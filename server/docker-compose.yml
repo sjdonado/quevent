@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    build: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      NODE_ENV: development
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      SECRET: A3EF16171C3D3CC6
+      MAILER_USER:
+      MAILER_PASS:
+      DATABASE_URL: mongodb://user:user_12345@db:27017/quevent
+    ports:
+      - 3000:3000
+      - 9229:9229
+    depends_on:
+      - db
+  db:
+    image: mongo
+    volumes:
+      - mongo-data:/data
+      # - ./db/dump:/dump
+      - ./db/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: user_12345
+      MONGO_INITDB_DATABASE: quevent
+    ports:
+      - 27017:27017
+
+volumes:
+  mongo-data: ~

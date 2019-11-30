@@ -1,0 +1,38 @@
+{
+  "name": "quevent-server",
+  "version": "1.0.0",
+  "description": "Tracking your events attendance using QR codes",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --inspect=0.0.0.0 index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjdonado/quevent.git"
+  },
+  "keywords": [
+    "qr",
+    "events",
+    "attendance"
+  ],
+  "author": "sjdonado",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sjdonado/quevent/issues"
+  },
+  "homepage": "https://github.com/sjdonado/quevent#readme",
+  "dependencies": {
+    "apollo-server": "^2.9.12",
+    "graphql": "^14.5.8",
+    "loglevel": "^1.6.6",
+    "mongoose": "^5.7.13"
+  },
+  "devDependencies": {
+    "eslint": "^6.7.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "nodemon": "^2.0.1"
+  }
+}
