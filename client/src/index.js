@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import { CookiesProvider } from 'react-cookie';
 import { BrowserRouter } from 'react-router-dom';
 
-import './index.module.css';
+import './index.module.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

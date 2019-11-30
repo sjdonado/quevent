@@ -2,7 +2,7 @@ FROM node:dubnium-alpine
 
 WORKDIR /usr/src/app
 
-EXPOSE 3000
+EXPOSE 4000
 
 RUN npm install -g yarn
 
