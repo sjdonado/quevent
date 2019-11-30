@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactRouterProptypes from 'react-router-prop-types';
+import { instanceOf } from 'prop-types';
 
 import { ApolloClient, ApolloLink } from 'apollo-boost';
 import { ApolloProvider, Query } from 'react-apollo';
@@ -8,8 +10,6 @@ import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
 
 import { withCookies, Cookies } from 'react-cookie';
-import { Cookie } from 'universal-cookie';
-import { Location, History } from 'history';
 
 import {
   Route,
@@ -22,11 +22,11 @@ import {
 
 import moment from 'moment';
 
-import './App.module.css';
+import './App.module.scss';
 
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
-import Login from './pages/login/Login';
+import Login from './pages/Login/Login';
 
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -38,15 +38,8 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const uploadLink = createUploadLink({ uri: API_URI });
 
-type AppProps = {
-  location: Location,
-  history: History,
-  cookies: Cookie,
-  children?: React.ReactNode,
-}
-
-const App: React.FC<any> = ({ cookies, location, history }: AppProps) => {
-  const setToken = (token: string) => {
+function App({ cookies, location, history }) {
+  const setToken = (token) => {
     // console.log('token', token, 'expires', moment(new Date()).add(24, 'hours').toDate());
     cookies.set(AUTH_TOKEN_COOKIE_NAME, token, {
       path: '/',
@@ -86,4 +79,10 @@ const App: React.FC<any> = ({ cookies, location, history }: AppProps) => {
   );
 }
 
-export default App;
+App.propTypes = {
+  location: ReactRouterProptypes.location.isRequired,
+  history: ReactRouterProptypes.history.isRequired,
+  cookies: instanceOf(Cookies).isRequired,
+};
+
+export default withRouter(withCookies(App));

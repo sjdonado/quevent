@@ -8,13 +8,13 @@ services:
     environment:
       NODE_ENV: development
       HOSTNAME: 0.0.0.0
-      PORT: 3000
+      PORT: 4000
       SECRET: A3EF16171C3D3CC6
       MAILER_USER:
       MAILER_PASS:
       DATABASE_URL: mongodb://user:user_12345@db:27017/quevent
     ports:
-      - 3000:3000
+      - 4000:4000
       - 9229:9229
     depends_on:
       - db
