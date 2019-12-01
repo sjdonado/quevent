@@ -1,0 +1,9 @@
+@import '../../styles/main.scss';
+
+.wrapper{
+  align-self: stretch;
+  margin-top: 1em;
+  color: $primary-text-color;
+  background-color: $contrast-color;
+  border-radius: 8px;
+}

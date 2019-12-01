@@ -30,6 +30,8 @@ import './App.module.scss';
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
+import PrivateRoute from './utils/PrivateRoute';
+import EventDetails from './pages/EventDetails/EventDetails';
 
 const theme = createMuiTheme({
   palette: {
@@ -100,6 +102,9 @@ function App({ cookies, location, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login />} />
+          <PrivateRoute>
+            <Route exact path="/events/:id" component={EventDetails} />
+          </PrivateRoute>
         </Switch>
       </ApolloProvider>
     </ThemeProvider>
