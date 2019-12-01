@@ -32,6 +32,15 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
 
 const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#9852f9',
+      main: '#3F20BA',
+    },
+    secondary: {
+      main: '#3c9d9b',
+    },
+  },
   typography: {
     fontFamily: [
       'Montserrat',
@@ -39,12 +48,7 @@ const theme = createMuiTheme({
       'BlinkMacSystemFont',
       '"Segoe UI"',
       'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
       'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
     ].join(','),
   },
 });

@@ -111,7 +111,7 @@ const LoginForm = () => (
             variant="contained"
             className={styles.button}
           >
-          Log in
+          Login
           </Button>
           <Grid container>
             <Grid item xs>

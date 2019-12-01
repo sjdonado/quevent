@@ -2,7 +2,7 @@
 
 .wrapper {
   display: flex;
-  border-radius: 15px; 
+  border-radius: 8px; 
   flex-direction: column;
   align-items: center;
   padding: 3em;
@@ -28,6 +28,7 @@
 }
 
 .button {
+  letter-spacing: 3px;
   background-color: $accent-color;
   justify-content: center;
   border-radius: 4px;
