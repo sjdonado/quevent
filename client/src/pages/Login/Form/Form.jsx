@@ -41,7 +41,7 @@ const LoginForm = () => (
     <Typography component="h1">
         Login
     </Typography>
-    <Formik
+    {/* <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values, { setSubmitting }) => {
@@ -122,7 +122,7 @@ const LoginForm = () => (
           </Grid>
         </Form>
       )}
-    </Formik>
+    </Formik> */}
   </Box>
 );
 
