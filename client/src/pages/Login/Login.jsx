@@ -1,14 +1,13 @@
 import React from 'react';
+import { Typography, Box } from '@material-ui/core';
 import styles from './Login.module.scss';
-import { Typography, Box } from '@material-ui/core'
+import LoginForm from './Form/Form';
+
 function Login() {
   return (
     <section id="login" className={styles.root}>
       <Box className={styles['form-container']}>
-        <Typography variant>Login</Typography>
-        <Box>
-          Form
-        </Box>
+        <LoginForm />
       </Box>
     </section>
   );
