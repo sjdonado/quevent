@@ -27,6 +27,7 @@ import './App.module.scss';
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
+import EventView from './pages/Events/EventView'
 
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -74,6 +75,7 @@ function App({ cookies, location, history }) {
     <ApolloProvider client={client}>
       <Switch>
         <Route exact path="/" render={() => <Login />} />
+        <Route path="/events" render={() => <EventView />} />
       </Switch>
     </ApolloProvider>
   );
