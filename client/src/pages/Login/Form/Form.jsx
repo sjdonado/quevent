@@ -32,14 +32,14 @@ const validationSchema = () => Yup.object().shape({
     .email('Invalid email.')
     .required('This field is required'),
   password: Yup.string()
-    .min(6, 'Password must have at least 6 characters.')
+    .min(6, 'Password must have at least 8 characters.')
     .required('This field is required'),
 });
 
 const LoginForm = () => (
   <Box className={styles.wrapper}>
     <Typography component="h1">
-        Inicia Sesión
+        Login
     </Typography>
     <Formik
       initialValues={initialValues}
@@ -50,13 +50,8 @@ const LoginForm = () => (
       }}
     >
       {({
-        values,
         errors,
         touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
       }) => (
         <Form
           className={styles.form}
