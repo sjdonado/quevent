@@ -18,6 +18,9 @@ import {
   withRouter,
 } from 'react-router-dom';
 
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
 // import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import moment from 'moment';
@@ -28,6 +31,24 @@ import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
 
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
+});
+responsiveFontSizes(theme);
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -71,11 +92,14 @@ function App({ cookies, location, history }) {
   });
 
   return (
-    <ApolloProvider client={client}>
-      <Switch>
-        <Route exact path="/" render={() => <Login />} />
-      </Switch>
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <ApolloProvider client={client}>
+        <Switch>
+          <Route exact path="/" render={() => <Login />} />
+        </Switch>
+      </ApolloProvider>
+    </ThemeProvider>
+
   );
 }
 
