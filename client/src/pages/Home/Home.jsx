@@ -6,18 +6,14 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import PageContainer from '../../components/PageContainer/PageContainer';
-import AttendeesTable from './AttendeesTable/AttendeesTable';
-import TabsNav from '../../components/TabsNav/TabsNav';
 
-import styles from './EventDetails.module.scss';
+import styles from './Home.module.scss';
 
-function EventDetails() {
+function Home() {
   return (
     <PageContainer>
       <Box className={styles.wrapper}>
-        <Typography component="h1" variant="h4"> Event details</Typography>
-        <TabsNav />
-        <AttendeesTable />
+        <Typography component="h1" variant="h4">My events</Typography>
 
         <Tooltip title="Add guest" aria-label="add a guest to the list">
           <Fab
@@ -33,8 +29,8 @@ function EventDetails() {
   );
 }
 
-EventDetails.propTypes = {
+Home.propTypes = {
 
 };
 
-export default EventDetails;
+export default Home;

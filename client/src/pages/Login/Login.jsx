@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { useMutation } from 'react-apollo';
 import { GoogleLogin } from 'react-google-login';
 import { Box } from '@material-ui/core';
 
-import { LOGIN_MUTATION } from '../../graphql/mutations';
-import { GOOGLE_CLIENT_ID } from '../../utils/environment';
 import styles from './Login.module.scss';
 
-function Login() {
+import { LOGIN_MUTATION } from '../../graphql/mutations';
+import { GOOGLE_CLIENT_ID } from '../../utils/environment';
+
+import Snackbar from '../../components/Snackbar/Snackbar';
+
+function Login({ setToken }) {
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
   const [loginMutation] = useMutation(LOGIN_MUTATION);
 
   const handleResponse = async ({ tokenId }) => {
@@ -17,10 +23,9 @@ function Login() {
           idToken: tokenId,
         },
       });
-      console.log(data);
-      // setToken(data.login.token);
+      setToken(data.login.token);
     } catch (err) {
-      // setSnackbarMsg(err.message.split('GraphQL error: ')[1]);
+      setSnackbarMsg(err.message.split('GraphQL error: ')[1]);
     }
   };
 
@@ -43,8 +48,13 @@ function Login() {
           // cookiePolicy="single_host_origin"
         />
       </Box>
+      <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
     </section>
   );
 }
+
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired,
+};
 
 export default Login;
