@@ -19,7 +19,7 @@ const authentication = async (authToken) => {
     new ApolloError('Auth token is not supplied', 400);
   }
 
-  await verify(token, secret, async (err, decoded) => {
+  return verify(token, secret, async (err, decoded) => {
     if (err) {
       new ApolloError('Unauthorized', 401);
     }
@@ -30,7 +30,7 @@ const authentication = async (authToken) => {
       new ApolloError('Auth Token expired', 400);
     }
 
-    req.user = await User.findById(userId);
+    return User.findById(userId);
   });
 };
 

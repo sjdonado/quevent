@@ -3,7 +3,7 @@ import ReactRouterProptypes from 'react-router-prop-types';
 import { instanceOf } from 'prop-types';
 
 import { ApolloClient, ApolloLink } from 'apollo-boost';
-import { ApolloProvider, Query } from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
@@ -14,7 +14,6 @@ import { withCookies, Cookies } from 'react-cookie';
 import {
   Route,
   Switch,
-  Redirect,
   withRouter,
 } from 'react-router-dom';
 
@@ -22,16 +21,17 @@ import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 
 // import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
 import moment from 'moment';
 
 import './App.module.scss';
 
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
+
 import Login from './pages/Login/Login';
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './pages/EventDetails/EventDetails';
+import Home from './pages/Home/Home';
 
 const theme = createMuiTheme({
   palette: {
@@ -65,7 +65,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const uploadLink = createUploadLink({ uri: API_URI });
 
-function App({ cookies, location, history }) {
+function App({ cookies, history }) {
   const setToken = (token) => {
     // console.log('token', token, 'expires', moment(new Date()).add(24, 'hours').toDate());
     cookies.set(AUTH_TOKEN_COOKIE_NAME, token, {
@@ -73,21 +73,18 @@ function App({ cookies, location, history }) {
       expires: moment(new Date()).add(1, 'day').toDate(),
       sameSite: true,
     });
-    history.push('/profile');
+    history.push('/home');
   };
 
   const getToken = () => cookies.get(AUTH_TOKEN_COOKIE_NAME);
-
-  const removeToken = () => cookies.remove(AUTH_TOKEN_COOKIE_NAME);
-
-  const authenticated = getToken();
+  // const removeToken = () => cookies.remove(AUTH_TOKEN_COOKIE_NAME);
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
     return {
       headers: {
         ...headers,
-        authorization: token ? `Bearer ${token}` : '',
+        authorization: token || null,
       },
     };
   });
@@ -101,8 +98,9 @@ function App({ cookies, location, history }) {
     <ThemeProvider theme={theme}>
       <ApolloProvider client={client}>
         <Switch>
-          <Route exact path="/" render={() => <Login />} />
-          <PrivateRoute>
+          <Route exact path="/" render={() => <Login setToken={setToken} />} />
+          <PrivateRoute authenticated={typeof getToken() === 'string'}>
+            <Route exact path="/home" component={Home} />
             <Route exact path="/events/:id" component={EventDetails} />
           </PrivateRoute>
         </Switch>
@@ -113,7 +111,7 @@ function App({ cookies, location, history }) {
 }
 
 App.propTypes = {
-  location: ReactRouterProptypes.location.isRequired,
+  // location: ReactRouterProptypes.location.isRequired,
   history: ReactRouterProptypes.history.isRequired,
   cookies: instanceOf(Cookies).isRequired,
 };

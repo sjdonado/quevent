@@ -11,31 +11,31 @@ const headers = ['Name', 'Email', 'Attended', 'Active'];
 
 const rows = [
   {
-    name: 'Juan Estrada',
+    name: 'Juan Estrada 1',
     email: 'jsestrada@uninorte.edu.co',
     attended: 'No',
     active: 'Yes',
   },
   {
-    name: 'Juan Estrada',
+    name: 'Juan Estrada 2',
     email: 'jsestrada@uninorte.edu.co',
     attended: 'No',
     active: 'Yes',
   },
   {
-    name: 'Juan Estrada',
+    name: 'Juan Estrada 3',
     email: 'jsestrada@uninorte.edu.co',
     attended: 'No',
     active: 'Yes',
   },
   {
-    name: 'Juan Estrada',
+    name: 'Juan Estrada 4',
     email: 'jsestrada@uninorte.edu.co',
     attended: 'No',
     active: 'Yes',
   },
   {
-    name: 'Juan Estrada',
+    name: 'Juan Estrada 5',
     email: 'jsestrada@uninorte.edu.co',
     attended: 'No',
     active: 'Yes',
