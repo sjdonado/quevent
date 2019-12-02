@@ -6,21 +6,6 @@ import { Box } from '@material-ui/core';
 import styles from './TabsNav.module.scss';
 
 
-const StyledTab = withStyles((theme) => ({
-  root: {
-    textTransform: 'none',
-    color: '#2f353f',
-    fontWeight: theme.typography.fontWeightRegular,
-    fontSize: theme.typography.pxToRem(15),
-    marginRight: theme.spacing(1),
-    '&:focus': {
-      opacity: 1,
-    },
-  },
-// eslint-disable-next-line react/jsx-props-no-spreading
-}))((props) => <Tab disableRipple {...props} />);
-
-
 export default function TabsNav() {
   const [value, setValue] = React.useState(0);
 
