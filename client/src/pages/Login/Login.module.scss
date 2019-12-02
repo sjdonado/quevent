@@ -2,13 +2,14 @@
 
 .root {
   height: 100vh;
+  background-image: linear-gradient(to right top, #3f20ba, #4928c3, #5230cb, #5b37d4, #643fdd);
   // background-color: $primary-color;
   display: flex;
   justify-content: center;
   align-items: center;
   .form-container{
+    border-radius: 8px;
       width: 500px;
-      height: 400px;
       background-color: #ffffff;
   }
 }

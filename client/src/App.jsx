@@ -18,6 +18,9 @@ import {
   withRouter,
 } from 'react-router-dom';
 
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+
 // import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import moment from 'moment';
@@ -27,7 +30,31 @@ import './App.module.scss';
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
+import PrivateRoute from './utils/PrivateRoute';
+import EventDetails from './pages/EventDetails/EventDetails';
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#9852f9',
+      main: '#3F20BA',
+    },
+    secondary: {
+      main: '#3c9d9b',
+    },
+  },
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      'sans-serif',
+    ].join(','),
+  },
+});
+responsiveFontSizes(theme);
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
@@ -71,11 +98,17 @@ function App({ cookies, location, history }) {
   });
 
   return (
-    <ApolloProvider client={client}>
-      <Switch>
-        <Route exact path="/" render={() => <Login />} />
-      </Switch>
-    </ApolloProvider>
+    <ThemeProvider theme={theme}>
+      <ApolloProvider client={client}>
+        <Switch>
+          <Route exact path="/" render={() => <Login />} />
+          <PrivateRoute>
+            <Route exact path="/events/:id" component={EventDetails} />
+          </PrivateRoute>
+        </Switch>
+      </ApolloProvider>
+    </ThemeProvider>
+
   );
 }
 
