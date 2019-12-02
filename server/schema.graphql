@@ -1,12 +1,20 @@
 type Query {
-  user: User
+  getUser: User!
 }
 
 type Mutation {
-  login(token: String): User
+  login(idToken: String!): AuthPayload!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
 }
 
 type User {
   name: String!
   email: String!
+  profilePicture: String!
+  active: Boolean!
+  attended: Boolean!
 }

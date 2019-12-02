@@ -3,8 +3,8 @@ const log = require('loglevel');
 const fs = require('fs');
 
 const typeDefs = gql(fs.readFileSync(__dirname.concat('/schema.graphql'), 'utf8'));
-const database = require('./services/database')
-// const models = require('./models');
+const database = require('./services/database');
+const models = require('./models');
 
 const Query = require('./resolvers/queries');
 const Mutation = require('./resolvers/mutations');
@@ -20,9 +20,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: async ({ req, res }) => ({
-    authorization: req.headers.authorization,
+    authToken: req.headers['x-access-token'] || req.headers.authorization,
     res,
-    // models,
+    models,
   }),
   formatError: (error) => {
     log.error(error);
