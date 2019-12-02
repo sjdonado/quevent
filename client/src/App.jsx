@@ -19,15 +19,17 @@ import {
 } from 'react-router-dom';
 
 // import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import moment from 'moment';
+import MomentUtils from '@date-io/moment';
 
 import './App.module.scss';
 
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import Login from './pages/Login/Login';
-import EventView from './pages/Events/EventView'
+import EventView from './pages/Events/EventView';
+import CreateEvent from './pages/Events/CreateEvent'
 
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
@@ -75,7 +77,10 @@ function App({ cookies, location, history }) {
     <ApolloProvider client={client}>
       <Switch>
         <Route exact path="/" render={() => <Login />} />
-        <Route path="/events" render={() => <EventView />} />
+        <Route exact path="/events" render={() => <EventView />} />
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+        <Route exact path="/events/add" render={() => <CreateEvent />} />
+        </MuiPickersUtilsProvider>
       </Switch>
     </ApolloProvider>
   );

@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
@@ -160,10 +161,8 @@ const EnhancedTableToolbar = props => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Edit">
-          <IconButton aria-label="edit">
-            <EditIcon />
-          </IconButton>
+        <Tooltip tittle="On/Off">
+          <Button>On/Off</Button>
         </Tooltip>
       ) : (
         <Tooltip title="Filter list">
@@ -172,6 +171,13 @@ const EnhancedTableToolbar = props => {
           </IconButton>
         </Tooltip>
       )}
+        {numSelected === 1?(
+          <Tooltip title="Edit">
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+          </Tooltip>)
+          :""}
     </Toolbar>
   );
 };
