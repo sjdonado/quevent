@@ -7,7 +7,7 @@ EXPOSE 4000
 RUN npm install -g yarn
 
 COPY ./package.json .
-COPY ./yarn.lock .
+# COPY ./yarn.lock .
 
 COPY . .
 
