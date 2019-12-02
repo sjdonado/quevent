@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography } from '@material-ui/core';
+import {
+  Box, Typography, Tooltip, Fab,
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import AttendeesTable from './AttendeesTable/AttendeesTable';
 import TabsNav from '../../components/TabsNav/TabsNav';
@@ -15,8 +18,16 @@ function EventDetails() {
         <TabsNav />
         <AttendeesTable />
 
+        <Tooltip title="Add guest" aria-label="add a guest to the list">
+          <Fab
+            color="secondary"
+            aria-label="add"
+            className={styles['add-action-button']}
+          >
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </Box>
-
     </PageContainer>
   );
 }

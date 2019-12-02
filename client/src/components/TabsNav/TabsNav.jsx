@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Box } from '@material-ui/core';
+import { Box, Paper } from '@material-ui/core';
 import styles from './TabsNav.module.scss';
 
 
@@ -14,7 +14,7 @@ export default function TabsNav() {
   };
 
   return (
-    <Box className={styles.wrapper}>
+    <Paper className={styles.wrapper}>
       <Tabs
         classes={{
           indicator: styles.tabs,
@@ -47,6 +47,6 @@ export default function TabsNav() {
           label="Not Attended"
         />
       </Tabs>
-    </Box>
+    </Paper>
   );
 }
