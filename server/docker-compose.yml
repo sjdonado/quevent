@@ -11,8 +11,7 @@ services:
       PORT: 4000
       SECRET: A3EF16171C3D3CC6
       GOOGLE_CLIENT_ID: 728156474147-7l3v2sf4l0mibr0sl56n0mjd09jti6lu.apps.googleusercontent.com
-      MAILER_USER:
-      MAILER_PASS:
+      MAILER_API_KEY: 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
       DATABASE_URL: mongodb://quevent_user:root_12345@db:27017/quevent
     ports:
       - 4000:4000

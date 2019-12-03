@@ -1,16 +1,11 @@
 const { ApolloError } = require('apollo-server');
 
 const { authentication } = require('../../services/auth');
+const { getQRCodeKeyData } = require('../../services/encrypt');
 
-const updateAttendee = async (parent, args, context) => {
-  const {
-    eventId,
-    attendeeId,
-    active,
-    attended,
-  } = args;
-
+const readInvitation = async (parent, { qrCodeKey }, context) => {
   const user = await authentication(context);
+  const { eventId, attendeeId } = getQRCodeKeyData(qrCodeKey);
 
   const eventIdx = user.events.findIndex(({ id }) => id === eventId);
   if (eventIdx === -1) {
@@ -25,8 +20,7 @@ const updateAttendee = async (parent, args, context) => {
   const attendee = user.events[eventIdx].attendance[attendeeIdx];
 
   user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
-    active: active || attendee.active,
-    attended: attended || attendee.attended,
+    invited: true,
   });
 
   await user.save();
@@ -34,4 +28,4 @@ const updateAttendee = async (parent, args, context) => {
   return user.events[eventIdx].attendance[attendeeIdx];
 };
 
-module.exports = updateAttendee;
+module.exports = readInvitation;
