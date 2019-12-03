@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const { eventSchema } = require('./Event');
+const { attendeeSchema } = require('./Attendee');
 const { Schema } = mongoose;
 
 const fields = {
@@ -8,24 +8,30 @@ const fields = {
     type: String,
     required: [true, 'Name required'],
   },
-  email: {
-    type: String,
-    unique: true,
-    required: [true, 'Email required'],
+  startDate: {
+    type: Date,
+    required: [true, 'Start date required'],
   },
-  profilePicture: String,
+  endDate: {
+    type: Date,
+    required: [true, 'Start date required'],
+  },
   active: {
     type: Boolean,
     default: true,
   },
-  events: [eventSchema],
+  author: {
+    type: String,
+    required: [true, 'Author email required'],
+  },
+  attendance: [attendeeSchema],
 };
 
-const userSchema = new Schema(fields, {
+const eventSchema = new Schema(fields, {
   timestamps: true,
 });
 
-userSchema.methods.toJSON = function toJSON() {
+eventSchema.methods.toJSON = function toJSON() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
   doc.id = doc._id;
@@ -38,12 +44,15 @@ userSchema.methods.toJSON = function toJSON() {
   return doc;
 };
 
-userSchema.methods.getId = function toJSON() {
+eventSchema.methods.getId = function toJSON() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
   return doc._id;
 };
 
-const User = mongoose.model('User', userSchema);
+// const Event = mongoose.model('Event', eventSchema);
 
-module.exports = User;
+module.exports = {
+  // Event,
+  eventSchema,
+};
