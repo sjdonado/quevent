@@ -1,9 +1,23 @@
+scalar Date
+
 type Query {
   getUser: User!
 }
 
 type Mutation {
   login(idToken: String!): AuthPayload!
+  createEvent(
+    name: String!
+    startDate: Date!
+    endDate: Date!
+  ): Event!
+  updateEvent(
+    id: ID!
+    name: String
+    startDate: Date
+    endDate: Date
+    active: Boolean
+  ): Event!
 }
 
 type AuthPayload {
@@ -12,9 +26,26 @@ type AuthPayload {
 }
 
 type User {
+  id: ID!
   name: String!
   email: String!
   profilePicture: String!
+  active: Boolean!
+  events: [Event!]!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  active: Boolean!
+  attendance: [Attendee!]!
+}
+
+type Attendee {
+  id: ID!
+  email: String!
   active: Boolean!
   attended: Boolean!
 }

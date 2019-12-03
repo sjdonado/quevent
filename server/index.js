@@ -1,4 +1,7 @@
 const { ApolloServer, gql } = require('apollo-server');
+const { GraphQLScalarType } = require('graphql');
+const { Kind } = require('graphql/language');
+
 const log = require('loglevel');
 const fs = require('fs');
 
@@ -15,6 +18,27 @@ const resolvers = {
   Query,
   Mutation,
 };
+
+const customScalarTypes = {
+  Date: new GraphQLScalarType({
+    name: 'Date',
+    description: 'Date custom scalar type',
+    parseValue(value) {
+      return new Date(value);
+    },
+    serialize(value) {
+      return value.getTime();
+    },
+    parseLiteral(ast) {
+      if (ast.kind === Kind.INT) {
+        return parseInt(ast.value, 10); // ast value is always in string format
+      }
+      return null;
+    },
+  }),
+}
+
+Object.assign(resolvers, customScalarTypes);
 
 const server = new ApolloServer({
   typeDefs,
@@ -33,7 +57,7 @@ const server = new ApolloServer({
   //   log.log(response);
   //   return response;
   // },
-  playground: false,
+  playground: true,
 });
 
 server.listen().then(({ url }) => {
