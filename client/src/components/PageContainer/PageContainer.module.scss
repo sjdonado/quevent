@@ -4,6 +4,10 @@
   height: 100vh;
   background-color: #f8f9fa;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  .content{
+    margin: 2em auto;
+    height: 100%;
+    max-width: 800px;
+  }
 }

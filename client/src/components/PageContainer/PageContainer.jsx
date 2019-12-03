@@ -9,7 +9,9 @@ function PageContainer({ children }) {
   return (
     <Box className={styles.root}>
       <AppBar />
-      {children}
+      <Box className={styles.content}>
+        {children}
+      </Box>
     </Box>
   );
 }
