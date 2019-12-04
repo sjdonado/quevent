@@ -17,12 +17,10 @@ const sendInvitations = async (parent, { eventId }, context) => {
 
   await Promise.all(event.attendance.map(async (attendee) => {
     const url = await QRCode.toDataURL(generateQRCodeKey(event.id, attendee.id));
-    // const data = url.replace(/.*,/, '');
-    // const qrCode = Buffer.from(data, 'base64');
 
-    if (attendee.invited) {
+    if (!attendee.invited) {
       const res = await sendQRCodeEmail(url, user.name, event.name, attendee.email);
-      console.log(res);
+
       if (res) {
         Object.assign(attendee, { invited: true });
       }
