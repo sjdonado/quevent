@@ -9,7 +9,7 @@ import { Box } from '@material-ui/core';
 import styles from './Table.module.scss';
 
 
-export default function Table({ headers, rows }) {
+export default function Table({ headers, rows, onRowClick }) {
   return (
     <Box className={styles.root}>
       <MuiTable className={styles.table} aria-label="simple table">
@@ -22,7 +22,7 @@ export default function Table({ headers, rows }) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.name}>
+            <TableRow className={styles.row} key={row.name} onClick={() => onRowClick(row)}>
               {Object.values(row).map((value) => (
                 <TableCell key={value} align="center">
                   {value}
@@ -39,4 +39,5 @@ export default function Table({ headers, rows }) {
 Table.propTypes = {
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   rows: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };

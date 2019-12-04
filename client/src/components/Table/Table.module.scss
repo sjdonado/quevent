@@ -2,6 +2,7 @@
 
 .root{
   background: #ffffff;
+  border-radius: 8px;
   width: 100%;
   overflow-x: auto;
   margin: 1em 0;
@@ -11,3 +12,12 @@
     border-collapse: separate;
   }
 } 
+
+.row{
+  border-left: 1px solid black;
+  transition: 0.2s;
+  &:hover{
+    background-color: lighten($color: $accent-color, $amount: 50);
+    cursor: pointer;
+  }
+}

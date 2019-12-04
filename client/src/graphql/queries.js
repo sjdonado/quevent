@@ -17,3 +17,11 @@ export const EXAMPLE_QUERY = gql`
     }
   }
 `;
+export const GET_EVENTS = gql`
+  {
+    getEvents {
+      name
+      profilePicture
+    }
+  }
+`;

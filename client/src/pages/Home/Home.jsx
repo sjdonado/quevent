@@ -4,7 +4,8 @@ import {
   Box, Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
+import { useQuery } from '@apollo/react-hooks';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import Table from '../../components/Table/Table';
@@ -27,7 +28,9 @@ const rows = [
 function Home() {
   const history = useHistory();
 
+  const onRowClick = (row) => {
 
+  };
   return (
     <PageContainer
       title="My events"
@@ -38,12 +41,12 @@ function Home() {
             history.push('/events/123123/guests');
           }}
         >
-          <EventOutlinedIcon />
+          <AddCircleOutlineOutlinedIcon />
         </ActionButton>
       )}
     >
       <Box className={styles.wrapper}>
-        <Table headers={headers} rows={rows} />
+        <Table headers={headers} rows={rows} onRowClick={onRowClick} />
       </Box>
     </PageContainer>
   );
