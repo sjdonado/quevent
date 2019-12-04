@@ -19,7 +19,7 @@ import {
   import LockIcon from '@material-ui/icons/Lock';
   import EmailIcon from '@material-ui/icons/Email';
   
-  //import styles from './Form.module.scss';
+  import styles from '../Login/Form/Form.module.scss';
   
   const initialValues = {
     name: 'LOREM IPSUM',
@@ -120,7 +120,7 @@ import {
   );*/
 
   const EventForm = () =>(
-    <Box /*{className={styles.wrapper}}*/>
+    <Box className={styles.wrapper}>
       <Typography component="h1">
         New Event
       </Typography>
@@ -133,9 +133,9 @@ import {
       }}
     >
       {({ errors , touched }) =>(
-        <Form /*{className={styles.form}}*/ noValidate>
+        <Form className={styles.form} noValidate>
           <Field
-            type="input"
+            /*type="input"*/
             as={TextField}
             placeholder="Name"
             variant="outlined"
@@ -154,7 +154,7 @@ import {
             }}
           />
           <Field
-            type="input"
+            /*type="input"*/
             as={TextField}
             placeholder="Description"
             variant="outlined"
@@ -173,24 +173,38 @@ import {
             }}
           />
           <Field
-            type="input"
+            /*type="input"*/
             as={DateTimePicker}
-            placeholder="Date"
+            placeholder="Start Date"
             variant="outlined"
             margin="normal"
             required
-            id="date"
-            label="Date"
-            name="date"
+            id="startDate"
+            label="Start Date"
+            name="startDate"
             InputProps={{
-              'aria-label': "Event's date",
+              'aria-label': "Event's start date",
+            }}
+          />
+          <Field
+            /*type="input"*/
+            as={DateTimePicker}
+            placeholder="End Date"
+            variant="outlined"
+            margin="normal"
+            required
+            id="endDate"
+            label="End Date"
+            name="endDate"
+            InputProps={{
+              'aria-label': "Event's end date",
             }}
           />
           <Button
               type="submit"
               fullWidth
               variant="contained"
-              /*className={styles.button}*/
+              className={styles.button}
             >
             Add Event
             </Button>

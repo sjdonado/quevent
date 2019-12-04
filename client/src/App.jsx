@@ -30,7 +30,6 @@ import Login from './pages/Login/Login';
 import EventView from './pages/Events/EventView';
 import CreateEvent from './pages/Events/CreateEvent'
 
-import Login from './pages/Login/Login';
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './pages/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
@@ -101,11 +100,11 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-          <PrivateRoute authenticated={typeof getToken() === 'string'}>
-            <Route exact path="/events" render={() => <EventView />} />
+          <Route exact path="/events" render={() => <EventView />} />
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <Route exact path="/events/add" render={() => <CreateEvent />} />
             </MuiPickersUtilsProvider>
+          <PrivateRoute authenticated={typeof getToken() === 'string'}>
             <Route exact path="/home" component={Home} />
             <Route exact path="/events/:id" component={EventDetails} />
           </PrivateRoute>
