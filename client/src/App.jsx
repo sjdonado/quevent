@@ -28,10 +28,14 @@ import './App.module.scss';
 import { API_URI } from './utils/environment';
 import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 
+import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './pages/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
+import AddGuests from './pages/AddGuests/AddGuests';
+import GuestsQrReader from './pages/GuestsQrReader/GuestsQrReader';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -102,6 +106,8 @@ function App({ cookies, history }) {
           <PrivateRoute authenticated={typeof getToken() === 'string'}>
             <Route exact path="/home" component={Home} />
             <Route exact path="/events/:id" component={EventDetails} />
+            <Route exact path="/events/:id/guests" component={AddGuests} />
+            <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
           </PrivateRoute>
         </Switch>
       </ApolloProvider>
