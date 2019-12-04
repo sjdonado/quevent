@@ -12,7 +12,6 @@
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     .header{
       display: flex;
       justify-content: space-between;
@@ -26,5 +25,21 @@
         font-weight: 700;
       }
     }
+
+    .header-center{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h1{
+        display: inline-block;
+        border-radius: 8px;;
+        padding: 0.1em 0.3em;
+        background-color: lighten($color: $accent-color, $amount: 50);
+        color: $accent-color;
+        font-weight: 700;
+      }
+    }
   }
 }
+
+

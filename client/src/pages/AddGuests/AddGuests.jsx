@@ -16,6 +16,7 @@ function AddGuests() {
   return (
     <PageContainer
       title="Add guests"
+      backButton="/events/123123"
       action={() => (
         <ActionButton title="Save guests">
           <SaveOutlinedIcon />

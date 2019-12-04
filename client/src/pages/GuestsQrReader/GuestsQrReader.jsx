@@ -24,6 +24,9 @@ function GuestsQrReader() {
   return (
     <PageContainer
       title="Scan guests"
+      subtitle="Place the guest's QR code"
+      backButton="/events/123123"
+      align="center"
     >
       <Box className={styles.wrapper}>
         <Card className={styles.card} classes={{ root: styles.card }}>
