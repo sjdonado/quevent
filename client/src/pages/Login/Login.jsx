@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useMutation } from 'react-apollo';
 import { GoogleLogin } from 'react-google-login';
-import { Box } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
 
 import styles from './Login.module.scss';
 
@@ -36,6 +36,7 @@ function Login({ setToken }) {
 
   return (
     <section id="login" className={styles.root}>
+      <Typography component="h1" variant="h2">Quevent</Typography>
       <Box className={styles['form-container']}>
         {/* <Typography variant>Login</Typography> */}
         {/* <Box>
