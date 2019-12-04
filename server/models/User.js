@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const { eventSchema } = require('./Event');
 const { Schema } = mongoose;
+const { eventSchema } = require('./Event');
 
 const fields = {
   name: {
