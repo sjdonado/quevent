@@ -17,6 +17,7 @@ function Login({ setToken }) {
   const [loginMutation] = useMutation(LOGIN_MUTATION);
 
   const handleResponse = async ({ tokenId }) => {
+    console.log('tokenId', tokenId);
     try {
       const { data } = await loginMutation({
         variables: {

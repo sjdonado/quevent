@@ -1,35 +1,30 @@
 const mongoose = require('mongoose');
 
-const { eventSchema } = require('./Event');
 const { Schema } = mongoose;
 
 const fields = {
-  name: {
-    type: String,
-    required: [true, 'Name required'],
-  },
   email: {
     type: String,
     unique: true,
-    required: [true, 'Email required'],
   },
-  profilePicture: String,
   active: {
     type: Boolean,
     default: true,
   },
-  events: [eventSchema],
+  attended: {
+    type: Boolean,
+    default: false,
+  },
 };
 
-const userSchema = new Schema(fields, {
+const attendeeSchema = new Schema(fields, {
   timestamps: true,
 });
 
-userSchema.methods.toJSON = function toJSON() {
+attendeeSchema.methods.toJSON = function toJSON() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
   doc.id = doc._id;
-  // eslint-disable-next-line no-underscore-dangle
   delete doc._id;
   // eslint-disable-next-line dot-notation
   delete doc['__v'];
@@ -38,12 +33,15 @@ userSchema.methods.toJSON = function toJSON() {
   return doc;
 };
 
-userSchema.methods.getId = function toJSON() {
+attendeeSchema.methods.getId = function toJSON() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
   return doc._id;
 };
 
-const User = mongoose.model('User', userSchema);
+// const Attendee = mongoose.model('Attendee', attendeeSchema);
 
-module.exports = User;
+module.exports = {
+  // Attendee,
+  attendeeSchema,
+};
