@@ -32,7 +32,7 @@ function StyledAppBar() {
         if (error) return null;
         if (loading) {
           return (
-            <div className={styles.root}>
+            <div className={styles.loading}>
               <Progress type="circular" size={68} />
             </div>
           );

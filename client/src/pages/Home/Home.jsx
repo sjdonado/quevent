@@ -1,29 +1,49 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Tooltip, Fab,
+  Box, Typography,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
+import { useHistory } from 'react-router-dom';
+import EventOutlinedIcon from '@material-ui/icons/EventOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
-
+import ActionButton from '../../components/ActionButton/ActionButton';
+import Table from '../../components/Table/Table';
 import styles from './Home.module.scss';
 
-function Home() {
-  return (
-    <PageContainer>
-      <Box className={styles.wrapper}>
-        <Typography component="h1" variant="h4">My events</Typography>
+const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
-        <Tooltip title="Add guest" aria-label="add a guest to the list">
-          <Fab
-            color="secondary"
-            aria-label="add"
-            className={styles['add-action-button']}
-          >
-            <AddIcon />
-          </Fab>
-        </Tooltip>
+const rows = [
+  {
+    event: 'Cátedra Europa',
+    location: 'Universidad del Norte',
+    startDate: 'February 4th, 2019 12:30 PM',
+    endDate: 'February 4th, 2019 2:30 PM',
+    active: 'Yes',
+  },
+
+
+];
+
+function Home() {
+  const history = useHistory();
+
+
+  return (
+    <PageContainer
+      title="My events"
+      action={() => (
+        <ActionButton
+          title="Create event"
+          onClick={() => {
+            history.push('/events/123123/guests');
+          }}
+        >
+          <EventOutlinedIcon />
+        </ActionButton>
+      )}
+    >
+      <Box className={styles.wrapper}>
+        <Table headers={headers} rows={rows} />
       </Box>
     </PageContainer>
   );

@@ -7,12 +7,49 @@ import {
 import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import CropFreeIcon from '@material-ui/icons/CropFree';
-import PageContainer from '../../components/PageContainer/PageContainer';
-import AttendeesTable from './AttendeesTable/AttendeesTable';
-import TabsNav from '../../components/TabsNav/TabsNav';
-import ActionButton from '../../components/ActionButton/ActionButton';
-
+import PageContainer from '../../../components/PageContainer/PageContainer';
+import GuestsTable from './GuestsTable/GuestsTable';
+import TabsNav from '../../../components/TabsNav/TabsNav';
+import ActionButton from '../../../components/ActionButton/ActionButton';
+import Table from '../../../components/Table/Table';
 import styles from './EventDetails.module.scss';
+
+const headers = ['Name', 'Email', 'Attended', 'Active'];
+
+const rows = [
+  {
+    name: 'Juan Estrada 1',
+    email: 'jsestrada@uninorte.edu.co',
+    attended: 'No',
+    active: 'Yes',
+  },
+  {
+    name: 'Juan Estrada 2',
+    email: 'jsestrada@uninorte.edu.co',
+    attended: 'No',
+    active: 'Yes',
+  },
+  {
+    name: 'Juan Estrada 3',
+    email: 'jsestrada@uninorte.edu.co',
+    attended: 'No',
+    active: 'Yes',
+  },
+  {
+    name: 'Juan Estrada 4',
+    email: 'jsestrada@uninorte.edu.co',
+    attended: 'No',
+    active: 'Yes',
+  },
+  {
+    name: 'Juan Estrada 5',
+    email: 'jsestrada@uninorte.edu.co',
+    attended: 'No',
+    active: 'Yes',
+  },
+
+
+];
 
 function EventDetails() {
   const history = useHistory();
@@ -44,7 +81,7 @@ function EventDetails() {
     >
       <Box className={styles.wrapper}>
         <TabsNav />
-        <AttendeesTable />
+        <Table rows={rows} headers={headers} />
       </Box>
     </PageContainer>
   );

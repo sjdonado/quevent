@@ -5,7 +5,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Box } from '@material-ui/core';
-import styles from './AttendeesTable.module.scss';
+import styles from './GuestsTable.module.scss';
 
 const headers = ['Name', 'Email', 'Attended', 'Active'];
 

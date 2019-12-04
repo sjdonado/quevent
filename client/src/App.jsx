@@ -31,10 +31,10 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
 import PrivateRoute from './utils/PrivateRoute';
-import EventDetails from './pages/EventDetails/EventDetails';
+import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
-import AddGuests from './pages/AddGuests/AddGuests';
-import GuestsQrReader from './pages/GuestsQrReader/GuestsQrReader';
+import AddGuests from './pages/Events/AddGuests/AddGuests';
+import GuestsQrReader from './pages/Events/GuestsQrReader/GuestsQrReader';
 
 
 const theme = createMuiTheme({
@@ -103,12 +103,15 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-          <PrivateRoute authenticated={typeof getToken() === 'string'}>
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/events/:id" component={EventDetails} />
-            <Route exact path="/events/:id/guests" component={AddGuests} />
-            <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
-          </PrivateRoute>
+          <>
+            <AppBar />
+            <PrivateRoute authenticated={typeof getToken() === 'string'}>
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/events/:id" component={EventDetails} />
+              <Route exact path="/events/:id/guests" component={AddGuests} />
+              <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
+            </PrivateRoute>
+          </>
         </Switch>
       </ApolloProvider>
     </ThemeProvider>

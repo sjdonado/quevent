@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
-import PageContainer from '../../components/PageContainer/PageContainer';
-import ActionButton from '../../components/ActionButton/ActionButton';
+import PageContainer from '../../../components/PageContainer/PageContainer';
+import ActionButton from '../../../components/ActionButton/ActionButton';
 import styles from './AddGuests.module.scss';
 
 function AddGuests() {

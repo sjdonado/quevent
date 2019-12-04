@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 import QrReader from 'react-qr-reader';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import PageContainer from '../../components/PageContainer/PageContainer';
-import ActionButton from '../../components/ActionButton/ActionButton';
+import PageContainer from '../../../components/PageContainer/PageContainer';
+import ActionButton from '../../../components/ActionButton/ActionButton';
 import styles from './GuestsQrReader.module.scss';
 
 function GuestsQrReader() {
