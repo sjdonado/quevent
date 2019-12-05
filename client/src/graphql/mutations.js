@@ -35,3 +35,14 @@ export const CREATE_EVENT_MUTATION = gql`
     }
   }
 `;
+
+export const ADD_ATTENDEES = gql`
+  mutation addAttendees($eventId: ID!, $attendees: [AttendeeInput]!) {
+    addAttendees(eventId: $eventId, attendees: $attendees) {
+      email
+      attended
+      active
+      invited
+    }
+  }
+`;

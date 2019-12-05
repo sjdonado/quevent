@@ -17,42 +17,7 @@ import styles from './EventDetails.module.scss';
 import Progress from '../../../components/Progress/Progress';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
 
-const headers = ['Name', 'Email', 'Attended', 'Active'];
-
-const rows = [
-  {
-    name: 'Juan Estrada 1',
-    email: 'jsestrada@uninorte.edu.co',
-    attended: 'No',
-    active: 'Yes',
-  },
-  {
-    name: 'Juan Estrada 2',
-    email: 'jsestrada@uninorte.edu.co',
-    attended: 'No',
-    active: 'Yes',
-  },
-  {
-    name: 'Juan Estrada 3',
-    email: 'jsestrada@uninorte.edu.co',
-    attended: 'No',
-    active: 'Yes',
-  },
-  {
-    name: 'Juan Estrada 4',
-    email: 'jsestrada@uninorte.edu.co',
-    attended: 'No',
-    active: 'Yes',
-  },
-  {
-    name: 'Juan Estrada 5',
-    email: 'jsestrada@uninorte.edu.co',
-    attended: 'No',
-    active: 'Yes',
-  },
-
-
-];
+const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
 function EventDetails({ match }) {
   const history = useHistory();
@@ -74,7 +39,7 @@ function EventDetails({ match }) {
           <ActionButton
             title="Scan QR code"
             onClick={() => {
-              history.push('/events/123123/qrreader');
+              history.push(`/events/${match.params.id}/qrreader`);
             }}
           >
             <CropFreeIcon />
@@ -82,7 +47,7 @@ function EventDetails({ match }) {
           <ActionButton
             title="Add a guest"
             onClick={() => {
-              history.push('/events/123123/guests');
+              history.push(`/events/${match.params.id}/guests`);
             }}
           >
             <PersonAddOutlinedIcon />
@@ -94,20 +59,17 @@ function EventDetails({ match }) {
         <TabsNav />
 
         {loading ? (<Progress type="circular" />) : (
-          <AttendeesTable rows={rows} headers={headers} onRowClick={onRowClick}>
+          <AttendeesTable headers={headers} onRowClick={onRowClick}>
             {data.getEvent.attendance.map((row) => (
               <TableRow className={styles.row} key={row.id} onClick={() => onRowClick(row)}>
                 <TableCell align="center">
-                  {row.name}
+                  {row.email}
                 </TableCell>
                 <TableCell align="center">
-                  Universidad del Norte
+                  {row.invited ? 'Yes' : 'No'}
                 </TableCell>
                 <TableCell align="center">
-                  {moment(`${row.startDate}`, 'x').format('LLL')}
-                </TableCell>
-                <TableCell align="center">
-                  {moment(`${row.endDate}`, 'x').format('LLL')}
+                  {row.attended ? 'Yes' : 'No'}
                 </TableCell>
                 <TableCell align="center">
                   {row.active ? 'Yes' : 'No'}

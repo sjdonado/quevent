@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
 
 import {
   Box,
@@ -7,12 +7,34 @@ import {
 import { useDropzone } from 'react-dropzone';
 import XLSX from 'xlsx';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
+import { useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
 import ActionButton from '../../../components/ActionButton/ActionButton';
 import styles from './AddGuests.module.scss';
+import { ADD_ATTENDEES } from '../../../graphql/mutations';
 
-function AddGuests() {
+function AddGuests({ match }) {
+  const [attendees, setAttendees] = useState(null);
+  const [error, setError] = useState(null);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const [addAttendeesMutation] = useMutation(ADD_ATTENDEES);
+
+  const handleSubmit = async () => {
+    try {
+      if (attendees) {
+        const { data } = await addAttendeesMutation({
+          variables: {
+            eventId: match.params.id,
+            attendees,
+          },
+        });
+      }
+    } catch (err) {
+
+    }
+  };
+
+
   if (acceptedFiles.length > 0) {
     const file = acceptedFiles[0];
     const reader = new FileReader();
@@ -23,15 +45,18 @@ function AddGuests() {
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws);
+      setAttendees(data);
     };
     if (rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
   }
+
+
   return (
     <PageContainer
       title="Add guests"
-      backButton="/events/123123"
+      backButton={`/events/${match.params.id}`}
       action={() => (
-        <ActionButton title="Save guests">
+        <ActionButton title="Save guests" onClick={handleSubmit}>
           <SaveOutlinedIcon />
         </ActionButton>
       )}
@@ -47,7 +72,7 @@ function AddGuests() {
 }
 
 AddGuests.propTypes = {
-
+  match: ReactRouterPropTypes.match.isRequired,
 };
 
 export default AddGuests;
