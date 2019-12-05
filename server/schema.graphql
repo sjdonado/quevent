@@ -12,7 +12,7 @@ type Mutation {
     endDate: Date!
   ): Event!
   updateEvent(
-    id: ID!
+    eventId: ID!
     name: String
     startDate: Date
     endDate: Date
@@ -27,6 +27,12 @@ type Mutation {
     attendeeId: ID!
     active: Boolean
     attended: Boolean
+  ): Attendee!
+  sendInvitations(
+    eventId: ID!
+  ): Event!
+  readInvitation(
+    qrCodeKey: String!
   ): Attendee!
 }
 
@@ -62,6 +68,7 @@ type Attendee {
   email: String!
   active: Boolean!
   attended: Boolean!
+  invited: Boolean!
   createdAt: Date!
   updatedAt: Date!
 }

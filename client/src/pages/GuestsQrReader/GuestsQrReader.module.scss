@@ -1,0 +1,13 @@
+
+.wrapper{
+  width: 100%;
+  max-width: 400px;
+  align-self: center;
+}
+.card {
+  display: flex;
+  margin: 1em 0;
+  .qr-reader {
+    width: 100%;
+  }
+}
