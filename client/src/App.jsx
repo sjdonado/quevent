@@ -16,12 +16,11 @@ import {
   Switch,
   withRouter,
 } from 'react-router-dom';
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-
-// import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import moment from 'moment';
+import MomentUtils from '@date-io/moment';
 
 import './App.module.scss';
 
@@ -30,6 +29,9 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
+import EventView from './pages/Events/EventView';
+import CreateEvent from './pages/Events/CreateEvent'
+
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
@@ -103,15 +105,16 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-          <>
-            <AppBar />
+            <Route exact path="/events" render={() => <EventView />} />
             <PrivateRoute authenticated={typeof getToken() === 'string'}>
               <Route exact path="/home" component={Home} />
+              <MuiPickersUtilsProvider utils={MomentUtils}>
+                <Route exact path="/events/add" render={() => <CreateEvent />} />
+              </MuiPickersUtilsProvider>
               <Route exact path="/events/:id" component={EventDetails} />
               <Route exact path="/events/:id/guests" component={AddGuests} />
               <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
             </PrivateRoute>
-          </>
         </Switch>
       </ApolloProvider>
     </ThemeProvider>
