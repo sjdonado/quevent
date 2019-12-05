@@ -34,16 +34,16 @@ export const GET_EVENTS_QUERY = gql`
 `;
 
 export const GET_ATTENDEES_QUERY = gql`
-  {
-    getUser {
+  query getEventById($eventId: ID!){
+    getEvent(eventId: $eventId) {
       id
-      events {
-        id
-        name
-        startDate
-        endDate
-        active
-      }
+      attendance {
+          id
+          email
+          attended
+          active
+          invited
+        }
     }
   }
 `;
