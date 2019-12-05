@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box, Typography, TableRow, TableCell,
@@ -15,17 +15,27 @@ import ActionButton from '../../../components/ActionButton/ActionButton';
 import AttendeesTable from '../../../components/Table/Table';
 import styles from './EventDetails.module.scss';
 import Progress from '../../../components/Progress/Progress';
+import Snackbar from '../../../components/Snackbar/Snackbar';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
+
 
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
-function EventDetails({ match }) {
+function EventDetails({ match, location }) {
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
   const history = useHistory();
   const { loading, error, data } = useQuery(GET_ATTENDEES_QUERY, {
     variables: {
       eventId: match.params.id,
     },
   });
+
+  useEffect(() => {
+    history.replace();
+    if (location.state && location.state.succesfulSubmit) {
+      setSnackbarMsg('Success! You have updated the attendees list.');
+    }
+  }, []);
 
   const onRowClick = (row) => {
 
@@ -79,7 +89,7 @@ function EventDetails({ match }) {
           </AttendeesTable>
         )}
 
-
+        <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
       </Box>
     </PageContainer>
   );
@@ -87,6 +97,7 @@ function EventDetails({ match }) {
 
 EventDetails.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
+  location: ReactRouterPropTypes.location.isRequired,
 };
 
 export default EventDetails;
