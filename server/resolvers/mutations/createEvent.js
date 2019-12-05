@@ -9,7 +9,6 @@ const createEvent = async (parent, { name, startDate, endDate }, context) => {
     endDate,
     author: user.email,
   });
-
   await user.save();
 
   return user.events[index - 1];
