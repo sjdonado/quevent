@@ -7,14 +7,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import styles from './PageContainer.module.scss';
-import AppBar from '../AppBar/AppBar';
 
 function PageContainer({
   title, backButton, action, subtitle, align, children,
 }) {
   return (
     <Box className={styles.root}>
-      <AppBar />
       <Box className={styles.content}>
         <Box className={align === 'center' ? styles['header-center'] : styles.header}>
           {backButton && (
@@ -52,7 +50,7 @@ function PageContainer({
 
 PageContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  action: PropTypes.func.isRequired,
+  action: PropTypes.func,
   subtitle: PropTypes.string,
   backButton: PropTypes.string,
   align: PropTypes.string,
@@ -62,6 +60,7 @@ PageContainer.propTypes = {
 PageContainer.defaultProps = {
   align: 'left',
   backButton: undefined,
+  action: undefined,
   subtitle: null,
 };
 

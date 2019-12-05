@@ -2,6 +2,7 @@ scalar Date
 
 type Query {
   getUser: User!
+  getEvent(eventId: ID!): Event!
 }
 
 type Mutation {
@@ -22,6 +23,10 @@ type Mutation {
     eventId: ID!
     email: String!
   ): Attendee!
+  addAttendees(
+    eventId: ID!
+    attendees: [AttendeeInput]!
+  ): [Attendee]!
   updateAttendee(
     eventId: ID!
     attendeeId: ID!
@@ -71,4 +76,8 @@ type Attendee {
   invited: Boolean!
   createdAt: Date!
   updatedAt: Date!
+}
+
+input AttendeeInput {
+  email: String!
 }

@@ -30,6 +30,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-prop-types": "^1.0.4",
     "react-scripts": "3.2.0",
+    "xlsx": "^0.15.3",
     "yup": "^0.27.0"
   },
   "scripts": {

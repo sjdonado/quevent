@@ -1,0 +1,19 @@
+@import '../../styles/main.scss';
+
+.dialog{
+  h2{
+    color: $primary-text-color;
+  }
+}
+
+.dates{
+  display: flex;
+  margin: 0 -1em;
+  .date{
+    margin: 1em;
+  }
+}
+
+.icon{
+  fill: $secondary-text-color;
+}
