@@ -50,7 +50,7 @@ function PageContainer({
 
 PageContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  action: PropTypes.func.isRequired,
+  action: PropTypes.func,
   subtitle: PropTypes.string,
   backButton: PropTypes.string,
   align: PropTypes.string,
@@ -60,6 +60,7 @@ PageContainer.propTypes = {
 PageContainer.defaultProps = {
   align: 'left',
   backButton: undefined,
+  action: undefined,
   subtitle: null,
 };
 

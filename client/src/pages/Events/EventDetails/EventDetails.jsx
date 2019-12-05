@@ -1,17 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Tooltip, Fab,
+  Box, Typography,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import PageContainer from '../../../components/PageContainer/PageContainer';
-import GuestsTable from './GuestsTable/GuestsTable';
 import TabsNav from '../../../components/TabsNav/TabsNav';
 import ActionButton from '../../../components/ActionButton/ActionButton';
-import Table from '../../../components/Table/Table';
+import AttendeesTable from '../../../components/Table/Table';
 import styles from './EventDetails.module.scss';
 
 const headers = ['Name', 'Email', 'Attended', 'Active'];
@@ -53,7 +51,9 @@ const rows = [
 
 function EventDetails() {
   const history = useHistory();
+  const onRowClick = (row) => {
 
+  };
   return (
     <PageContainer
       title="Event details"
@@ -81,7 +81,7 @@ function EventDetails() {
     >
       <Box className={styles.wrapper}>
         <TabsNav />
-        <Table rows={rows} headers={headers} />
+        <AttendeesTable rows={rows} headers={headers} onRowClick={onRowClick} />
       </Box>
     </PageContainer>
   );

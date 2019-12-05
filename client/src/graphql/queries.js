@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 export const APPBAR_QUERY = gql`
   {
     getUser {
+      id
       name
       profilePicture
     }
@@ -17,11 +18,32 @@ export const EXAMPLE_QUERY = gql`
     }
   }
 `;
-export const GET_EVENTS = gql`
+export const GET_EVENTS_QUERY = gql`
   {
-    getEvents {
-      name
-      profilePicture
+    getUser {
+      id
+      events {
+        id
+        name
+        startDate
+        endDate
+        active
+      }
+    }
+  }
+`;
+
+export const GET_ATTENDEES_QUERY = gql`
+  {
+    getUser {
+      id
+      events {
+        id
+        name
+        startDate
+        endDate
+        active
+      }
     }
   }
 `;

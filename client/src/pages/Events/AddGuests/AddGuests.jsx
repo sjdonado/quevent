@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Tooltip, Fab,
+  Box,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';

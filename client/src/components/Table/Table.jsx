@@ -22,7 +22,7 @@ export default function Table({ headers, rows, onRowClick }) {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow className={styles.row} key={row.name} onClick={() => onRowClick(row)}>
+            <TableRow className={styles.row} key={row} onClick={() => onRowClick(row)}>
               {Object.values(row).map((value) => (
                 <TableCell key={value} align="center">
                   {value}

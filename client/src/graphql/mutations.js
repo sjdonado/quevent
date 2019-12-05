@@ -25,3 +25,13 @@ export const EXAMPLE_MUTATION = gql`
     }
   }
 `;
+
+export const CREATE_EVENT_MUTATION = gql`
+  mutation createEvent($name: String!, $startDate: Date!, $endDate: Date!) {
+    createEvent(name: $name, startDate: $startDate, endDate: $endDate) {
+      name
+      startDate
+      endDate
+    }
+  }
+`;

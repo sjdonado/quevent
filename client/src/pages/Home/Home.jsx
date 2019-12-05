@@ -1,15 +1,16 @@
 import React from 'react';
 
 import {
-  Box, Typography,
+  Box,
 } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import Table from '../../components/Table/Table';
+import Modal from '../../components/Modal/Modal';
 import styles from './Home.module.scss';
+import { GET_EVENTS_QUERY } from '../../graphql/queries';
 
 const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
@@ -26,9 +27,20 @@ const rows = [
 ];
 
 function Home() {
-  const history = useHistory();
+  const { loading } = useQuery(GET_EVENTS_QUERY);
+  if (!loading) {
 
-  const onRowClick = (row) => {
+  }
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const onRowClick = () => {
 
   };
   return (
@@ -38,13 +50,14 @@ function Home() {
         <ActionButton
           title="Create event"
           onClick={() => {
-            history.push('/events/123123/guests');
+            handleClickOpen();
           }}
         >
           <AddCircleOutlineOutlinedIcon />
         </ActionButton>
       )}
     >
+      <Modal open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} />
       <Box className={styles.wrapper}>
         <Table headers={headers} rows={rows} onRowClick={onRowClick} />
       </Box>

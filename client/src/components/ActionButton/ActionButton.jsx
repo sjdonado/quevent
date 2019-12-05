@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Tooltip, Fab, IconButton,
+  Tooltip, IconButton,
 } from '@material-ui/core';
 import styles from './ActionButton.module.scss';
 

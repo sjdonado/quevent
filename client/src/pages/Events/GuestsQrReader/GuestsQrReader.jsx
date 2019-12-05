@@ -1,17 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Card, CardContent, IconButton, Link,
+  Box, Card, CardContent,
 } from '@material-ui/core';
 import QrReader from 'react-qr-reader';
-import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import PageContainer from '../../../components/PageContainer/PageContainer';
-import ActionButton from '../../../components/ActionButton/ActionButton';
 import styles from './GuestsQrReader.module.scss';
 
 function GuestsQrReader() {
-  function handleScan(result) {
+  function handleScan() {
     // TODO: Remove log
     // eslint-disable-next-line no-console
 
