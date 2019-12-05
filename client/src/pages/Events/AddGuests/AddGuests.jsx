@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
 import {
-  Box,
+  Box, Typography,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import XLSX from 'xlsx';
@@ -11,12 +11,14 @@ import { useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
 import ActionButton from '../../../components/ActionButton/ActionButton';
 import Progress from '../../../components/Progress/Progress';
+import Snackbar from '../../../components/Snackbar/Snackbar';
 import styles from './AddGuests.module.scss';
 import { ADD_ATTENDEES } from '../../../graphql/mutations';
 
 function AddGuests({ match }) {
   const [attendees, setAttendees] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
   const history = useHistory();
   const [error, setError] = useState(null);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
@@ -38,9 +40,11 @@ function AddGuests({ match }) {
             succesfulSubmit: true,
           },
         });
+      } else {
+        setSnackbarMsg('A file is required');
       }
     } catch (err) {
-      setError(err);
+      setSnackbarMsg('Error. There was problem submitting the file');
     }
     setSubmitting(false);
   };
@@ -76,10 +80,12 @@ function AddGuests({ match }) {
         {submitting ? <Progress type="circular" /> : (
           <Box {...getRootProps({ className: 'dropzone' })} className={styles.dropzone}>
             <input {...getInputProps()} />
-            <p>Drag and drop your .xls file here, or click to select file</p>
+            {acceptedFiles.length > 0 ? <p>{acceptedFiles[0].name}</p>
+              : <p>Drag and drop your .xls file here, or click to select file</p>}
           </Box>
         )}
       </Box>
+      <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
     </PageContainer>
   );
 }
