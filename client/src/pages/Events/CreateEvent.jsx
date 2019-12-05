@@ -3,26 +3,26 @@ import { DateTimePicker} from "@material-ui/pickers";
 import {
     Button,
     TextField,
-    FormControlLabel,
-    Checkbox,
-    Link,
-    Grid,
+    // FormControlLabel,
+    // Checkbox,
+    // Link,
+    // Grid,
     Typography,
     Box,
-    InputAdornment,
+    // InputAdornment,
   } from '@material-ui/core';
   import {
     Formik, Form, Field,
   } from 'formik';
   import * as Yup from 'yup';
   
-  import LockIcon from '@material-ui/icons/Lock';
-  import EmailIcon from '@material-ui/icons/Email';
+  // import LockIcon from '@material-ui/icons/Lock';
+  // import EmailIcon from '@material-ui/icons/Email';
   
   import styles from '../Login/Form/Form.module.scss';
   
   const initialValues = {
-    name: 'LOREM IPSUM',
+    name: '',
   
   };
   
@@ -118,8 +118,34 @@ import {
       </Formik>
     </Box>
   );*/
-
-  const EventForm = () =>(
+  const FormikDateTimePicker = ({
+    name,
+    form: { setFieldValue },
+    field: { value },
+    placeholder,
+    id,
+    label,
+    InputProps,
+    ...rest
+  }) => {
+    console.log(rest);
+    return (
+      <DateTimePicker
+        name={name}
+        variant="inline"
+        id={id}
+        label={label}
+        InputProps={InputProps}
+        placeholder={placeholder}
+        onChange={value => {
+          console.log("setting value to", value);
+          setFieldValue(id, value);
+        }}
+        value={value}
+      />
+    );
+  };
+  export default CreateEvent =>(
     <Box className={styles.wrapper}>
       <Typography component="h1">
         New Event
@@ -127,12 +153,12 @@ import {
       <Formik
       initialValues={initialValues}
       validationSchema = {validationSchema}
-      onSubmit={(values, {setSubmitting}) =>{
+      onSubmit={(values, { setSubmitting }) =>{
         setSubmitting(true);
         console.log(values);
       }}
     >
-      {({ errors , touched }) =>(
+      {({ errors , touched , setFieldValue }) =>(
         <Form className={styles.form} noValidate>
           <Field
             /*type="input"*/
@@ -146,11 +172,11 @@ import {
             name="name"
             InputProps={{
               'aria-label': 'Event Name',
-              endAdornment: (
+              /*endAdornment: (
                 <InputAdornment position="end">
                   <EmailIcon />
                 </InputAdornment>
-              ),
+              ),*/
             }}
           />
           <Field
@@ -165,16 +191,16 @@ import {
             name="description"
             InputProps={{
               'aria-label': "Event's description",
-              endAdornment: (
+              /*endAdornment: (
                 <InputAdornment position="end">
                   <EmailIcon />
                 </InputAdornment>
-              ),
+              ),*/
             }}
           />
           <Field
             /*type="input"*/
-            as={DateTimePicker}
+            component={FormikDateTimePicker}
             placeholder="Start Date"
             variant="outlined"
             margin="normal"
@@ -188,7 +214,7 @@ import {
           />
           <Field
             /*type="input"*/
-            as={DateTimePicker}
+            component={FormikDateTimePicker}
             placeholder="End Date"
             variant="outlined"
             margin="normal"
@@ -213,105 +239,3 @@ import {
     </Formik>
     </Box>
   );
-
-class CreateEvent extends Component{
-    constructor(props){
-        super(props);
-
-        this.state = {
-            name: '',
-            description: '',
-            startDate: new Date(),
-            endDate: new Date(),
-            attendees: [],
-        }
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        const event = {
-            name: this.state.name,
-            description: this.state.description,
-            attendees: this.state.attendees,
-        };
-    }
-    onChangeAttendees = (e) =>{
-        this.setState({
-            attendees: e.target.value
-        });
-    }
-    onChangeDescription = (e) =>{
-        this.setState({
-            description: e.target.value
-        });
-    }
-    onChangeEndDate = (date) =>{
-        this.setState({
-            endDate: date
-        });
-    }
-    onChangeStartDate = (date) =>{
-        this.setState({
-            startDate: date
-        })
-    }
-    onChangeName = (e) =>{
-        this.setState({
-            name: e.target.value
-        })
-    }
-
-    render(){
-        /*return(
-            <div>
-                <h3>Add New Event</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div>
-                        <label>Event Name</label>
-                        <input type="text"
-                            required
-                            value={this.state.name}
-                            onChange={this.onChangeName}
-                        />
-                    </div>
-                    <div>
-                        <label>Event Description</label>
-                        <input type="text"
-                            required
-                            value={this.state.descripton}
-                            onChange={this.onChangeDescription}
-                        />
-                    </div>
-                    <div>
-                        <label>Event's date</label>
-                        <div>
-                            <DateTimePicker
-                                variant="inline"
-                                label="Start"
-                                value={this.state.startDate}
-                                onChange={this.onChangeStartDate}
-                            />
-                        </div>
-                        <div>
-                            <DateTimePicker
-                                variant="inline"
-                                label="End"
-                                value={this.state.endDate}
-                                onChange={this.onChangeEndDate}
-                            />
-                        </div>
-                    </div>
-                    <div>
-                        
-                    </div>
-                    <div>
-                        <input type="submit" value="Add Event" />
-                    </div>
-                </form>
-            </div>
-        );*/
-        return EventForm();
-    }
-}
-
-export default CreateEvent;
