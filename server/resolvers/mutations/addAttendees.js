@@ -10,7 +10,7 @@ const addAttendee = async (parent, { eventId, attendees }, context) => {
     throw new ApolloError('Event not found', 404);
   }
 
-  user.attendance = [...attendees];
+  user.events[eventIdx].attendance = [...attendees];
 
   await user.save();
 
