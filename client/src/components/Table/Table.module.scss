@@ -12,12 +12,3 @@
     border-collapse: separate;
   }
 } 
-
-.row{
-  border-left: 1px solid black;
-  transition: 0.2s;
-  &:hover{
-    background-color: lighten($color: $primary-color, $amount: 50);
-    cursor: pointer;
-  }
-}

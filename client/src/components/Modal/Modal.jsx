@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Formik, Form, Field,
 } from 'formik';
@@ -16,6 +16,7 @@ import { InputAdornment, Box } from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined';
+import Progress from '../Progress/Progress';
 import styles from './Modal.module.scss';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations';
 
@@ -39,6 +40,7 @@ const validationSchema = () => Yup.object().shape({
 });
 
 export default function Modal({ open, handleClose }) {
+  const [error, setError] = useState(null);
   const [createEventMutation] = useMutation(CREATE_EVENT_MUTATION);
 
   const handleSubmit = async ({ name, startDate, endDate }, { setSubmitting }) => {
@@ -53,8 +55,9 @@ export default function Modal({ open, handleClose }) {
       });
       console.log(data);
     } catch (err) {
-      console.log(err);
+      setError(err);
     }
+    setSubmitting(false);
   };
 
   return (
@@ -75,105 +78,114 @@ export default function Modal({ open, handleClose }) {
             {({
               errors,
               touched,
+              isSubmitting,
             }) => (
               <Form
                 className={styles.form}
                 noValidate
               >
-                <Field
-                  type="input"
-                  as={TextField}
-                  placeholder="Name"
-                  error={touched.name && !!errors.name}
-                  helperText={errors.name}
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="name"
-                  label="Name"
-                  name="name"
-                  InputProps={{
-                    'aria-label': 'event name',
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <EmailIcon className={styles.icon} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Field
-                  as={TextField}
-                  placeholder="Location"
-                  margin="normal"
-                  required
-                  fullWidth
-                  error={touched.location && !!errors.location}
-                  helperText={errors.location}
-                  name="location"
-                  label="Location"
-                  type="input"
-                  id="location"
-                  InputProps={{
-                    'aria-label': 'event location',
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <LockIcon className={styles.icon} />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Box className={styles.dates}>
-                  <Field
-                    id="date"
-                    name="startDate"
-                    as={TextField}
-                    error={touched.startDate && !!errors.startDate}
-                    helperText={errors.startDate}
-                    label="Start date"
-                    type="datetime-local"
-                    className={styles.date}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    InputProps={{
-                      'aria-label': 'event start date',
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <TodayOutlinedIcon className={styles.icon} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                  <Field
-                    id="date"
-                    name="endDate"
-                    as={TextField}
-                    error={touched.endDate && !!errors.endDate}
-                    helperText={errors.endDate}
-                    label="Start date"
-                    type="datetime-local"
-                    className={styles.date}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                    InputProps={{
-                      'aria-label': 'event start date',
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <TodayOutlinedIcon className={styles.icon} />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                </Box>
-                <DialogActions>
-                  <Button onClick={handleClose} color="secondary">
+                {isSubmitting ? (
+                  <Box>
+                    <Progress type="circular" />
+                  </Box>
+                ) : (
+                  <>
+                    <Field
+                      type="input"
+                      as={TextField}
+                      placeholder="Name"
+                      error={touched.name && !!errors.name}
+                      helperText={errors.name}
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="name"
+                      label="Name"
+                      name="name"
+                      InputProps={{
+                        'aria-label': 'event name',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <EmailIcon className={styles.icon} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <Field
+                      as={TextField}
+                      placeholder="Location"
+                      margin="normal"
+                      required
+                      fullWidth
+                      error={touched.location && !!errors.location}
+                      helperText={errors.location}
+                      name="location"
+                      label="Location"
+                      type="input"
+                      id="location"
+                      InputProps={{
+                        'aria-label': 'event location',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LockIcon className={styles.icon} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <Box className={styles.dates}>
+                      <Field
+                        id="date"
+                        name="startDate"
+                        as={TextField}
+                        error={touched.startDate && !!errors.startDate}
+                        helperText={errors.startDate}
+                        label="Start date"
+                        type="datetime-local"
+                        className={styles.date}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          'aria-label': 'event start date',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <TodayOutlinedIcon className={styles.icon} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <Field
+                        id="date"
+                        name="endDate"
+                        as={TextField}
+                        error={touched.endDate && !!errors.endDate}
+                        helperText={errors.endDate}
+                        label="Start date"
+                        type="datetime-local"
+                        className={styles.date}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          'aria-label': 'event start date',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <TodayOutlinedIcon className={styles.icon} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Box>
+                    <DialogActions>
+                      <Button onClick={handleClose} color="secondary">
                     Cancel
-                  </Button>
-                  <Button color="secondary" type="submit">
+                      </Button>
+                      <Button color="secondary" type="submit">
                     Create
-                  </Button>
-                </DialogActions>
+                      </Button>
+                    </DialogActions>
+                  </>
+                )}
 
               </Form>
             )}
