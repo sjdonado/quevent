@@ -20,6 +20,7 @@ const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
 function Home() {
   const { loading, error, data } = useQuery(GET_EVENTS_QUERY);
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -30,7 +31,7 @@ function Home() {
     setOpen(false);
   };
   const onRowClick = (row) => {
-
+    history.push(`/events/${row.id}`);
   };
   return (
     <PageContainer
