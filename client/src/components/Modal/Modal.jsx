@@ -19,10 +19,12 @@ import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined';
 import Progress from '../Progress/Progress';
 import styles from './Modal.module.scss';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations';
+import DatePicker from '../DatePicker/DatePicker';
 
 const initialValues = {
   name: '',
   location: '',
+  description: '',
   startDate: moment().format('YYYY-MM-DDThh:mm'),
   endDate: moment().format('YYYY-MM-DDThh:mm'),
 };
@@ -32,6 +34,8 @@ const validationSchema = () => Yup.object().shape({
   name: Yup.string()
     .required('This field is required'),
   location: Yup.string()
+    .required('This field is required'),
+  description: Yup.string()
     .required('This field is required'),
   startDate: Yup.date()
     .required('This field is required'),
@@ -79,6 +83,7 @@ export default function Modal({ open, handleClose }) {
               errors,
               touched,
               isSubmitting,
+              setFieldValue,
             }) => (
               <Form
                 className={styles.form}
@@ -132,8 +137,69 @@ export default function Modal({ open, handleClose }) {
                         ),
                       }}
                     />
+                    <Field
+                      as={TextField}
+                      placeholder="Descrption"
+                      margin="normal"
+                      required
+                      fullWidth
+                      error={touched.description && !!errors.description}
+                      helperText={errors.description}
+                      name="description"
+                      label="Description"
+                      type="input"
+                      id="description"
+                      InputProps={{
+                        'aria-label': 'event description',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <LockIcon className={styles.icon} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
                     <Box className={styles.dates}>
-                      <Field
+                    <Field
+                      id="startDate"
+                      name="startDate"
+                      component={DatePicker}
+                      error={touched.startDate && !!errors.startDate}
+                      helperText={errors.startDate}
+                      label="Start date"
+                      className={styles.date}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        'aria-label': 'event start date',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <TodayOutlinedIcon className={styles.icon} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                    <Field
+                      id="endDate"
+                      name="endDate"
+                      component={DatePicker}
+                      error={touched.endDate && !!errors.endDate}
+                      helperText={errors.endDate}
+                      label="End date"
+                      className={styles.date}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      InputProps={{
+                        'aria-label': 'event end date',
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <TodayOutlinedIcon className={styles.icon} />
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                      {/* <Field
                         id="date"
                         name="startDate"
                         as={TextField}
@@ -153,8 +219,8 @@ export default function Modal({ open, handleClose }) {
                             </InputAdornment>
                           ),
                         }}
-                      />
-                      <Field
+                      /> */}
+                      {/* <Field
                         id="date"
                         name="endDate"
                         as={TextField}
@@ -174,7 +240,7 @@ export default function Modal({ open, handleClose }) {
                             </InputAdornment>
                           ),
                         }}
-                      />
+                      /> */}
                     </Box>
                     <DialogActions>
                       <Button onClick={handleClose} color="secondary">

@@ -107,9 +107,10 @@ function App({ cookies, history }) {
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
             <Route exact path="/events" render={() => <EventView />} />
             <PrivateRoute authenticated={typeof getToken() === 'string'}>
-              <Route exact path="/home" component={Home} />
+              
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <Route exact path="/events/add" render={() => <CreateEvent />} />
+                <Route exact path="/home" component={Home} />
               </MuiPickersUtilsProvider>
               <Route exact path="/events/:id" component={EventDetails} />
               <Route exact path="/events/:id/guests" component={AddGuests} />
