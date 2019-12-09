@@ -13,7 +13,7 @@ function ActionButton({ title, children, ...props }) {
     <Tooltip title={title} aria-label="add a guest to the list">
       <IconButton
         {...props}
-        color="secondary"
+        color="primary"
         aria-label="add"
         className={styles['action-button']}
       >

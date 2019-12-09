@@ -57,7 +57,6 @@ export default function Modal({ open, handleClose }) {
           endDate,
         },
       });
-      console.log(data);
     } catch (err) {
       setError(err);
     }
@@ -159,46 +158,46 @@ export default function Modal({ open, handleClose }) {
                       }}
                     />
                     <Box className={styles.dates}>
-                    <Field
-                      id="startDate"
-                      name="startDate"
-                      component={DatePicker}
-                      error={touched.startDate && !!errors.startDate}
-                      helperText={errors.startDate}
-                      label="Start date"
-                      className={styles.date}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        'aria-label': 'event start date',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <TodayOutlinedIcon className={styles.icon} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <Field
-                      id="endDate"
-                      name="endDate"
-                      component={DatePicker}
-                      error={touched.endDate && !!errors.endDate}
-                      helperText={errors.endDate}
-                      label="End date"
-                      className={styles.date}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        'aria-label': 'event end date',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <TodayOutlinedIcon className={styles.icon} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
+                      <Field
+                        id="startDate"
+                        name="startDate"
+                        component={DatePicker}
+                        error={touched.startDate && !!errors.startDate}
+                        helperText={errors.startDate}
+                        label="Start date"
+                        className={styles.date}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          'aria-label': 'event start date',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <TodayOutlinedIcon className={styles.icon} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                      <Field
+                        id="endDate"
+                        name="endDate"
+                        component={DatePicker}
+                        error={touched.endDate && !!errors.endDate}
+                        helperText={errors.endDate}
+                        label="End date"
+                        className={styles.date}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          'aria-label': 'event end date',
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <TodayOutlinedIcon className={styles.icon} />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
                       {/* <Field
                         id="date"
                         name="startDate"

@@ -1,7 +1,8 @@
 @import "../../styles/main.scss";
 
+
 .root {
-  height: 100vh;
+  height: calc(100vh - 64px);
   background-color: #f8f9fa;
   display: flex;
   flex-direction: column;
@@ -17,12 +18,19 @@
       justify-content: space-between;
       align-items: center;
       h1{
+        margin-right: auto;
         display: inline-block;
         border-radius: 8px;;
         padding: 0.1em 0.3em;
         background-color: lighten($color: $accent-color, $amount: 50);
         color: $accent-color;
         font-weight: 700;
+        &::before{
+          content: '';
+          width: 12px;
+          height: 12px;
+          background-color: $accent-color;
+        }
       }
     }
 

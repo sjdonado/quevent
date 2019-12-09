@@ -46,3 +46,25 @@ export const ADD_ATTENDEES = gql`
     }
   }
 `;
+
+
+export const SEND_INVITATIONS_MUTATION = gql`
+  mutation sendInvitations($eventId: ID!) {
+    sendInvitations(eventId: $eventId) {
+      name
+      startDate
+      endDate
+    }
+  }
+`;
+
+export const READ_INVITATION_MUTATION = gql`
+  mutation readInvitation($qrCodeKey: String!) {
+    readInvitation(qrCodeKey: $qrCodeKey) {
+      email
+      attended
+      active
+      invited
+    }
+  }
+`;

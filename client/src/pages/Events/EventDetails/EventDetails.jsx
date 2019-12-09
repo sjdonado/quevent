@@ -6,9 +6,9 @@ import {
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CropFreeIcon from '@material-ui/icons/CropFree';
-import moment from 'moment';
-import { useQuery } from 'react-apollo';
+import { useQuery, useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
 import TabsNav from '../../../components/TabsNav/TabsNav';
 import ActionButton from '../../../components/ActionButton/ActionButton';
@@ -17,6 +17,7 @@ import styles from './EventDetails.module.scss';
 import Progress from '../../../components/Progress/Progress';
 import Snackbar from '../../../components/Snackbar/Snackbar';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
+import { SEND_INVITATIONS_MUTATION } from '../../../graphql/mutations';
 
 
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
@@ -29,6 +30,7 @@ function EventDetails({ match, location }) {
       eventId: match.params.id,
     },
   });
+  const [sendInvitationsMutation] = useMutation(SEND_INVITATIONS_MUTATION);
 
   useEffect(() => {
     history.replace();
@@ -36,6 +38,19 @@ function EventDetails({ match, location }) {
       setSnackbarMsg('Success! You have updated the attendees list.');
     }
   }, []);
+
+  const handleSendInvitations = async () => {
+    try {
+      const { res } = await sendInvitationsMutation({
+        variables: {
+          eventId: match.params.id,
+        },
+      });
+      console.log(res);
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
+  };
 
   const onRowClick = (row) => {
 
@@ -53,6 +68,12 @@ function EventDetails({ match, location }) {
             }}
           >
             <CropFreeIcon />
+          </ActionButton>
+          <ActionButton
+            title="Send invitations"
+            onClick={handleSendInvitations}
+          >
+            <MailOutlineIcon />
           </ActionButton>
           <ActionButton
             title="Add a guest"

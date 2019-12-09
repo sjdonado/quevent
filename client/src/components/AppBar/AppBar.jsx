@@ -41,7 +41,9 @@ function StyledAppBar() {
           <Box className={styles['profile-wrapper']}>
             <Query query={APPBAR_QUERY}>
               {({ loading, error, data }) => {
-                if (error) return null;
+                if (error) {
+                  return null;
+                }
                 if (loading) {
                   return null;
                 }

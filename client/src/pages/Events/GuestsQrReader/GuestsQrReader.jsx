@@ -1,17 +1,37 @@
-import React from 'react';
-
+import React, { useState } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import {
   Box, Card, CardContent,
 } from '@material-ui/core';
+import { useMutation } from 'react-apollo';
 import QrReader from 'react-qr-reader';
 import PageContainer from '../../../components/PageContainer/PageContainer';
+import Snackbar from '../../../components/Snackbar/Snackbar';
+import Progress from '../../../components/Progress/Progress';
+import { READ_INVITATION_MUTATION } from '../../../graphql/mutations';
 import styles from './GuestsQrReader.module.scss';
 
-function GuestsQrReader() {
-  function handleScan() {
+function GuestsQrReader({ match }) {
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
+  const [scanning, setScanning] = useState(null);
+  const [readInvitationMutation] = useMutation(READ_INVITATION_MUTATION);
+  async function handleScan(arg) {
     // TODO: Remove log
     // eslint-disable-next-line no-console
-
+    if (arg) {
+      setScanning(true);
+      try {
+        const { res } = await readInvitationMutation({
+          variables: {
+            qrCodeKey: arg,
+          },
+        });
+        setSnackbarMsg('User scanned!');
+      } catch (err) {
+        setSnackbarMsg(err);
+      }
+      setScanning(false);
+    }
   }
 
   function handleError(error) {
@@ -22,29 +42,37 @@ function GuestsQrReader() {
     <PageContainer
       title="Scan guests"
       subtitle="Place the guest's QR code"
-      backButton="/events/123123"
+      backButton={`/events/${match.params.id}`}
       align="center"
     >
       <Box className={styles.wrapper}>
         <Card className={styles.card} classes={{ root: styles.card }}>
           <Box display="flex" flexDirection="column" className={styles.wrapper}>
             <CardContent className={styles['card-content']}>
-              <QrReader
-                className={styles['qr-reader']}
-                delay={300}
-                onError={handleError}
-                onScan={handleScan}
-              />
+              {scanning ? (
+                <div className={styles.progress}>
+                  <Progress type="circular" size={55} />
+                </div>
+              ) : (
+                <QrReader
+                  className={styles['qr-reader']}
+                  delay={300}
+                  onError={handleError}
+                  onScan={handleScan}
+                />
+              )}
+
             </CardContent>
           </Box>
         </Card>
       </Box>
+      <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
     </PageContainer>
   );
 }
 
 GuestsQrReader.propTypes = {
-
+  match: ReactRouterPropTypes.match.isRequired,
 };
 
 export default GuestsQrReader;
