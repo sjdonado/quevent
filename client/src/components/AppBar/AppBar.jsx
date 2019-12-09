@@ -9,7 +9,7 @@ import styles from './AppBar.module.scss';
 
 import { APPBAR_QUERY } from '../../graphql/queries';
 
-import Progress from '../Progress/Progress';
+// import Progress from '../Progress/Progress';
 
 function StyledAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -28,7 +28,7 @@ function StyledAppBar() {
     <AppBar className={styles.root}>
       <Toolbar className={styles.toolbar}>
         <Typography variant="h6">
-                Quevent
+          Quevent
         </Typography>
         <IconButton
           aria-label="account of current user"

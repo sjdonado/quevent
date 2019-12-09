@@ -1,37 +1,37 @@
 import React, { Component } from 'react';
-import { DateTimePicker} from "@material-ui/pickers";
+import { DateTimePicker } from '@material-ui/pickers';
 import {
-    Button,
-    TextField,
-    // FormControlLabel,
-    // Checkbox,
-    // Link,
-    // Grid,
-    Typography,
-    Box,
-    // InputAdornment,
-  } from '@material-ui/core';
-  import {
-    Formik, Form, Field,
-  } from 'formik';
-  import * as Yup from 'yup';
-  
-  // import LockIcon from '@material-ui/icons/Lock';
-  // import EmailIcon from '@material-ui/icons/Email';
-  
-  import styles from '../Login/Form/Form.module.scss';
-  
-  const initialValues = {
-    name: '',
-  
-  };
-  
-  const validationSchema = () => Yup.object().shape({
-    name: Yup.string()
-      .required('This field is required'),
-  });
-  
-  /*const LoginForm = () => (
+  Button,
+  TextField,
+  // FormControlLabel,
+  // Checkbox,
+  // Link,
+  // Grid,
+  Typography,
+  Box,
+  // InputAdornment,
+} from '@material-ui/core';
+import {
+  Formik, Form, Field,
+} from 'formik';
+import * as Yup from 'yup';
+
+// import LockIcon from '@material-ui/icons/Lock';
+// import EmailIcon from '@material-ui/icons/Email';
+
+import styles from '../Login/Form/Form.module.scss';
+
+const initialValues = {
+  name: '',
+
+};
+
+const validationSchema = () => Yup.object().shape({
+  name: Yup.string()
+    .required('This field is required'),
+});
+
+/*const LoginForm = () => (
     <Box className={styles.wrapper}>
       <Typography component="h1">
           Add Event
@@ -117,51 +117,51 @@ import {
         )}
       </Formik>
     </Box>
-  );*/
-  const FormikDateTimePicker = ({
-    name,
-    form: { setFieldValue },
-    field: { value },
-    placeholder,
-    id,
-    label,
-    InputProps,
-    ...rest
-  }) => {
-    console.log(rest);
-    return (
-      <DateTimePicker
-        name={name}
-        variant="inline"
-        id={id}
-        label={label}
-        InputProps={InputProps}
-        placeholder={placeholder}
-        onChange={value => {
-          console.log("setting value to", value);
-          setFieldValue(id, value);
-        }}
-        value={value}
-      />
-    );
-  };
-  export default CreateEvent =>(
+  ); */
+const FormikDateTimePicker = ({
+  name,
+  form: { setFieldValue },
+  field: { value },
+  placeholder,
+  id,
+  label,
+  InputProps,
+  ...rest
+}) => {
+  console.log(rest);
+  return (
+    <DateTimePicker
+      name={name}
+      variant="inline"
+      id={id}
+      label={label}
+      InputProps={InputProps}
+      placeholder={placeholder}
+      onChange={(value) => {
+        console.log('setting value to', value);
+        setFieldValue(id, value);
+      }}
+      value={value}
+    />
+  );
+};
+export default (CreateEvent) => (
     <Box className={styles.wrapper}>
       <Typography component="h1">
         New Event
       </Typography>
       <Formik
-      initialValues={initialValues}
-      validationSchema = {validationSchema}
-      onSubmit={(values, { setSubmitting }) =>{
+        initialValues={initialValues}
+        validationSchema ={validationSchema}
+        onSubmit={(values, { setSubmitting }) => {
         setSubmitting(true);
         console.log(values);
       }}
-    >
-      {({ errors , touched , setFieldValue }) =>(
+      >
+        {({ errors, touched, setFieldValue }) => (
         <Form className={styles.form} noValidate>
           <Field
-            /*type="input"*/
+            /*type="input" */
             as={TextField}
             placeholder="Name"
             variant="outlined"
@@ -176,11 +176,11 @@ import {
                 <InputAdornment position="end">
                   <EmailIcon />
                 </InputAdornment>
-              ),*/
+              ), */
             }}
           />
           <Field
-            /*type="input"*/
+            /*type="input" */
             as={TextField}
             placeholder="Description"
             variant="outlined"
@@ -195,11 +195,11 @@ import {
                 <InputAdornment position="end">
                   <EmailIcon />
                 </InputAdornment>
-              ),*/
+              ), */
             }}
           />
           <Field
-            /*type="input"*/
+            /*type="input" */
             component={FormikDateTimePicker}
             placeholder="Start Date"
             variant="outlined"
@@ -213,7 +213,7 @@ import {
             }}
           />
           <Field
-            /*type="input"*/
+            /*type="input" */
             component={FormikDateTimePicker}
             placeholder="End Date"
             variant="outlined"
@@ -227,15 +227,15 @@ import {
             }}
           />
           <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              className={styles.button}
-            >
+            type="submit"
+            fullWidth
+            variant="contained"
+            className={styles.button}
+          >
             Add Event
-            </Button>
+          </Button>
         </Form>
       )}
-    </Formik>
+      </Formik>
     </Box>
-  );
+);

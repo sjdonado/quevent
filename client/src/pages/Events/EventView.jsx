@@ -28,10 +28,10 @@ function AddButton() {
 }
 
 export default function EventView(){
-    return(
-        <div>
-            <EventTable/>
-            <AddButton/>
-        </div>
-    );
+  return(
+    <div>
+      <EventTable/>
+      <AddButton/>
+    </div>
+  );
 }

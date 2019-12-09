@@ -25,6 +25,8 @@ export const GET_EVENTS_QUERY = gql`
       events {
         id
         name
+        description
+        location
         startDate
         endDate
         active

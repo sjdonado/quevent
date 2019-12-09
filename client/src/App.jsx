@@ -62,13 +62,6 @@ const theme = createMuiTheme({
 });
 responsiveFontSizes(theme);
 
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors) {
-    graphQLErrors.map(({ message, locations, path }) => console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`));
-  }
-  if (networkError) console.error(`[Network error]: ${networkError}`);
-});
-
 const uploadLink = createUploadLink({ uri: API_URI });
 
 function App({ cookies, history }) {
@@ -84,6 +77,23 @@ function App({ cookies, history }) {
 
   const getToken = () => cookies.get(AUTH_TOKEN_COOKIE_NAME);
   // const removeToken = () => cookies.remove(AUTH_TOKEN_COOKIE_NAME);
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({
+        message,
+        locations,
+        path,
+        extensions,
+      }) => {
+        if (extensions.code === 'UNAUTHENTICATED') {
+          cookies.remove(AUTH_TOKEN_COOKIE_NAME);
+        }
+        console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
+      });
+    }
+    if (networkError) console.error(`[Network error]: ${networkError}`);
+  });
 
   const authLink = setContext((_, { headers }) => {
     const token = getToken();
@@ -105,17 +115,16 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-            <Route exact path="/events" render={() => <EventView />} />
-            <PrivateRoute authenticated={typeof getToken() === 'string'}>
-              
-              <MuiPickersUtilsProvider utils={MomentUtils}>
-                <Route exact path="/events/add" render={() => <CreateEvent />} />
-                <Route exact path="/home" component={Home} />
-              </MuiPickersUtilsProvider>
-              <Route exact path="/events/:id" component={EventDetails} />
-              <Route exact path="/events/:id/guests" component={AddGuests} />
-              <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
-            </PrivateRoute>
+          <Route exact path="/events" render={() => <EventView />} />
+          <PrivateRoute authenticated={typeof getToken() === 'string'}>
+            <MuiPickersUtilsProvider utils={MomentUtils}>
+              <Route exact path="/events/add" render={() => <CreateEvent />} />
+              <Route exact path="/home" component={Home} />
+            </MuiPickersUtilsProvider>
+            <Route exact path="/events/:id" component={EventDetails} />
+            <Route exact path="/events/:id/guests" component={AddGuests} />
+            <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
+          </PrivateRoute>
         </Switch>
       </ApolloProvider>
     </ThemeProvider>
