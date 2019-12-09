@@ -86,10 +86,6 @@ function StyledAppBar() {
             horizontal: 'right',
           }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
           open={open}
           onClose={handleClose}
         >
