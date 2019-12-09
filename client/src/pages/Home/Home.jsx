@@ -1,8 +1,9 @@
 import React from 'react';
 
 import {
-  Box, TableRow, TableCell,
+  Typography, Box, TableRow, TableCell,
 } from '@material-ui/core';
+
 import { useQuery } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
@@ -19,9 +20,11 @@ const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
 
 function Home() {
-  const { loading, error, data } = useQuery(GET_EVENTS_QUERY);
-  const history = useHistory();
   const [open, setOpen] = React.useState(false);
+  const history = useHistory();
+  const { loading, error, data } = useQuery(GET_EVENTS_QUERY);
+
+  if (error) return <Typography variant="subtitle2">Unexpected error, try again</Typography>;
 
   const handleClickOpen = () => {
     setOpen(true);
