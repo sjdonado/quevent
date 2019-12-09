@@ -12,7 +12,7 @@ const oauth2Client = new OAuth2Client(googleClientId);
  * @param {String} userId
  */
 const authentication = async (context) => {
-  const token  = context.authToken.substring(7);
+  const token = context.authToken.substring(7);
 
   if (!token) {
     throw new ApolloError('Auth token is not supplied', 400);
