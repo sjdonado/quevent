@@ -3,12 +3,22 @@
 .root {
   height: 100vh;
   background-image: linear-gradient(to right top, #3f20ba, #4928c3, #5230cb, #5b37d4, #643fdd);
+  // background-color: $primary-color;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  h1{
+    border-radius: 8px;;
+    padding: 0.1em 0.3em;
+    background-color: lighten($color: $accent-color, $amount: 50);
+    color: $accent-color;
+    font-weight: 700;
+  }
   .form-container{
-    border-radius: 15px;
-      width: 500px;
-      background-color: #ffffff;
+    margin-top: 5em;
+    border-radius: 8px;
+    background-color: #ffffff;
+    
   }
 }

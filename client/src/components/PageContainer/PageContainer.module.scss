@@ -1,0 +1,45 @@
+@import "../../styles/main.scss";
+
+.root {
+  height: 100vh;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  .content{
+    margin: 2em auto;
+    height: 100%;
+    width: 100%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    .header{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      h1{
+        display: inline-block;
+        border-radius: 8px;;
+        padding: 0.1em 0.3em;
+        background-color: lighten($color: $accent-color, $amount: 50);
+        color: $accent-color;
+        font-weight: 700;
+      }
+    }
+
+    .header-center{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      h1{
+        display: inline-block;
+        border-radius: 8px;;
+        padding: 0.1em 0.3em;
+        background-color: lighten($color: $accent-color, $amount: 50);
+        color: $accent-color;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+

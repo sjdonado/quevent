@@ -1,0 +1,30 @@
+@import '../../styles/main.scss';
+
+.wrapper{
+  align-self: stretch;
+  margin-top: 1em;
+  color: $primary-text-color;
+  background-color: $contrast-color;
+  border-radius: 8px;
+  .tabs{
+    display: flex;
+    justify-content: center;
+    background-color: transparent;
+    & > div{
+      max-width: 40px;
+      width: 100%;
+      background-color: $accent-color;
+    }
+  }
+  .tab{
+    text-transform: none;
+    color: #2f353f;
+    font-weight: 400;
+    font-size: 1em;
+    margin-right: 1em;
+    &:focus{
+      opacity: 1;
+    }
+  }
+}
+

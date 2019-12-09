@@ -1,12 +1,83 @@
+scalar Date
+
 type Query {
-  user: User
+  getUser: User!
+  getEvent(eventId: ID!): Event!
 }
 
 type Mutation {
-  login(token: String): User
+  login(idToken: String!): AuthPayload!
+  createEvent(
+    name: String!
+    startDate: Date!
+    endDate: Date!
+  ): Event!
+  updateEvent(
+    eventId: ID!
+    name: String
+    startDate: Date
+    endDate: Date
+    active: Boolean
+  ): Event!
+  addAttendee(
+    eventId: ID!
+    email: String!
+  ): Attendee!
+  addAttendees(
+    eventId: ID!
+    attendees: [AttendeeInput]!
+  ): [Attendee]!
+  updateAttendee(
+    eventId: ID!
+    attendeeId: ID!
+    active: Boolean
+    attended: Boolean
+  ): Attendee!
+  sendInvitations(
+    eventId: ID!
+  ): Event!
+  readInvitation(
+    qrCodeKey: String!
+  ): Attendee!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
 }
 
 type User {
+  id: ID!
   name: String!
+  email: String!
+  profilePicture: String!
+  active: Boolean!
+  events: [Event!]!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Event {
+  id: ID!
+  name: String!
+  startDate: Date!
+  endDate: Date!
+  active: Boolean!
+  attendance: [Attendee!]!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type Attendee {
+  id: ID!
+  email: String!
+  active: Boolean!
+  attended: Boolean!
+  invited: Boolean!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+input AttendeeInput {
   email: String!
 }

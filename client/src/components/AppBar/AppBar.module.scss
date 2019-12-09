@@ -1,0 +1,47 @@
+@import '../../styles/main.scss';
+
+.loading{
+  height: 64px;
+  position: sticky;
+  margin: 0;
+  background-color: $primary-color;
+    top:0;
+    left:0;
+    right:0;
+}
+.root{
+    position: sticky;
+    top:0;
+    left:0;
+    right:0;
+
+}
+  
+.toolbar{
+    display: flex;
+    justify-content: flex-end;
+    background-color: $primary-color;
+    box-shadow: none;
+    h6{
+        color: #ffffff;
+        font-weight: 600;
+    }
+  }
+  .username{
+    color: #ffffff;
+    font-weight: bold;
+  }
+  .profile-wrapper {
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .picture {
+    margin: 0 0.5em;
+  }
+  
+  .badge {
+    background-color: #44b700;
+  }
