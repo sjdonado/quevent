@@ -8,10 +8,15 @@ import PropTypes from 'prop-types';
 import styles from './EventDetailsGuestsRow.module.scss';
 
 
-function EventDetailsGuestRow({ row, isEditting }) {
+function EventDetailsGuestRow({
+  row, isEditting, saveChanges, handleSaveChanges, handleCheck,
+}) {
   const [checked, setChecked] = useState(false);
   const [active, setActive] = useState(row.active);
 
+  if (saveChanges) {
+    handleSaveChanges(row);
+  }
 
   return (
     <TableRow className={styles.row} key={row.id}>
@@ -19,9 +24,9 @@ function EventDetailsGuestRow({ row, isEditting }) {
       <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
         <TableCell align="center">
           <Checkbox
-            checked={checked}
+            checked={!!row.checked}
             onChange={() => {
-              setChecked(!checked);
+              handleCheck(!row.checked, row.id);
             }}
             value="checked"
             inputProps={{
