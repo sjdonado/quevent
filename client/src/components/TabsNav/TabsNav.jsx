@@ -1,16 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import { Paper } from '@material-ui/core';
 import styles from './TabsNav.module.scss';
 
 
-export default function TabsNav() {
+export default function TabsNav({ handleTabChange, currentFilter }) {
   const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   return (
     <Paper className={styles.wrapper}>
@@ -19,8 +17,8 @@ export default function TabsNav() {
           indicator: styles.tabs,
         }}
         centered
-        value={value}
-        onChange={handleChange}
+        value={currentFilter}
+        onChange={handleTabChange}
         aria-label="styled tabs example"
         TabIndicatorProps={{ children: <div /> }}
       >
@@ -49,3 +47,8 @@ export default function TabsNav() {
     </Paper>
   );
 }
+
+TabsNav.propTypes = {
+  handleTabChange: PropTypes.func.isRequired,
+  currentFilter: PropTypes.number.isRequired,
+};

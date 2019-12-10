@@ -11,7 +11,6 @@ import styles from './EventDetailsGuestsRow.module.scss';
 function EventDetailsGuestRow({
   row, isEditting, saveChanges, handleSaveChanges, handleCheck,
 }) {
-  const [checked, setChecked] = useState(false);
   const [active, setActive] = useState(row.active);
 
   if (saveChanges) {

@@ -19,6 +19,7 @@ import GuestsRow from './EventDetailsGuestsRow/EventDetailsGuestsRow';
 import styles from './EventDetails.module.scss';
 import Progress from '../../../components/Progress/Progress';
 import Snackbar from '../../../components/Snackbar/Snackbar';
+import ConfirmationDialog from './ConfirmationDialog/ConfirmationDialog';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
 import { SEND_INVITATIONS_MUTATION } from '../../../graphql/mutations';
 
@@ -27,6 +28,7 @@ const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
 
 function EventDetails({ match, location }) {
+  const [currentFilter, setCurrentFilter] = useState(0);
   const [snackbarMsg, setSnackbarMsg] = useState(null);
   const [isEditting, setIsEditting] = useState(false);
   const [saveChanges, setSaveChanges] = useState(false);
@@ -34,6 +36,8 @@ function EventDetails({ match, location }) {
   const [rows, setRows] = useState([]);
   const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
   const [isAllChecked, setIsAllChecked] = useState(false);
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [dialogType, setDialogType] = useState('');
   const history = useHistory();
   const { loading, error, data } = useQuery(GET_ATTENDEES_QUERY, {
     variables: {
@@ -64,21 +68,27 @@ function EventDetails({ match, location }) {
     }
   }, [numberOfCheckedRows, rows]);
 
-  const handleSendInvitations = async () => {
-    try {
-      const { res } = await sendInvitationsMutation({
-        variables: {
-          eventId: match.params.id,
-        },
-      });
-    } catch (err) {
-      setSnackbarMsg(err);
+  useEffect(() => {
+    if (!loading) {
+      let filteredRows;
+      switch (currentFilter) {
+        case 0:
+          setRows(data.getEvent.attendance);
+          break;
+        case 1:
+          filteredRows = data.getEvent.attendance.filter((row) => row.attended);
+          setRows(filteredRows);
+          break;
+        case 2:
+          filteredRows = data.getEvent.attendance.filter((row) => !row.attended);
+          setRows(filteredRows);
+          break;
+        default:
+          break;
+      }
     }
-  };
+  }, [currentFilter]);
 
-  const handleSaveChanges = (updatedRow) => {
-    setChanges([...changes, updatedRow]);
-  };
 
   const handleCheckAll = (checked) => {
     const allRowsChecked = rows.map((row) => ({ ...row, checked }));
@@ -95,6 +105,53 @@ function EventDetails({ match, location }) {
     });
     setRows(updatedRows);
     setNumberOfCheckedRows(checked ? numberOfCheckedRows + 1 : numberOfCheckedRows - 1);
+  };
+
+
+  const handleOpenDialog = (type) => {
+    setDialogType(type);
+    setOpenDialog(true);
+  };
+
+  const handleSendInvitations = async () => {
+    try {
+      const { res } = await sendInvitationsMutation({
+        variables: {
+          eventId: match.params.id,
+        },
+      });
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
+  };
+
+  const handleSaveChanges = (updatedRow) => {
+    setChanges([...changes, updatedRow]);
+  };
+
+  const handleDeleteGuest = () => {
+
+  };
+  const handleCloseDialog = (type) => {
+    switch (type) {
+      case 'save':
+        handleSaveChanges();
+        break;
+      case 'send':
+        handleSendInvitations();
+        break;
+      case 'delete':
+        handleDeleteGuest();
+        break;
+      default:
+        break;
+    }
+    setOpenDialog(false);
+  };
+
+  const handleTabChange = (event, newValue) => {
+    setCurrentFilter(newValue);
+    console.log(newValue);
   };
 
   return (
@@ -125,7 +182,10 @@ function EventDetails({ match, location }) {
       )}
     >
       <Box className={styles.wrapper}>
-        <TabsNav />
+        <TabsNav
+          handleTabChange={handleTabChange}
+          currentFilter={currentFilter}
+        />
 
         {loading ? (<Progress type="circular" />) : (
           <Box className={styles.table}>
@@ -147,9 +207,7 @@ function EventDetails({ match, location }) {
                     </Typography>
                     <Typography
                       color="primary"
-                      onClick={() => {
-                        setSaveChanges(true);
-                      }}
+                      onClick={() => { handleOpenDialog('save'); }}
                       className={styles.editAction}
                       variant="body2"
                     >
@@ -161,12 +219,13 @@ function EventDetails({ match, location }) {
                     <div>
                       <ActionButton
                         title="Send invitations"
-                        onClick={handleSendInvitations}
+                        onClick={() => { handleOpenDialog('send'); }}
                       >
                         <MailOutlineIcon />
                       </ActionButton>
                       <ActionButton
                         title="Delete selected"
+                        onClick={() => { handleOpenDialog('delete'); }}
                       >
                         <DeleteForeverOutlinedIcon />
                       </ActionButton>
@@ -207,7 +266,11 @@ function EventDetails({ match, location }) {
             </AttendeesTable>
           </Box>
         )}
-
+        <ConfirmationDialog
+          openDialog={openDialog}
+          handleCloseDialog={handleCloseDialog}
+          dialogType={dialogType}
+        />
         <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
       </Box>
     </PageContainer>
