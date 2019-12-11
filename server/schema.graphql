@@ -19,6 +19,9 @@ type Mutation {
     endDate: Date
     active: Boolean
   ): Event!
+  updateEvents(
+    events: String!
+  ): [Event]!
   addAttendee(
     eventId: ID!
     email: String!

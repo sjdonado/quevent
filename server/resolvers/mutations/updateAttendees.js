@@ -8,7 +8,7 @@ const updateAttendees = async (parent, args, context) => {
     attendees,
   } = args;
 
-  const attendesToArray = JSON.parse(attendees);
+  const attendeesToArray = JSON.parse(attendees);
 
   const user = await authentication(context);
 
@@ -17,7 +17,7 @@ const updateAttendees = async (parent, args, context) => {
     throw new ApolloError('Event not found', 404);
   }
 
-  user.events[eventIdx].attendance = [...attendesToArray];
+  user.events[eventIdx].attendance = [...attendeesToArray];
 
   await user.save();
 

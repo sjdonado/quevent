@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const { attendeeSchema } = require('./Attendee');
+
 const { Schema } = mongoose;
 
 const fields = {
@@ -22,7 +23,6 @@ const fields = {
   },
   author: {
     type: String,
-    required: [true, 'Author email required'],
   },
   attendance: [attendeeSchema],
 };
