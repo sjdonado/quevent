@@ -46,7 +46,7 @@ export default function ConfirmationDialog({ openDialog, handleCloseDialog, dial
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={() => handleCloseDialog(dialogType)} color="primary">
+          <Button autoFocus onClick={() => handleCloseDialog()} color="primary">
             Disagree
           </Button>
           <Button onClick={() => handleCloseDialog(dialogType)} color="primary" autoFocus>

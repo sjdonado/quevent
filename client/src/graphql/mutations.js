@@ -68,3 +68,14 @@ export const READ_INVITATION_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_ATTENDEES_MUTATION = gql`
+  mutation updateAttendees($eventId: ID!, $attendees: String!) {
+    updateAttendees(eventId: $eventId, attendees: $attendees) {
+      email
+      attended
+      active
+      invited
+    }
+  }
+`;

@@ -7,9 +7,6 @@ import styles from './TabsNav.module.scss';
 
 
 export default function TabsNav({ handleTabChange, currentFilter }) {
-  const [value, setValue] = React.useState(0);
-
-
   return (
     <Paper className={styles.wrapper}>
       <Tabs

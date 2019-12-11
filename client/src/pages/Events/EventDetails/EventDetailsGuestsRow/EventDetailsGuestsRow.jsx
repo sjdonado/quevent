@@ -9,13 +9,9 @@ import styles from './EventDetailsGuestsRow.module.scss';
 
 
 function EventDetailsGuestRow({
-  row, isEditting, saveChanges, handleSaveChanges, handleCheck,
+  row, isEditting, handleActiveCheckboxChange, handleCheck,
 }) {
   const [active, setActive] = useState(row.active);
-
-  if (saveChanges) {
-    handleSaveChanges(row);
-  }
 
   return (
     <TableRow className={styles.row} key={row.id}>
@@ -61,8 +57,10 @@ function EventDetailsGuestRow({
       </TableCell>
       <TableCell align="center">
         <Checkbox
-          checked={isEditting ? active : row.active}
-          onChange={() => { setActive(!active); }}
+          checked={!!row.active}
+          onChange={() => {
+            handleActiveCheckboxChange(!row.active, row.id);
+          }}
           disabled={!isEditting}
           value="active"
           inputProps={{

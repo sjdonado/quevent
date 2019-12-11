@@ -21,7 +21,7 @@ import Progress from '../../../components/Progress/Progress';
 import Snackbar from '../../../components/Snackbar/Snackbar';
 import ConfirmationDialog from './ConfirmationDialog/ConfirmationDialog';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
-import { SEND_INVITATIONS_MUTATION } from '../../../graphql/mutations';
+import { SEND_INVITATIONS_MUTATION, UPDATE_ATTENDEES_MUTATION } from '../../../graphql/mutations';
 
 
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
@@ -45,6 +45,7 @@ function EventDetails({ match, location }) {
     },
   });
   const [sendInvitationsMutation] = useMutation(SEND_INVITATIONS_MUTATION);
+  const [updateAttendeesMutation] = useMutation(UPDATE_ATTENDEES_MUTATION);
 
 
   useEffect(() => {
@@ -68,24 +69,28 @@ function EventDetails({ match, location }) {
     }
   }, [numberOfCheckedRows, rows]);
 
+  const handleFilteredRows = () => {
+    let filteredRows;
+    switch (currentFilter) {
+      case 0:
+        setRows(data.getEvent.attendance);
+        break;
+      case 1:
+        filteredRows = data.getEvent.attendance.filter((row) => row.attended);
+        setRows(filteredRows);
+        break;
+      case 2:
+        filteredRows = data.getEvent.attendance.filter((row) => !row.attended);
+        setRows(filteredRows);
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
     if (!loading) {
-      let filteredRows;
-      switch (currentFilter) {
-        case 0:
-          setRows(data.getEvent.attendance);
-          break;
-        case 1:
-          filteredRows = data.getEvent.attendance.filter((row) => row.attended);
-          setRows(filteredRows);
-          break;
-        case 2:
-          filteredRows = data.getEvent.attendance.filter((row) => !row.attended);
-          setRows(filteredRows);
-          break;
-        default:
-          break;
-      }
+      handleFilteredRows();
     }
   }, [currentFilter]);
 
@@ -115,22 +120,49 @@ function EventDetails({ match, location }) {
 
   const handleSendInvitations = async () => {
     try {
+      const checkedRows = rows.filter((row) => row.checked);
       const { res } = await sendInvitationsMutation({
         variables: {
           eventId: match.params.id,
         },
       });
+      setSnackbarMsg('Success! You have invited the attendees correctly.');
+      setIsEditting(false);
     } catch (err) {
       setSnackbarMsg(err);
     }
   };
 
-  const handleSaveChanges = (updatedRow) => {
-    setChanges([...changes, updatedRow]);
+  const handleSaveChanges = async (updatedRow) => {
+    try {
+      const { res } = await updateAttendeesMutation({
+        variables: {
+          eventId: match.params.id,
+          attendees: JSON.stringify(rows),
+        },
+      });
+      setSnackbarMsg('Success! You have updated the attendees list correctly.');
+      setIsEditting(false);
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
   };
 
-  const handleDeleteGuest = () => {
-
+  const handleDeleteGuest = async () => {
+    try {
+      const checkedRows = rows.filter((row) => !row.checked);
+      const { res } = await updateAttendeesMutation({
+        variables: {
+          eventId: match.params.id,
+          attendees: JSON.stringify(checkedRows),
+        },
+      });
+      setRows(checkedRows);
+      setSnackbarMsg('Success! You have deleted the attendees correctly.');
+      setIsEditting(false);
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
   };
   const handleCloseDialog = (type) => {
     switch (type) {
@@ -151,7 +183,17 @@ function EventDetails({ match, location }) {
 
   const handleTabChange = (event, newValue) => {
     setCurrentFilter(newValue);
-    console.log(newValue);
+  };
+
+  const handleActiveCheckboxChange = (active, rowId) => {
+    const updatedRows = rows.map((row) => {
+      if (row.id === rowId) {
+        return { ...row, active };
+      }
+      return row;
+    });
+
+    setRows(updatedRows);
   };
 
   return (
@@ -197,7 +239,7 @@ function EventDetails({ match, location }) {
                       color="primary"
                       onClick={() => {
                         setIsEditting(false);
-                        setRows(data.getEvent.attendance);
+                        handleFilteredRows();
                         setNumberOfCheckedRows(0);
                       }}
                       className={styles.editAction}
@@ -257,6 +299,7 @@ function EventDetails({ match, location }) {
                   className={styles.row}
                   key={row.id}
                   row={row}
+                  handleActiveCheckboxChange={handleActiveCheckboxChange}
                   handleCheck={handleCheck}
                   handleSaveChanges={handleSaveChanges}
                   saveChanges={saveChanges}

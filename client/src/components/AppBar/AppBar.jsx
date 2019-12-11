@@ -9,7 +9,6 @@ import styles from './AppBar.module.scss';
 
 import { APPBAR_QUERY } from '../../graphql/queries';
 
-import Progress from '../Progress/Progress';
 
 function StyledAppBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
