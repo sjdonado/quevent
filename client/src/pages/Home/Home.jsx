@@ -40,7 +40,7 @@ function Home() {
   }, [loading]);
 
   useEffect(() => {
-    if (numberOfCheckedRows === rows.length) {
+    if (rows.length > 0 && numberOfCheckedRows === rows.length) {
       setIsAllChecked(true);
     } else {
       setIsAllChecked(false);
@@ -137,13 +137,6 @@ function Home() {
 
                 <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
                   <div>
-                    <ActionButton
-                      title="Send invitations"
-                      disabled={!(numberOfCheckedRows === 1)}
-                      onClick={() => { handleOpenDialog('send'); }}
-                    >
-                      <EditOutlinedIcon />
-                    </ActionButton>
                     <ActionButton
                       title="Delete selected"
                       disabled={!(numberOfCheckedRows > 0)}

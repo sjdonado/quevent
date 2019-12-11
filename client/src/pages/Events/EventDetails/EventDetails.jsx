@@ -62,7 +62,7 @@ function EventDetails({ match, location }) {
   }, [loading]);
 
   useEffect(() => {
-    if (numberOfCheckedRows === rows.length) {
+    if (rows.length > 0 && numberOfCheckedRows === rows.length) {
       setIsAllChecked(true);
     } else {
       setIsAllChecked(false);
