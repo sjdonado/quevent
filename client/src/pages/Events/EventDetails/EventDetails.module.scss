@@ -20,6 +20,7 @@
   flex-direction: column;
   .edit{
     display: flex;
+    align-items: center;
     justify-content: flex-end;
     .editActions{
       margin-right: auto;
@@ -32,5 +33,4 @@
   cursor: pointer;
   align-self: flex-start;
   font-weight: 600;
-  margin: 12px;
 }

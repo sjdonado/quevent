@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import Slide from '@material-ui/core/Slide';
-
+import moment from 'moment';
 import {
   TableRow, TableCell, Checkbox,
 } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import styles from './EventDetailsGuestsRow.module.scss';
+import styles from './EventRow.module.scss';
 
 
-function EventDetailsGuestRow({
-  row, isEditting, handleActiveCheckboxChange, handleCheck,
+function EventRow({
+  row, isEditting, handleActiveCheckboxChange, handleCheck, onRowClick,
 }) {
   return (
-    <TableRow className={styles.row} key={row.id}>
+    <TableRow className={isEditting ? '' : styles.row} key={row.id} onClick={() => !isEditting && onRowClick(row)}>
       {isEditting && (
       <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
         <TableCell align="center">
@@ -31,27 +31,16 @@ function EventDetailsGuestRow({
 
       )}
       <TableCell align="center">
-        {row.email}
+        {row.name}
       </TableCell>
       <TableCell align="center">
-        <Checkbox
-          checked={row.invited}
-          disabled
-          value="checked"
-          inputProps={{
-            'aria-label': 'primary checkbox',
-          }}
-        />
+        Universidad del Norte
       </TableCell>
       <TableCell align="center">
-        <Checkbox
-          checked={row.attended}
-          disabled
-          value="checked"
-          inputProps={{
-            'aria-label': 'primary checkbox',
-          }}
-        />
+        {moment(`${row.startDate}`, 'x').format('LLL')}
+      </TableCell>
+      <TableCell align="center">
+        {moment(`${row.endDate}`, 'x').format('LLL')}
       </TableCell>
       <TableCell align="center">
         <Checkbox
@@ -70,9 +59,9 @@ function EventDetailsGuestRow({
   );
 }
 
-EventDetailsGuestRow.propTypes = {
+EventRow.propTypes = {
   row: PropTypes.oneOfType([PropTypes.object]).isRequired,
   isEditting: PropTypes.bool.isRequired,
 };
 
-export default EventDetailsGuestRow;
+export default EventRow;

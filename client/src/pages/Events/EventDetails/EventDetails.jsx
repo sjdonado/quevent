@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box, Typography,
+  Box, Typography, Button,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import ReactRouterPropTypes from 'react-router-prop-types';
@@ -32,7 +32,7 @@ function EventDetails({ match, location }) {
   const [snackbarMsg, setSnackbarMsg] = useState(null);
   const [isEditting, setIsEditting] = useState(false);
   const [saveChanges, setSaveChanges] = useState(false);
-  const [changes, setChanges] = useState([]);
+  const [isActiveStateChanged, setIsActiveStateChanged] = useState(false);
   const [rows, setRows] = useState([]);
   const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
   const [isAllChecked, setIsAllChecked] = useState(false);
@@ -192,7 +192,7 @@ function EventDetails({ match, location }) {
       }
       return row;
     });
-
+    setIsActiveStateChanged(true);
     setRows(updatedRows);
   };
 
@@ -235,7 +235,7 @@ function EventDetails({ match, location }) {
               <>
                 <div className={styles.edit}>
                   <div className={styles.editActions}>
-                    <Typography
+                    <Button
                       color="primary"
                       onClick={() => {
                         setIsEditting(false);
@@ -243,29 +243,30 @@ function EventDetails({ match, location }) {
                         setNumberOfCheckedRows(0);
                       }}
                       className={styles.editAction}
-                      variant="body2"
                     >
                   Cancel
-                    </Typography>
-                    <Typography
+                    </Button>
+                    <Button
                       color="primary"
                       onClick={() => { handleOpenDialog('save'); }}
+                      disabled={!isActiveStateChanged}
                       className={styles.editAction}
-                      variant="body2"
                     >
                   Save
-                    </Typography>
+                    </Button>
                   </div>
 
                   <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
                     <div>
                       <ActionButton
+                        disabled={!(numberOfCheckedRows > 0)}
                         title="Send invitations"
                         onClick={() => { handleOpenDialog('send'); }}
                       >
                         <MailOutlineIcon />
                       </ActionButton>
                       <ActionButton
+                        disabled={!(numberOfCheckedRows > 0)}
                         title="Delete selected"
                         onClick={() => { handleOpenDialog('delete'); }}
                       >
@@ -277,16 +278,15 @@ function EventDetails({ match, location }) {
 
               </>
             ) : (
-              <Typography
+              <Button
                 color="primary"
                 onClick={() => {
                   setIsEditting(true);
                 }}
                 className={styles.editAction}
-                variant="body2"
               >
               Edit
-              </Typography>
+              </Button>
             )}
             <AttendeesTable
               headers={headers}
