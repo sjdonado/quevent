@@ -4,6 +4,7 @@ const updateEvent = require('./updateEvent');
 const addAttendee = require('./addAttendee');
 const addAttendees = require('./addAttendees');
 const updateAttendee = require('./updateAttendee');
+const updateAttendees = require('./updateAttendees');
 const sendInvitations = require('./sendInvitations');
 const readInvitation = require('./readInvitation');
 
@@ -15,6 +16,7 @@ module.exports = {
   addAttendee,
   addAttendees,
   updateAttendee,
+  updateAttendees,
   sendInvitations,
   readInvitation,
 };
