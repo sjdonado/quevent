@@ -22,22 +22,18 @@ import Snackbar from '../../../components/Snackbar/Snackbar';
 import ConfirmationDialog from '../EventDetails/ConfirmationDialog/ConfirmationDialog';
 import EditToolbar from '../../../components/EditToolbar/EditToolbar';
 import { useCheckBox } from '../../../hooks/useCheckbox';
-
+import { useRowAction } from '../../../hooks/useRowAction';
 
 const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
 
 function Home() {
   const [rows, setRows] = useState([]);
-  const [snackbarMsg, setSnackbarMsg] = useState(null);
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [dialogType, setDialogType] = useState('');
+  const history = useHistory();
+
   const {
     loading, error, data, refetch,
   } = useQuery(GET_EVENTS_QUERY);
-  const history = useHistory();
-  const [openModal, setOpenModal] = React.useState(false);
-
   const [updateEventsMutation] = useMutation(UPDATE_EVENTS_MUTATION);
 
 
@@ -47,74 +43,29 @@ function Home() {
     isActiveStateChanged, isAllChecked,
     isEditting, setIsEditting,
     numberOfCheckedRows,
-  } = useCheckBox(data, loading, rows, setRows);
+  } = useCheckBox(rows, setRows);
+  const {
+    handleCloseDialog,
+    handleOpenDialog,
+    handleClickOpenModal,
+    handleCloseModal,
+    snackbarMsg,
+    openDialog,
+    dialogType,
+    openModal,
+    setDialogType,
+    setSnackbarMsg,
+    setOpenDialog,
+  } = useRowAction(rows, setRows, refetch, updateEventsMutation, setIsEditting);
 
-
-  const handleClickOpenModal = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = (submit) => {
-    if (submit) {
-      refetch();
-      setSnackbarMsg('Success! You have created a new event.');
+  useEffect(() => {
+    if (!loading) {
+      setRows(data.getUser.events);
     }
-    setOpenModal(false);
-  };
+  }, [loading, data]);
 
   const onRowClick = (row) => {
     history.push(`/events/${row.id}`);
-  };
-
-  const handleDeleteEvents = async () => {
-    try {
-      const checkedRows = rows.filter((row) => !row.checked);
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(checkedRows),
-        },
-      });
-      refetch();
-      setRows(checkedRows);
-      setSnackbarMsg('Success! You have deleted the events correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(rows),
-        },
-      });
-      refetch();
-      setSnackbarMsg('Success! You have updated the attendees list correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      setSnackbarMsg(err);
-    }
-  };
-
-  const handleOpenDialog = (type) => {
-    setDialogType(type);
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = (type) => {
-    switch (type) {
-      case 'save':
-        handleSaveChanges();
-        break;
-      case 'delete':
-        handleDeleteEvents();
-        break;
-      default:
-        break;
-    }
-    setOpenDialog(false);
   };
 
 
@@ -138,7 +89,7 @@ function Home() {
           <EditToolbar
             isEditting={isEditting}
             setIsEditting={setIsEditting}
-            handleReset={handleReset}
+            handleReset={() => { handleReset(data.getUser.events); }}
             setDialogType={setDialogType}
             setOpenDialog={setOpenDialog}
             isActiveStateChanged={isActiveStateChanged}

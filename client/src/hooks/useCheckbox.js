@@ -1,18 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useQuery, useMutation } from 'react-apollo';
-import { useHistory } from 'react-router-dom';
 // eslint-disable-next-line import/prefer-default-export
-export const useCheckBox = (data, loading, rows, setRows) => {
+export const useCheckBox = (rows, setRows) => {
   const [isEditting, setIsEditting] = useState(false);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isActiveStateChanged, setIsActiveStateChanged] = useState(false);
   const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
 
-  useEffect(() => {
-    if (!loading) {
-      setRows(data.getUser.events);
-    }
-  }, [loading, data]);
 
   useEffect(() => {
     if (rows.length > 0 && numberOfCheckedRows === rows.length) {
@@ -52,10 +45,10 @@ export const useCheckBox = (data, loading, rows, setRows) => {
   };
 
 
-  const handleReset = () => {
+  const handleReset = (data) => {
     setIsActiveStateChanged(false);
     setIsEditting(false);
-    setRows(data.getUser.events);
+    setRows(data);
     setNumberOfCheckedRows(0);
   };
 
