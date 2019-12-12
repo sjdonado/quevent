@@ -13,19 +13,6 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
-export const EXAMPLE_MUTATION = gql`
-  mutation LoginMutation($idToken: String!) {
-    login(idToken: $idToken) {
-      token
-      user {
-        name
-        email
-        profilePicture
-      }
-    }
-  }
-`;
-
 export const CREATE_EVENT_MUTATION = gql`
   mutation createEvent(
     $name: String!
@@ -34,7 +21,13 @@ export const CREATE_EVENT_MUTATION = gql`
     $startDate: Date!
     $endDate: Date!
   ) {
-    createEvent(name: $name, startDate: $startDate, endDate: $endDate) {
+    createEvent(
+      name: $name
+      description: $description
+      location: $location
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       name
       description
       location
@@ -49,7 +42,10 @@ export const ADD_ATTENDEES = gql`
     $eventId: ID!
     $attendees: [AttendeeInput]!
   ) {
-    addAttendees(eventId: $eventId, attendees: $attendees) {
+    addAttendees(
+      eventId: $eventId
+      attendees: $attendees
+    ) {
       email
       attended
       active
@@ -82,7 +78,10 @@ export const READ_INVITATION_MUTATION = gql`
 
 export const UPDATE_ATTENDEES_MUTATION = gql`
   mutation updateAttendees($eventId: ID!, $attendees: String!) {
-    updateAttendees(eventId: $eventId, attendees: $attendees) {
+    updateAttendees(
+      eventId: $eventId
+      attendees: $attendees
+    ) {
       email
       attended
       active

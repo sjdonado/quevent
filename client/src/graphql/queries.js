@@ -10,14 +10,6 @@ export const APPBAR_QUERY = gql`
   }
 `;
 
-export const EXAMPLE_QUERY = gql`
-  {
-    getUser {
-      name
-      profilePicture
-    }
-  }
-`;
 export const GET_EVENTS_QUERY = gql`
   {
     getUser {

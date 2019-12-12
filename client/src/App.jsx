@@ -30,7 +30,6 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
 import EventView from './pages/Events/EventView';
-import CreateEvent from './pages/Events/CreateEvent';
 
 import PrivateRoute from './utils/PrivateRoute';
 import EventDetails from './pages/Events/EventDetails/EventDetails';
@@ -119,7 +118,6 @@ function App({ cookies, history }) {
           <PrivateRoute authenticated={typeof getToken() === 'string'}>
             <AppBar />
             <MuiPickersUtilsProvider utils={MomentUtils}>
-              <Route exact path="/events/add" render={() => <CreateEvent />} />
               <Route exact path="/home" component={Home} />
             </MuiPickersUtilsProvider>
             <Route exact path="/events/:id" component={EventDetails} />

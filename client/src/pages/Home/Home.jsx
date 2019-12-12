@@ -14,7 +14,7 @@ import PageContainer from '../../components/PageContainer/PageContainer';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import Progress from '../../components/Progress/Progress';
 import Table from '../../components/Table/Table';
-import Modal from '../../components/Modal/Modal';
+import CreateEventModal from '../../components/CreateEventModal/CreateEventModal';
 import EventRow from './EventRow/EventRow';
 import styles from './Home.module.scss';
 import { GET_EVENTS_QUERY } from '../../graphql/queries';
@@ -38,7 +38,7 @@ function Home() {
     loading, error, data, refetch,
   } = useQuery(GET_EVENTS_QUERY);
   const history = useHistory();
-  const [openModal, setOpenModal] = React.useState(false);
+  const [openCreateEventModal, setOpenCreateEventModal] = useState(false);
 
   const [updateEventsMutation] = useMutation(UPDATE_EVENTS_MUTATION);
 
@@ -57,7 +57,7 @@ function Home() {
   }, [numberOfCheckedRows, rows]);
 
   const handleClickOpen = () => {
-    setOpenModal(true);
+    setOpenCreateEventModal(true);
   };
 
   const handleCloseModal = (submit) => {
@@ -65,7 +65,7 @@ function Home() {
       refetch();
       setSnackbarMsg('Success! You have created a new event.');
     }
-    setOpenModal(false);
+    setOpenCreateEventModal(false);
   };
   const onRowClick = (row) => {
     history.push(`/events/${row.id}`);
@@ -167,7 +167,6 @@ function Home() {
         </ActionButton>
       )}
     >
-      <Modal open={openModal} handleClickOpen={handleClickOpen} handleClose={handleCloseModal} />
       {loading ? (<Progress type="circular" />) : (
         <Box className={styles.table}>
           {isEditting ? (
@@ -247,6 +246,11 @@ function Home() {
           <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
         </Box>
       )}
+      <CreateEventModal
+        open={openCreateEventModal}
+        handleClickOpen={handleClickOpen}
+        handleClose={handleCloseModal}
+      />
     </PageContainer>
   );
 }
