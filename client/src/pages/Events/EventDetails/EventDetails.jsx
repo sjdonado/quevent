@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box, Typography, Button,
+  Box,
+  Button,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import ReactRouterPropTypes from 'react-router-prop-types';

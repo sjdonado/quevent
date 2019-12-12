@@ -10,17 +10,17 @@ import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
 
 import { withCookies, Cookies } from 'react-cookie';
+import moment from 'moment';
 
 import {
   Route,
   Switch,
+  Redirect,
   withRouter,
 } from 'react-router-dom';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import moment from 'moment';
-import MomentUtils from '@date-io/moment';
 
 import './App.module.scss';
 
@@ -29,9 +29,8 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
-import EventView from './pages/Events/EventView';
 
-import PrivateRoute from './utils/PrivateRoute';
+import PrivateRoutes from './utils/PrivateRoutes';
 import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
 import AddGuests from './pages/Events/AddGuests/AddGuests';
@@ -65,7 +64,6 @@ const uploadLink = createUploadLink({ uri: API_URI });
 
 function App({ cookies, history }) {
   const setToken = (token) => {
-    // console.log('token', token, 'expires', moment(new Date()).add(24, 'hours').toDate());
     cookies.set(AUTH_TOKEN_COOKIE_NAME, token, {
       path: '/',
       expires: moment(new Date()).add(1, 'day').toDate(),
@@ -75,7 +73,11 @@ function App({ cookies, history }) {
   };
 
   const getToken = () => cookies.get(AUTH_TOKEN_COOKIE_NAME);
-  // const removeToken = () => cookies.remove(AUTH_TOKEN_COOKIE_NAME);
+
+  const handleLogout = () => {
+    cookies.remove(AUTH_TOKEN_COOKIE_NAME);
+    history.push('/');
+  };
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (graphQLErrors) {
@@ -114,16 +116,14 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-          <Route exact path="/events" render={() => <EventView />} />
-          <PrivateRoute authenticated={typeof getToken() === 'string'}>
-            <AppBar />
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              <Route exact path="/home" component={Home} />
-            </MuiPickersUtilsProvider>
+          <PrivateRoutes authenticated={typeof getToken() === 'string'}>
+            <AppBar history={history} handleLogout={handleLogout} />
+            <Route exact path="/home" component={Home} />
             <Route exact path="/events/:id" component={EventDetails} />
             <Route exact path="/events/:id/guests" component={AddGuests} />
             <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />
-          </PrivateRoute>
+          </PrivateRoutes>
+          <Route render={() => <Redirect to="/" />} />
         </Switch>
       </ApolloProvider>
     </ThemeProvider>
