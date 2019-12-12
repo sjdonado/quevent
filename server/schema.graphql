@@ -21,6 +21,9 @@ type Mutation {
     endDate: Date
     active: Boolean
   ): Event!
+  updateEvents(
+    events: String!
+  ): [Event]!
   addAttendee(
     eventId: ID!
     email: String!
@@ -35,6 +38,10 @@ type Mutation {
     active: Boolean
     attended: Boolean
   ): Attendee!
+  updateAttendees(
+    eventId: ID!
+    attendees: String!
+  ): [Attendee]!
   sendInvitations(
     eventId: ID!
   ): Event!
@@ -84,4 +91,10 @@ type Attendee {
 
 input AttendeeInput {
   email: String!
+}
+
+input AttendeeUpdateInput {
+  id: ID!
+  email: String!
+  active: Boolean!
 }

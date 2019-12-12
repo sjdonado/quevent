@@ -31,7 +31,6 @@ const fields = {
   },
   author: {
     type: String,
-    required: [true, 'Author email required'],
   },
   attendance: [attendeeSchema],
 };

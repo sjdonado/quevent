@@ -9,6 +9,7 @@ import styles from './AppBar.module.scss';
 
 import { APPBAR_QUERY } from '../../graphql/queries';
 
+
 // import Progress from '../Progress/Progress';
 
 function StyledAppBar() {
@@ -41,7 +42,9 @@ function StyledAppBar() {
           <Box className={styles['profile-wrapper']}>
             <Query query={APPBAR_QUERY}>
               {({ loading, error, data }) => {
-                if (error) return null;
+                if (error) {
+                  return null;
+                }
                 if (loading) {
                   return null;
                 }
@@ -84,10 +87,6 @@ function StyledAppBar() {
             horizontal: 'right',
           }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
           open={open}
           onClose={handleClose}
         >
