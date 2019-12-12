@@ -1,0 +1,33 @@
+@import '../../../styles/main.scss';
+.wrapper{
+  margin: 1em 0;
+}
+.row{
+  border-left: 1px solid black;
+  transition: 0.2s;
+  &:hover{
+    background-color: lighten($color: $primary-color, $amount: 50);
+    cursor: pointer;
+  }
+}
+
+.table{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  .edit{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .editActions{
+      margin-right: auto;
+    }
+  }
+}
+
+.editAction{
+  display: inline-block;
+  cursor: pointer;
+  align-self: flex-start;
+  font-weight: 600;
+}

@@ -37,6 +37,7 @@ import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';
 import AddGuests from './pages/Events/AddGuests/AddGuests';
 import GuestsQrReader from './pages/Events/GuestsQrReader/GuestsQrReader';
+import Test from './pages/Events/EventContainer/EventContainer';
 
 
 const theme = createMuiTheme({
@@ -111,6 +112,7 @@ function App({ cookies, history }) {
             <MuiPickersUtilsProvider utils={MomentUtils}>
               <Route exact path="/events/add" render={() => <CreateEvent />} />
               <Route exact path="/home" component={Home} />
+              <Route exact path="/test" component={Test} />
             </MuiPickersUtilsProvider>
             <Route exact path="/events/:id" component={EventDetails} />
             <Route exact path="/events/:id/guests" component={AddGuests} />
