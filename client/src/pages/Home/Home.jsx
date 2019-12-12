@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
+import { useHistory } from 'react-router-dom';
 import {
-  Box, Typography, Button,
+  Box,
+  Button,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-import { useHistory } from 'react-router-dom';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
@@ -154,109 +157,107 @@ function Home() {
 
 
   return (
-    <PageContainer
-      title="My events"
-      action={() => (
-        <ActionButton
-          title="Create event"
-          onClick={() => {
-            handleClickOpen();
-          }}
-        >
-          <AddCircleOutlineOutlinedIcon />
-        </ActionButton>
-      )}
-    >
-      {loading ? (<Progress type="circular" />) : (
-        <Box className={styles.table}>
-          {isEditting ? (
-            <>
-              <div className={styles.edit}>
-                <div className={styles.editActions}>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      setIsActiveStateChanged(false);
-                      setIsEditting(false);
-                      setRows(data.getUser.events);
-                      setNumberOfCheckedRows(0);
-                    }}
-                    className={styles.editAction}
-                  >
-                  Cancel
-                  </Button>
-                  <Button
-                    color="primary"
-                    disabled={!isActiveStateChanged}
-                    onClick={() => { handleOpenDialog('save'); }}
-                    className={styles.editAction}
-                  >
-                  Save
-                  </Button>
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <PageContainer
+        title="My events"
+        action={() => (
+          <ActionButton
+            title="Create event"
+            onClick={() => {
+              handleClickOpen();
+            }}
+          >
+            <AddCircleOutlineOutlinedIcon />
+          </ActionButton>
+        )}
+      >
+        {loading ? (<Progress type="circular" />) : (
+          <Box className={styles.table}>
+            {isEditting ? (
+              <>
+                <div className={styles.edit}>
+                  <div className={styles.editActions}>
+                    <Button
+                      color="primary"
+                      onClick={() => {
+                        setIsActiveStateChanged(false);
+                        setIsEditting(false);
+                        setRows(data.getUser.events);
+                        setNumberOfCheckedRows(0);
+                      }}
+                      className={styles.editAction}
+                    >
+                    Cancel
+                    </Button>
+                    <Button
+                      color="primary"
+                      disabled={!isActiveStateChanged}
+                      onClick={() => { handleOpenDialog('save'); }}
+                      className={styles.editAction}
+                    >
+                    Save
+                    </Button>
+                  </div>
+
+                  <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
+                    <div>
+                      <ActionButton
+                        title="Delete selected"
+                        disabled={!(numberOfCheckedRows > 0)}
+                        onClick={() => { handleOpenDialog('delete'); }}
+                      >
+                        <DeleteForeverOutlinedIcon />
+                      </ActionButton>
+                    </div>
+                  </Slide>
                 </div>
 
-                <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
-                  <div>
-                    <ActionButton
-                      title="Delete selected"
-                      disabled={!(numberOfCheckedRows > 0)}
-                      onClick={() => { handleOpenDialog('delete'); }}
-                    >
-                      <DeleteForeverOutlinedIcon />
-                    </ActionButton>
-                  </div>
-                </Slide>
-              </div>
-
-            </>
-          ) : (
-            <Button
-              color="primary"
-              onClick={() => {
-                setIsEditting(true);
-              }}
-              className={styles.editAction}
+              </>
+            ) : (
+              <Button
+                color="primary"
+                onClick={() => {
+                  setIsEditting(true);
+                }}
+                className={styles.editAction}
+              >
+                Edit
+              </Button>
+            )}
+            <Table
+              headers={headers}
+              isEditting={isEditting}
+              isAllChecked={isAllChecked}
+              handleCheckAll={handleCheckAll}
             >
-              Edit
-            </Button>
-          )}
-          <Table
-            headers={headers}
-            isEditting={isEditting}
-            isAllChecked={isAllChecked}
-            handleCheckAll={handleCheckAll}
-          >
-            {rows.map((row) => (
-              <EventRow
-                className={styles.row}
-                key={row.id}
-                row={row}
-                onRowClick={onRowClick}
-                handleActiveCheckboxChange={handleActiveCheckboxChange}
-                handleCheck={handleCheck}
-                isEditting={isEditting}
-              />
-            ))}
-          </Table>
-          <ConfirmationDialog
-            openDialog={openDialog}
-            handleCloseDialog={handleCloseDialog}
-            dialogType={dialogType}
-          />
-          <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
-        </Box>
-      )}
-      <CreateEventModal
-        open={openCreateEventModal}
-        handleClickOpen={handleClickOpen}
-        handleClose={handleCloseModal}
-      />
-    </PageContainer>
+              {rows.map((row) => (
+                <EventRow
+                  className={styles.row}
+                  key={row.id}
+                  row={row}
+                  onRowClick={onRowClick}
+                  handleActiveCheckboxChange={handleActiveCheckboxChange}
+                  handleCheck={handleCheck}
+                  isEditting={isEditting}
+                />
+              ))}
+            </Table>
+            <ConfirmationDialog
+              openDialog={openDialog}
+              handleCloseDialog={handleCloseDialog}
+              dialogType={dialogType}
+            />
+            <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
+          </Box>
+        )}
+        <CreateEventModal
+          open={openCreateEventModal}
+          handleClickOpen={handleClickOpen}
+          handleClose={handleCloseModal}
+        />
+      </PageContainer>
+    </MuiPickersUtilsProvider>
   );
 }
-
-Home.propTypes = {
-
-};
 
 export default Home;
