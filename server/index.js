@@ -1,4 +1,8 @@
-const { ApolloServer, gql } = require('apollo-server');
+// const { ApolloServer,  } = require('apollo-server');
+const express = require('express');
+const path = require('path');
+const { ApolloServer, gql } = require('apollo-server-express');
+
 const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 
@@ -6,13 +10,20 @@ const log = require('loglevel');
 const fs = require('fs');
 
 const typeDefs = gql(fs.readFileSync(__dirname.concat('/schema.graphql'), 'utf8'));
+const config = require('./config');
+
 const database = require('./services/database');
 const models = require('./models');
 
 const Query = require('./resolvers/queries');
 const Mutation = require('./resolvers/mutations');
 
+const { port } = config.server;
+
 database.connect();
+
+const app = express();
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const resolvers = {
   Query,
@@ -36,7 +47,7 @@ const customScalarTypes = {
       return null;
     },
   }),
-}
+};
 
 Object.assign(resolvers, customScalarTypes);
 
@@ -57,9 +68,15 @@ const server = new ApolloServer({
   //   log.log(response);
   //   return response;
   // },
-  playground: true,
+  playground: false,
 });
 
-server.listen().then(({ url }) => {
-  log.log(`Server ready at ${url}`);
+server.applyMiddleware({ app });
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
+
+app.listen({ port }, () =>  
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
+);

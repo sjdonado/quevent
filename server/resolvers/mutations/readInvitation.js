@@ -6,6 +6,8 @@ const { getQRCodeKeyData } = require('../../services/encrypt');
 const readInvitation = async (parent, { qrCodeKey }, context) => {
   const user = await authentication(context);
   const { eventId, attendeeId } = getQRCodeKeyData(qrCodeKey);
+  console.log(eventId, attendeeId);
+
 
   const eventIdx = user.events.findIndex(({ id }) => id === eventId);
   if (eventIdx === -1) {
@@ -20,10 +22,11 @@ const readInvitation = async (parent, { qrCodeKey }, context) => {
   const attendee = user.events[eventIdx].attendance[attendeeIdx];
 
   user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
-    invited: true,
+    attended: true,
   });
 
   await user.save();
+  console.log(user.events[eventIdx].attendance[attendeeIdx]);
 
   return user.events[eventIdx].attendance[attendeeIdx];
 };

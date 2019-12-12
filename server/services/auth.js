@@ -1,6 +1,6 @@
 const { sign, verify } = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
-const { ApolloError } = require('apollo-server');
+const { ApolloError, AuthenticationError } = require('apollo-server');
 
 const { server } = require('../config');
 
@@ -12,10 +12,10 @@ const oauth2Client = new OAuth2Client(googleClientId);
  * @param {String} userId
  */
 const authentication = async (context) => {
-  const token  = context.authToken.substring(7);
+  const token = context.authToken.substring(7);
 
   if (!token) {
-    throw new ApolloError('Auth token is not supplied', 400);
+    throw new AuthenticationError('Auth token is not supplied');
   }
 
   return verify(token, secret, async (err, decoded) => {
@@ -26,13 +26,13 @@ const authentication = async (context) => {
     const { userId, iat, exp } = decoded;
 
     if (exp - iat < 0) {
-      throw new ApolloError('Auth Token expired', 400);
+      throw new AuthenticationError('Auth Token expired');
     }
 
     const user = await context.models.User.findById(userId);
 
     if (!user) {
-      throw new ApolloError('User not found, invalid auth token', 404);
+      throw new AuthenticationError('User not found, invalid auth token');
     }
 
     return user;

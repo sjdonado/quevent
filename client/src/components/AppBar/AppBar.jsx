@@ -1,17 +1,24 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import {
-  Typography, AppBar, Toolbar, IconButton, Menu, MenuItem, Badge, Avatar, Box,
+  Typography,
+  AppBar,
+  Toolbar,
+  IconButton,
+  Menu,
+  MenuItem,
+  Badge,
+  Avatar,
+  Box,
 } from '@material-ui/core';
 import { Query } from 'react-apollo';
 
 import styles from './AppBar.module.scss';
-
 import { APPBAR_QUERY } from '../../graphql/queries';
 
-import Progress from '../Progress/Progress';
 
-function StyledAppBar() {
+function ApppBar({ handleLogout }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -23,12 +30,11 @@ function StyledAppBar() {
     setAnchorEl(null);
   };
 
-
   return (
     <AppBar className={styles.root}>
       <Toolbar className={styles.toolbar}>
         <Typography variant="h6">
-                Quevent
+          Quevent
         </Typography>
         <IconButton
           aria-label="account of current user"
@@ -41,7 +47,9 @@ function StyledAppBar() {
           <Box className={styles['profile-wrapper']}>
             <Query query={APPBAR_QUERY}>
               {({ loading, error, data }) => {
-                if (error) return null;
+                if (error) {
+                  return null;
+                }
                 if (loading) {
                   return null;
                 }
@@ -84,19 +92,19 @@ function StyledAppBar() {
             horizontal: 'right',
           }}
           keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
           open={open}
           onClose={handleClose}
         >
           <MenuItem onClick={handleClose}>Profile</MenuItem>
-          <MenuItem>Logout</MenuItem>
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Toolbar>
     </AppBar>
   );
 }
 
-export default StyledAppBar;
+ApppBar.propTypes = {
+  handleLogout: PropTypes.func.isRequired,
+};
+
+export default ApppBar;

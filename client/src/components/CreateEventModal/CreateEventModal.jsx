@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import {
   Formik, Form, Field,
 } from 'formik';
+
 import * as Yup from 'yup';
 import PropTypes from 'prop-types';
 import { useMutation } from 'react-apollo';
@@ -12,12 +14,13 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { InputAdornment, Box } from '@material-ui/core';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Box from '@material-ui/core/Box';
 import LockIcon from '@material-ui/icons/Lock';
 import EmailIcon from '@material-ui/icons/Email';
 import TodayOutlinedIcon from '@material-ui/icons/TodayOutlined';
 import Progress from '../Progress/Progress';
-import styles from './Modal.module.scss';
+import styles from './CreateEventModal.module.scss';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations';
 import DatePicker from '../DatePicker/DatePicker';
 
@@ -43,23 +46,18 @@ const validationSchema = () => Yup.object().shape({
     .required('This field is required'),
 });
 
-export default function Modal({ open, handleClose }) {
-  const [error, setError] = useState(null);
+export default function CreateEventModal({ open, handleClose }) {
   const [createEventMutation] = useMutation(CREATE_EVENT_MUTATION);
 
-  const handleSubmit = async ({ name, startDate, endDate }, { setSubmitting }) => {
+  const handleSubmit = async (variables, { setSubmitting }) => {
     setSubmitting(true);
     try {
       const { data } = await createEventMutation({
-        variables: {
-          name,
-          startDate,
-          endDate,
-        },
+        variables,
       });
-      console.log(data);
+      handleClose(data);
     } catch (err) {
-      setError(err);
+      handleClose(false);
     }
     setSubmitting(false);
   };
@@ -83,7 +81,6 @@ export default function Modal({ open, handleClose }) {
               errors,
               touched,
               isSubmitting,
-              setFieldValue,
             }) => (
               <Form
                 className={styles.form}
@@ -159,54 +156,13 @@ export default function Modal({ open, handleClose }) {
                       }}
                     />
                     <Box className={styles.dates}>
-                    <Field
-                      id="startDate"
-                      name="startDate"
-                      component={DatePicker}
-                      error={touched.startDate && !!errors.startDate}
-                      helperText={errors.startDate}
-                      label="Start date"
-                      className={styles.date}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        'aria-label': 'event start date',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <TodayOutlinedIcon className={styles.icon} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                    <Field
-                      id="endDate"
-                      name="endDate"
-                      component={DatePicker}
-                      error={touched.endDate && !!errors.endDate}
-                      helperText={errors.endDate}
-                      label="End date"
-                      className={styles.date}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        'aria-label': 'event end date',
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <TodayOutlinedIcon className={styles.icon} />
-                          </InputAdornment>
-                        ),
-                      }}
-                    />
-                      {/* <Field
-                        id="date"
+                      <Field
+                        id="startDate"
                         name="startDate"
-                        as={TextField}
+                        component={DatePicker}
                         error={touched.startDate && !!errors.startDate}
                         helperText={errors.startDate}
                         label="Start date"
-                        type="datetime-local"
                         className={styles.date}
                         InputLabelProps={{
                           shrink: true,
@@ -219,35 +175,34 @@ export default function Modal({ open, handleClose }) {
                             </InputAdornment>
                           ),
                         }}
-                      /> */}
-                      {/* <Field
-                        id="date"
+                      />
+                      <Field
+                        id="endDate"
                         name="endDate"
-                        as={TextField}
+                        component={DatePicker}
                         error={touched.endDate && !!errors.endDate}
                         helperText={errors.endDate}
-                        label="Start date"
-                        type="datetime-local"
+                        label="End date"
                         className={styles.date}
                         InputLabelProps={{
                           shrink: true,
                         }}
                         InputProps={{
-                          'aria-label': 'event start date',
+                          'aria-label': 'event end date',
                           endAdornment: (
                             <InputAdornment position="end">
                               <TodayOutlinedIcon className={styles.icon} />
                             </InputAdornment>
                           ),
                         }}
-                      /> */}
+                      />
                     </Box>
                     <DialogActions>
-                      <Button onClick={handleClose} color="secondary">
-                    Cancel
+                      <Button onClick={() => handleClose()} color="secondary">
+                        Cancel
                       </Button>
                       <Button color="secondary" type="submit">
-                    Create
+                        Create
                       </Button>
                     </DialogActions>
                   </>
@@ -263,7 +218,7 @@ export default function Modal({ open, handleClose }) {
   );
 }
 
-Modal.propTypes = {
+CreateEventModal.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };

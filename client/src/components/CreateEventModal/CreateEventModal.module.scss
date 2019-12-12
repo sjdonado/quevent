@@ -8,9 +8,13 @@
 
 .dates{
   display: flex;
-  margin: 0 -1em;
+  flex-wrap: wrap;
+  margin: 1em 0;
   .date{
-    margin: 1em;
+    flex-grow: 1;
+    &:not(:first-child){
+      margin-left: 1em;
+    }
   }
 }
 

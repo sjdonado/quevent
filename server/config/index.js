@@ -9,6 +9,6 @@ module.exports = {
     apiKey: process.env.MAILER_API_KEY,
   },
   database: {
-    url: process.env.DATABASE_URL,
+    url: process.env.MONGODB_URI,
   },
 };

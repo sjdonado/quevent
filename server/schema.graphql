@@ -9,6 +9,8 @@ type Mutation {
   login(idToken: String!): AuthPayload!
   createEvent(
     name: String!
+    description: String!
+    location: String!
     startDate: Date!
     endDate: Date!
   ): Event!
@@ -19,6 +21,9 @@ type Mutation {
     endDate: Date
     active: Boolean
   ): Event!
+  updateEvents(
+    events: String!
+  ): [Event]!
   addAttendee(
     eventId: ID!
     email: String!
@@ -33,6 +38,10 @@ type Mutation {
     active: Boolean
     attended: Boolean
   ): Attendee!
+  updateAttendees(
+    eventId: ID!
+    attendees: String!
+  ): [Attendee]!
   sendInvitations(
     eventId: ID!
   ): Event!
@@ -60,6 +69,8 @@ type User {
 type Event {
   id: ID!
   name: String!
+  description: String!
+  location: String!
   startDate: Date!
   endDate: Date!
   active: Boolean!
@@ -80,4 +91,10 @@ type Attendee {
 
 input AttendeeInput {
   email: String!
+}
+
+input AttendeeUpdateInput {
+  id: ID!
+  email: String!
+  active: Boolean!
 }

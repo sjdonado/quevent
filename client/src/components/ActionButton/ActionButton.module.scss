@@ -1,4 +1,7 @@
 
-.action-button {
-  font-size: 3em;
+.wrapper {
+  display: inline-block;
+  .action-button {
+    font-size: 3em;
+  }
 }

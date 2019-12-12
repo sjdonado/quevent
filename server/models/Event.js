@@ -1,12 +1,21 @@
 const mongoose = require('mongoose');
 
 const { attendeeSchema } = require('./Attendee');
+
 const { Schema } = mongoose;
 
 const fields = {
   name: {
     type: String,
     required: [true, 'Name required'],
+  },
+  description: {
+    type: String,
+    required: [true, 'Description required'],
+  },
+  location: {
+    type: String,
+    required: [true, 'Location required'],
   },
   startDate: {
     type: Date,
@@ -22,7 +31,6 @@ const fields = {
   },
   author: {
     type: String,
-    required: [true, 'Author email required'],
   },
   attendance: [attendeeSchema],
 };
