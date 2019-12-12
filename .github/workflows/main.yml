@@ -1,0 +1,41 @@
+name: Build and deploy on heroku
+
+on:
+  push:
+    branches:
+    - master
+    - release/*
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node_version }}
+    - name: npm install and build
+      run: |
+        cd client
+        npm install
+        npm run build --if-present
+        rm -r ../server/client/build
+        mv build ../server/client/build
+    
+    - name: Login to heroku
+      uses: actions/heroku@1.0.0
+      with:
+        args: container:login
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+    - name: Push to heroku
+      uses: actions/heroku@1.0.0
+      with:
+        needs: login
+        args: container:push -a $(basename $GITHUB_REPOSITORY) web
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
