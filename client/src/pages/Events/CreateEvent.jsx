@@ -1,6 +1,7 @@
 import React, { Component, useState } from 'react';
 import { DateTimePicker } from '@material-ui/pickers';
 
+
 import {
   Button,
   TextField,
@@ -19,6 +20,7 @@ import * as Yup from 'yup';
 import { useMutation } from 'react-apollo';
 import { CREATE_EVENT_MUTATION } from '../../graphql/mutations';
 
+
 // import LockIcon from '@material-ui/icons/Lock';
 // import EmailIcon from '@material-ui/icons/Email';
 
@@ -34,7 +36,7 @@ const validationSchema = () => Yup.object().shape({
     .required('This field is required'),
 });
 
-/* const LoginForm = () => (
+/*const LoginForm = () => (
     <Box className={styles.wrapper}>
       <Typography component="h1">
           Add Event
@@ -259,3 +261,4 @@ export default (CreateEvent) => {
     </Box>
   );
 };
+
