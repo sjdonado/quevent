@@ -57,6 +57,7 @@ export default function Modal({ open, handleClose }) {
           endDate,
         },
       });
+      handleClose('submit');
     } catch (err) {
       setError(err);
     }
@@ -242,7 +243,7 @@ export default function Modal({ open, handleClose }) {
                       /> */}
                     </Box>
                     <DialogActions>
-                      <Button onClick={handleClose} color="secondary">
+                      <Button onClick={() => handleClose()} color="secondary">
                     Cancel
                       </Button>
                       <Button color="secondary" type="submit">

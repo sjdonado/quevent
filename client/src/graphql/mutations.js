@@ -79,3 +79,22 @@ export const UPDATE_ATTENDEES_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_EVENTS_MUTATION = gql`
+  mutation updateEvents($events: String!) {
+    updateEvents(events: $events) {
+      id
+      name
+      startDate
+      endDate
+      active
+      attendance {
+          id
+          email
+          attended
+          active
+          invited
+      }
+    }
+  }
+`;

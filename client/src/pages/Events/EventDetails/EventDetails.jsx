@@ -57,6 +57,8 @@ function EventDetails({ match, location }) {
 
   useEffect(() => {
     if (!loading) {
+      console.log(data);
+
       setRows(data.getEvent.attendance);
     }
   }, [loading]);
@@ -133,7 +135,7 @@ function EventDetails({ match, location }) {
     }
   };
 
-  const handleSaveChanges = async (updatedRow) => {
+  const handleSaveChanges = async () => {
     try {
       const { res } = await updateAttendeesMutation({
         variables: {

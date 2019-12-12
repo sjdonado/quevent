@@ -28,6 +28,13 @@ export const GET_EVENTS_QUERY = gql`
         startDate
         endDate
         active
+        attendance {
+          id
+          email
+          attended
+          active
+          invited
+        }
       }
     }
   }

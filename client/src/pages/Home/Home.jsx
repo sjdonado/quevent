@@ -4,7 +4,7 @@ import {
   Box, Typography, Button,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
-import { useQuery } from '@apollo/react-hooks';
+import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
@@ -17,6 +17,9 @@ import Modal from '../../components/Modal/Modal';
 import EventRow from './EventRow/EventRow';
 import styles from './Home.module.scss';
 import { GET_EVENTS_QUERY } from '../../graphql/queries';
+import { UPDATE_EVENTS_MUTATION } from '../../graphql/mutations';
+import Snackbar from '../../components/Snackbar/Snackbar';
+import ConfirmationDialog from '../Events/EventDetails/ConfirmationDialog/ConfirmationDialog';
 
 const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
@@ -24,20 +27,25 @@ const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 function Home() {
   const [rows, setRows] = useState([]);
   const [isEditting, setIsEditting] = useState(false);
+  const [snackbarMsg, setSnackbarMsg] = useState(null);
   const [isAllChecked, setIsAllChecked] = useState(false);
   const [isActiveStateChanged, setIsActiveStateChanged] = useState(false);
   const [openDialog, setOpenDialog] = React.useState(false);
   const [dialogType, setDialogType] = useState('');
   const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
-  const { loading, error, data } = useQuery(GET_EVENTS_QUERY);
+  const {
+    loading, error, data, refetch,
+  } = useQuery(GET_EVENTS_QUERY);
   const history = useHistory();
-  const [open, setOpen] = React.useState(false);
+  const [openModal, setOpenModal] = React.useState(false);
+
+  const [updateEventsMutation] = useMutation(UPDATE_EVENTS_MUTATION);
 
   useEffect(() => {
     if (!loading) {
       setRows(data.getUser.events);
     }
-  }, [loading]);
+  }, [loading, data]);
 
   useEffect(() => {
     if (rows.length > 0 && numberOfCheckedRows === rows.length) {
@@ -48,20 +56,20 @@ function Home() {
   }, [numberOfCheckedRows, rows]);
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setOpenModal(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseModal = (submit) => {
+    if (submit) {
+      refetch();
+      setSnackbarMsg('Success! You have created a new event.');
+    }
+    setOpenModal(false);
   };
   const onRowClick = (row) => {
     history.push(`/events/${row.id}`);
   };
 
-  const handleOpenDialog = (type) => {
-    setDialogType(type);
-    setOpenDialog(true);
-  };
 
   const handleCheckAll = (checked) => {
     const allRowsChecked = rows.map((row) => ({ ...row, checked }));
@@ -92,6 +100,58 @@ function Home() {
     setRows(updatedRows);
   };
 
+  const handleDeleteEvents = async () => {
+    try {
+      const checkedRows = rows.filter((row) => !row.checked);
+      const { res } = await updateEventsMutation({
+        variables: {
+          events: JSON.stringify(checkedRows),
+        },
+      });
+      refetch();
+      setRows(checkedRows);
+      setSnackbarMsg('Success! You have deleted the events correctly.');
+      setIsEditting(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleSaveChanges = async () => {
+    try {
+      const { res } = await updateEventsMutation({
+        variables: {
+          events: JSON.stringify(rows),
+        },
+      });
+      refetch();
+      setSnackbarMsg('Success! You have updated the attendees list correctly.');
+      setIsEditting(false);
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
+  };
+
+  const handleOpenDialog = (type) => {
+    setDialogType(type);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = (type) => {
+    switch (type) {
+      case 'save':
+        handleSaveChanges();
+        break;
+      case 'delete':
+        handleDeleteEvents();
+        break;
+      default:
+        break;
+    }
+    setOpenDialog(false);
+  };
+
+
   return (
     <PageContainer
       title="My events"
@@ -106,7 +166,7 @@ function Home() {
         </ActionButton>
       )}
     >
-      <Modal open={open} handleClickOpen={handleClickOpen} handleClose={handleClose} />
+      <Modal open={openModal} handleClickOpen={handleClickOpen} handleClose={handleCloseModal} />
       {loading ? (<Progress type="circular" />) : (
         <Box className={styles.table}>
           {isEditting ? (
@@ -178,6 +238,12 @@ function Home() {
               />
             ))}
           </Table>
+          <ConfirmationDialog
+            openDialog={openDialog}
+            handleCloseDialog={handleCloseDialog}
+            dialogType={dialogType}
+          />
+          <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
         </Box>
       )}
     </PageContainer>
