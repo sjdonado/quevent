@@ -20,35 +20,35 @@ export const useRowAction = (refetch, setIsEditting) => {
 
   const handleDelete = async (mutation, variables) => {
     try {
-      const { res } = await mutation({ variables });
+      await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have deleted the events correctly.');
       setIsEditting(false);
     } catch (err) {
-      console.log(err);
+      setSnackbarMsg('There was a problem with the server');
     }
   };
 
   const handleSaveChanges = async (mutation, variables) => {
     try {
-      const { res } = await mutation({ variables });
+      await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have updated the attendees list correctly.');
       setIsEditting(false);
     } catch (err) {
-      setSnackbarMsg(err);
+      setSnackbarMsg('There was a problem with the server');
     }
   };
 
 
   const handleSendInvitations = async (mutation, variables) => {
     try {
-      const { res } = await mutation({ variables });
+      await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have invited the attendees correctly.');
       setIsEditting(false);
     } catch (err) {
-      setSnackbarMsg(err);
+      setSnackbarMsg('There was a problem with the server');
     }
   };
 

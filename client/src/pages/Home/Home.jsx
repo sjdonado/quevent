@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
   Box,
-  Button,
 } from '@material-ui/core';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 

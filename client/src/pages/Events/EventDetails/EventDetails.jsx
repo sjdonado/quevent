@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box, Typography, Button, Menu, MenuItem,
+  Box, Menu, MenuItem,
 } from '@material-ui/core';
-import Slide from '@material-ui/core/Slide';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
@@ -136,7 +135,7 @@ function EventDetails({ match, location }) {
         checkedRows = rows.filter((row) => !row.checked);
         handleDelete(updateAttendeesMutation, {
           eventId: match.params.id,
-          attendees: JSON.stringify(rows),
+          attendees: JSON.stringify(checkedRows),
         });
         break;
       default:

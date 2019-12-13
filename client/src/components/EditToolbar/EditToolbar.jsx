@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Box, Typography, Button,
+  Box, Button,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import styles from './EditToolbar.module.scss';
@@ -73,7 +73,11 @@ EditToolbar.propTypes = {
   handleReset: PropTypes.func.isRequired,
   setDialogType: PropTypes.func.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
-  options: PropTypes.func.isRequired,
+  options: PropTypes.func,
+};
+
+EditToolbar.defaultProps = {
+  options: null,
 };
 
 export default EditToolbar;
