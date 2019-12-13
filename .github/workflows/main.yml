@@ -22,9 +22,9 @@ jobs:
         cd client
         npm install
         npm run build --if-present
-        rm -rf ../server/client/build
+        mkdir --parents ../server/client/build
         mv build ../server/client/build
-    
+
     - name: Login to heroku
       uses: actions/heroku@1.0.0
       with:
@@ -36,6 +36,6 @@ jobs:
       uses: actions/heroku@1.0.0
       with:
         needs: login
-        args: container:push -a $(basename $GITHUB_REPOSITORY) web
+        args: container:push -a $(basename $GITHUB_REPOSITORY) server
       env:
         HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}

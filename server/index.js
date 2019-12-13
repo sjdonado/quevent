@@ -19,12 +19,16 @@ const models = require('./models');
 const Query = require('./resolvers/queries');
 const Mutation = require('./resolvers/mutations');
 
-const { port } = config.server;
+const { port, origin } = config.server;
 
 database.connect();
 
 const app = express();
-app.use(cors());
+
+app.use(cors({
+  origin,
+}));
+
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const resolvers = {
@@ -79,5 +83,6 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
-app.listen({ port }, () =>
-  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`),);
+app.listen({ port }, () => 
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`),
+);

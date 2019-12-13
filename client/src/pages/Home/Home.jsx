@@ -6,7 +6,8 @@ import {
 } from '@material-ui/core';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
@@ -32,10 +33,12 @@ function Home() {
   const history = useHistory();
 
   const {
-    loading, error, data, refetch,
+    loading,
+    error,
+    data,
+    refetch,
   } = useQuery(GET_EVENTS_QUERY);
   const [updateEventsMutation] = useMutation(UPDATE_EVENTS_MUTATION);
-
 
   const {
     handleActiveCheckboxChange, handleCheck,
@@ -44,6 +47,7 @@ function Home() {
     isEditting, setIsEditting,
     numberOfCheckedRows,
   } = useCheckBox(rows, setRows);
+
   const {
     handleSaveChanges,
     handleDelete,
@@ -89,67 +93,72 @@ function Home() {
     setOpenDialog(false);
   };
 
-
   return (
-    <PageContainer
-      title="My events"
-      action={() => (
-        <ActionButton
-          title="Create event"
-          onClick={() => {
-            handleClickOpenModal();
-          }}
-        >
-          <AddCircleOutlineOutlinedIcon />
-        </ActionButton>
-      )}
-    >
-      <CreateEventModal open={openModal} handleClickOpen={handleClickOpenModal} handleClose={handleCloseModal} />
-      {loading ? (<Progress type="circular" />) : (
-        <Box className={styles.table}>
-          <EditToolbar
-            isEditting={isEditting}
-            setIsEditting={setIsEditting}
-            handleReset={() => { handleReset(data.getUser.events); }}
-            setDialogType={setDialogType}
-            setOpenDialog={setOpenDialog}
-            isActiveStateChanged={isActiveStateChanged}
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <PageContainer
+        title="My events"
+        action={() => (
+          <ActionButton
+            title="Create event"
+            onClick={() => {
+              handleClickOpenModal();
+            }}
           >
-            <ActionButton
-              title="Delete selected"
-              disabled={!(numberOfCheckedRows > 0)}
-              onClick={() => { handleOpenDialog('delete'); }}
+            <AddCircleOutlineOutlinedIcon />
+          </ActionButton>
+        )}
+      >
+        {loading ? (<Progress type="circular" />) : (
+          <Box className={styles.table}>
+            <EditToolbar
+              isEditting={isEditting}
+              setIsEditting={setIsEditting}
+              handleReset={() => { handleReset(data.getUser.events); }}
+              setDialogType={setDialogType}
+              setOpenDialog={setOpenDialog}
+              isActiveStateChanged={isActiveStateChanged}
             >
-              <DeleteForeverOutlinedIcon />
-            </ActionButton>
-          </EditToolbar>
-          <Table
-            headers={headers}
-            isEditting={isEditting}
-            isAllChecked={isAllChecked}
-            handleCheckAll={handleCheckAll}
-          >
-            {rows.map((row) => (
-              <EventRow
-                className={styles.row}
-                key={row._id}
-                row={row}
-                onRowClick={onRowClick}
-                handleActiveCheckboxChange={handleActiveCheckboxChange}
-                handleCheck={handleCheck}
-                isEditting={isEditting}
-              />
-            ))}
-          </Table>
-          <ConfirmationDialog
-            openDialog={openDialog}
-            handleCloseDialog={handleCloseDialog}
-            dialogType={dialogType}
-          />
-          <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
-        </Box>
-      )}
-    </PageContainer>
+              <ActionButton
+                title="Delete selected"
+                disabled={!(numberOfCheckedRows > 0)}
+                onClick={() => { handleOpenDialog('delete'); }}
+              >
+                <DeleteForeverOutlinedIcon />
+              </ActionButton>
+            </EditToolbar>
+            <Table
+              headers={headers}
+              isEditting={isEditting}
+              isAllChecked={isAllChecked}
+              handleCheckAll={handleCheckAll}
+            >
+              {rows.map((row) => (
+                <EventRow
+                  className={styles.row}
+                  key={row.id}
+                  row={row}
+                  onRowClick={onRowClick}
+                  handleActiveCheckboxChange={handleActiveCheckboxChange}
+                  handleCheck={handleCheck}
+                  isEditting={isEditting}
+                />
+              ))}
+            </Table>
+            <ConfirmationDialog
+              openDialog={openDialog}
+              handleCloseDialog={handleCloseDialog}
+              dialogType={dialogType}
+            />
+            <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
+          </Box>
+        )}
+        <CreateEventModal
+          open={openModal}
+          handleClickOpen={handleClickOpenModal}
+          handleClose={handleCloseModal}
+        />
+      </PageContainer>
+    </MuiPickersUtilsProvider>
   );
 }
 
