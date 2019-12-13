@@ -8,10 +8,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { withCookies, Cookies } from 'react-cookie';
 import moment from 'moment';
-import MomentUtils from '@date-io/moment';
 import {
   Route,
   Switch,
@@ -117,13 +115,9 @@ function App({ cookies, history }) {
       <ApolloProvider client={client}>
         <Switch>
           <Route exact path="/" render={() => <Login setToken={setToken} />} />
-          {/* <Route exact path="/events" render={() => <EventView />} /> */}
           <PrivateRoutes authenticated={typeof getToken() === 'string'}>
             <AppBar history={history} handleLogout={handleLogout} />
-            <MuiPickersUtilsProvider utils={MomentUtils}>
-              {/* <Route exact path="/events/add" render={() => <CreateEvent />} /> */}
-              <Route exact path="/home" component={Home} />
-            </MuiPickersUtilsProvider>
+            <Route exact path="/home" component={Home} />
             <Route exact path="/events/:id" component={EventDetails} />
             <Route exact path="/events/:id/guests" component={AddGuests} />
             <Route exact path="/events/:id/qrreader" component={GuestsQrReader} />

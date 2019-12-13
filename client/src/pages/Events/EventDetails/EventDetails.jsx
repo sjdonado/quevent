@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box, Menu, MenuItem,
+  Box,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
@@ -35,7 +37,10 @@ function EventDetails({ match, location }) {
   const [rows, setRows] = useState([]);
   const history = useHistory();
   const {
-    loading, error, data, refetch,
+    loading,
+    error,
+    data,
+    refetch,
   } = useQuery(GET_ATTENDEES_QUERY, {
     variables: {
       eventId: match.params.id,
@@ -44,9 +49,8 @@ function EventDetails({ match, location }) {
   const [sendInvitationsMutation] = useMutation(SEND_INVITATIONS_MUTATION);
   const [updateAttendeesMutation] = useMutation(UPDATE_ATTENDEES_MUTATION);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -63,6 +67,7 @@ function EventDetails({ match, location }) {
     isEditting, setIsEditting,
     numberOfCheckedRows,
   } = useCheckBox(rows, setRows);
+
   const {
     handleSendInvitations,
     handleSaveChanges,
@@ -88,7 +93,6 @@ function EventDetails({ match, location }) {
       setRows(data.getEvent.attendance);
     }
   }, [loading]);
-
 
   const handleFilteredRows = () => {
     let filteredRows;
@@ -233,6 +237,7 @@ function EventDetails({ match, location }) {
                 <ActionButton
                   title="Send invitations"
                   onClick={() => { handleOpenDialog('send'); }}
+                  disabled={!(rows.some(({ invited }) => !invited))}
                 >
                   <MailOutlineIcon />
                 </ActionButton>
