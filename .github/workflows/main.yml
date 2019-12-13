@@ -4,7 +4,6 @@ on:
   push:
     branches:
     - master
-    - release/*
 
 jobs:
   build:
@@ -24,18 +23,10 @@ jobs:
         npm run build --if-present
         mkdir --parents ../server/client/build
         mv build ../server/client/build
-
-    - name: Login to heroku
-      uses: actions/heroku@1.0.0
-      with:
-        args: container:login
+    - name: Deploy server to Heroku
       env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-    - name: Push to heroku
-      uses: actions/heroku@1.0.0
-      with:
-        needs: login
-        args: container:push -a $(basename $GITHUB_REPOSITORY) server
-      env:
-        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_API_TOKEN: ${{ secrets.HEROKU_API_TOKEN }}
+        HEROKU_APP_NAME: "quevent"
+      run: |
+        cd server
+        git push https://heroku:$HEROKU_API_TOKEN@git.heroku.com/$HEROKU_APP_NAME.git origin/master:master
