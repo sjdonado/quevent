@@ -13,23 +13,24 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
-export const EXAMPLE_MUTATION = gql`
-  mutation LoginMutation($idToken: String!) {
-    login(idToken: $idToken) {
-      token
-      user {
-        name
-        email
-        profilePicture
-      }
-    }
-  }
-`;
-
 export const CREATE_EVENT_MUTATION = gql`
-  mutation createEvent($name: String!, $startDate: Date!, $endDate: Date!) {
-    createEvent(name: $name, startDate: $startDate, endDate: $endDate) {
+  mutation createEvent(
+    $name: String!
+    $description: String!
+    $location: String!
+    $startDate: Date!
+    $endDate: Date!
+  ) {
+    createEvent(
+      name: $name
+      description: $description
+      location: $location
+      startDate: $startDate
+      endDate: $endDate
+    ) {
       name
+      description
+      location
       startDate
       endDate
     }
@@ -37,8 +38,14 @@ export const CREATE_EVENT_MUTATION = gql`
 `;
 
 export const ADD_ATTENDEES = gql`
-  mutation addAttendees($eventId: ID!, $attendees: [AttendeeInput]!) {
-    addAttendees(eventId: $eventId, attendees: $attendees) {
+  mutation addAttendees(
+    $eventId: ID!
+    $attendees: [AttendeeInput]!
+  ) {
+    addAttendees(
+      eventId: $eventId
+      attendees: $attendees
+    ) {
       email
       attended
       active
@@ -71,7 +78,10 @@ export const READ_INVITATION_MUTATION = gql`
 
 export const UPDATE_ATTENDEES_MUTATION = gql`
   mutation updateAttendees($eventId: ID!, $attendees: String!) {
-    updateAttendees(eventId: $eventId, attendees: $attendees) {
+    updateAttendees(
+      eventId: $eventId
+      attendees: $attendees
+    ) {
       email
       attended
       active

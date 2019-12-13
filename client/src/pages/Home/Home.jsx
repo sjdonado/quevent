@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box, Typography, Button,
-} from '@material-ui/core';
-import Slide from '@material-ui/core/Slide';
-import { useQuery, useMutation } from '@apollo/react-hooks';
 import { useHistory } from 'react-router-dom';
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import {
+  Box,
+  Button,
+} from '@material-ui/core';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+
+
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import PageContainer from '../../components/PageContainer/PageContainer';
 import ActionButton from '../../components/ActionButton/ActionButton';
 import Progress from '../../components/Progress/Progress';
 import Table from '../../components/Table/Table';
-import Modal from '../../components/Modal/Modal';
+import CreateEventModal from '../../components/CreateEventModal/CreateEventModal';
 import EventRow from './EventRow/EventRow';
 import styles from './Home.module.scss';
 import { GET_EVENTS_QUERY } from '../../graphql/queries';
@@ -104,7 +105,7 @@ function Home() {
         </ActionButton>
       )}
     >
-      <Modal open={openModal} handleClickOpen={handleClickOpenModal} handleClose={handleCloseModal} />
+      <CreateEventModal open={openModal} handleClickOpen={handleClickOpenModal} handleClose={handleCloseModal} />
       {loading ? (<Progress type="circular" />) : (
         <Box className={styles.table}>
           <EditToolbar
@@ -152,9 +153,5 @@ function Home() {
     </PageContainer>
   );
 }
-
-Home.propTypes = {
-
-};
 
 export default Home;

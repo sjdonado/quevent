@@ -9,6 +9,8 @@ type Mutation {
   login(idToken: String!): AuthPayload!
   createEvent(
     name: String!
+    description: String!
+    location: String!
     startDate: Date!
     endDate: Date!
   ): Event!
@@ -67,6 +69,8 @@ type User {
 type Event {
   id: ID!
   name: String!
+  description: String!
+  location: String!
   startDate: Date!
   endDate: Date!
   active: Boolean!

@@ -2,13 +2,13 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const PrivateRoute = ({ children, authenticated }) => (
+const PrivateRoutes = ({ children, authenticated }) => (
   <>
     {authenticated ? children : <Redirect to="/" />}
   </>
 );
 
-PrivateRoute.propTypes = {
+PrivateRoutes.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
@@ -16,4 +16,4 @@ PrivateRoute.propTypes = {
   authenticated: PropTypes.bool.isRequired,
 };
 
-export default PrivateRoute;
+export default PrivateRoutes;

@@ -85,7 +85,15 @@ function AddGuests({ match }) {
           <Box {...getRootProps({ className: 'dropzone' })} className={styles.dropzone}>
             <input {...getInputProps()} />
             {acceptedFiles.length > 0 ? <p>{acceptedFiles[0].name}</p>
-              : <p>Drag and drop your .xls file here, or click to select file</p>}
+              : (
+                <div className={styles.message}>
+                  <p>Drag and drop your .xls file here, or click to select file.</p>
+                  <p className={styles.small}>
+                    Make sure that your file contains a column called
+                    <b> email</b>
+                  </p>
+                </div>
+              )}
           </Box>
         )}
       </Box>
