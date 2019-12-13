@@ -5,6 +5,10 @@
   border-radius: 8px;
   width: 100%;
   overflow-x: auto;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
   .table{
     border: 1px solid #dfe1e5;
     border-radius: 8px;
