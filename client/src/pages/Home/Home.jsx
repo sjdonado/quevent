@@ -20,26 +20,44 @@ import { GET_EVENTS_QUERY } from '../../graphql/queries';
 import { UPDATE_EVENTS_MUTATION } from '../../graphql/mutations';
 import Snackbar from '../../components/Snackbar/Snackbar';
 import ConfirmationDialog from '../Events/EventDetails/ConfirmationDialog/ConfirmationDialog';
+import { useCheckBox } from '../../hooks/useCheckbox';
+import { useRowAction } from '../../hooks/useRowAction';
+import EditToolbar from '../../components/EditToolbar/EditToolbar';
 
 const headers = ['Event', 'Location', 'Start Date', 'End Date', 'Active'];
 
 
 function Home() {
   const [rows, setRows] = useState([]);
-  const [isEditting, setIsEditting] = useState(false);
-  const [snackbarMsg, setSnackbarMsg] = useState(null);
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [isActiveStateChanged, setIsActiveStateChanged] = useState(false);
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [dialogType, setDialogType] = useState('');
-  const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
+  const history = useHistory();
+
   const {
     loading, error, data, refetch,
   } = useQuery(GET_EVENTS_QUERY);
-  const history = useHistory();
-  const [openModal, setOpenModal] = React.useState(false);
-
   const [updateEventsMutation] = useMutation(UPDATE_EVENTS_MUTATION);
+
+
+  const {
+    handleActiveCheckboxChange, handleCheck,
+    handleReset, handleCheckAll,
+    isActiveStateChanged, isAllChecked,
+    isEditting, setIsEditting,
+    numberOfCheckedRows,
+  } = useCheckBox(rows, setRows);
+  const {
+    handleSaveChanges,
+    handleDelete,
+    handleOpenDialog,
+    handleClickOpenModal,
+    handleCloseModal,
+    snackbarMsg,
+    openDialog,
+    dialogType,
+    openModal,
+    setDialogType,
+    setSnackbarMsg,
+    setOpenDialog,
+  } = useRowAction(refetch, setIsEditting);
 
   useEffect(() => {
     if (!loading) {
@@ -47,103 +65,23 @@ function Home() {
     }
   }, [loading, data]);
 
-  useEffect(() => {
-    if (rows.length > 0 && numberOfCheckedRows === rows.length) {
-      setIsAllChecked(true);
-    } else {
-      setIsAllChecked(false);
-    }
-  }, [numberOfCheckedRows, rows]);
-
-  const handleClickOpen = () => {
-    setOpenModal(true);
-  };
-
-  const handleCloseModal = (submit) => {
-    if (submit) {
-      refetch();
-      setSnackbarMsg('Success! You have created a new event.');
-    }
-    setOpenModal(false);
-  };
   const onRowClick = (row) => {
     history.push(`/events/${row.id}`);
   };
 
-
-  const handleCheckAll = (checked) => {
-    const allRowsChecked = rows.map((row) => ({ ...row, checked }));
-    setRows(allRowsChecked);
-    setNumberOfCheckedRows(checked ? rows.length : 0);
-  };
-
-  const handleCheck = (checked, rowId) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
-        return { ...row, checked };
-      }
-      return row;
-    });
-    setRows(updatedRows);
-
-    setNumberOfCheckedRows(checked ? numberOfCheckedRows + 1 : numberOfCheckedRows - 1);
-  };
-
-  const handleActiveCheckboxChange = (active, rowId) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
-        return { ...row, active };
-      }
-      return row;
-    });
-    setIsActiveStateChanged(true);
-    setRows(updatedRows);
-  };
-
-  const handleDeleteEvents = async () => {
-    try {
-      const checkedRows = rows.filter((row) => !row.checked);
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(checkedRows),
-        },
-      });
-      refetch();
-      setRows(checkedRows);
-      setSnackbarMsg('Success! You have deleted the events correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(rows),
-        },
-      });
-      refetch();
-      setSnackbarMsg('Success! You have updated the attendees list correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      setSnackbarMsg(err);
-    }
-  };
-
-  const handleOpenDialog = (type) => {
-    setDialogType(type);
-    setOpenDialog(true);
-  };
-
   const handleCloseDialog = (type) => {
+    let checkedRows;
     switch (type) {
       case 'save':
-        handleSaveChanges();
+        handleSaveChanges(updateEventsMutation, {
+          events: JSON.stringify(rows),
+        });
         break;
       case 'delete':
-        handleDeleteEvents();
+        checkedRows = rows.filter((row) => !row.checked);
+        handleDelete(updateEventsMutation, {
+          events: JSON.stringify(checkedRows),
+        });
         break;
       default:
         break;
@@ -159,67 +97,32 @@ function Home() {
         <ActionButton
           title="Create event"
           onClick={() => {
-            handleClickOpen();
+            handleClickOpenModal();
           }}
         >
           <AddCircleOutlineOutlinedIcon />
         </ActionButton>
       )}
     >
-      <Modal open={openModal} handleClickOpen={handleClickOpen} handleClose={handleCloseModal} />
+      <Modal open={openModal} handleClickOpen={handleClickOpenModal} handleClose={handleCloseModal} />
       {loading ? (<Progress type="circular" />) : (
         <Box className={styles.table}>
-          {isEditting ? (
-            <>
-              <div className={styles.edit}>
-                <div className={styles.editActions}>
-                  <Button
-                    color="primary"
-                    onClick={() => {
-                      setIsActiveStateChanged(false);
-                      setIsEditting(false);
-                      setRows(data.getUser.events);
-                      setNumberOfCheckedRows(0);
-                    }}
-                    className={styles.editAction}
-                  >
-                  Cancel
-                  </Button>
-                  <Button
-                    color="primary"
-                    disabled={!isActiveStateChanged}
-                    onClick={() => { handleOpenDialog('save'); }}
-                    className={styles.editAction}
-                  >
-                  Save
-                  </Button>
-                </div>
-
-                <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
-                  <div>
-                    <ActionButton
-                      title="Delete selected"
-                      disabled={!(numberOfCheckedRows > 0)}
-                      onClick={() => { handleOpenDialog('delete'); }}
-                    >
-                      <DeleteForeverOutlinedIcon />
-                    </ActionButton>
-                  </div>
-                </Slide>
-              </div>
-
-            </>
-          ) : (
-            <Button
-              color="primary"
-              onClick={() => {
-                setIsEditting(true);
-              }}
-              className={styles.editAction}
+          <EditToolbar
+            isEditting={isEditting}
+            setIsEditting={setIsEditting}
+            handleReset={() => { handleReset(data.getUser.events); }}
+            setDialogType={setDialogType}
+            setOpenDialog={setOpenDialog}
+            isActiveStateChanged={isActiveStateChanged}
+          >
+            <ActionButton
+              title="Delete selected"
+              disabled={!(numberOfCheckedRows > 0)}
+              onClick={() => { handleOpenDialog('delete'); }}
             >
-              Edit
-            </Button>
-          )}
+              <DeleteForeverOutlinedIcon />
+            </ActionButton>
+          </EditToolbar>
           <Table
             headers={headers}
             isEditting={isEditting}

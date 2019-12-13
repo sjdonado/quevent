@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // eslint-disable-next-line import/prefer-default-export
-export const useRowAction = (rows, setRows, refetch, updateEventsMutation, setIsEditting) => {
+export const useRowAction = (refetch, setIsEditting) => {
   const [snackbarMsg, setSnackbarMsg] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState('');
@@ -18,16 +18,10 @@ export const useRowAction = (rows, setRows, refetch, updateEventsMutation, setIs
     setOpenModal(false);
   };
 
-  const handleDeleteEvents = async () => {
+  const handleDelete = async (mutation, variables) => {
     try {
-      const checkedRows = rows.filter((row) => !row.checked);
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(checkedRows),
-        },
-      });
+      const { res } = await mutation({ variables });
       refetch();
-      setRows(checkedRows);
       setSnackbarMsg('Success! You have deleted the events correctly.');
       setIsEditting(false);
     } catch (err) {
@@ -35,15 +29,22 @@ export const useRowAction = (rows, setRows, refetch, updateEventsMutation, setIs
     }
   };
 
-  const handleSaveChanges = async () => {
+  const handleSaveChanges = async (mutation, variables) => {
     try {
-      const { res } = await updateEventsMutation({
-        variables: {
-          events: JSON.stringify(rows),
-        },
-      });
+      const { res } = await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have updated the attendees list correctly.');
+      setIsEditting(false);
+    } catch (err) {
+      setSnackbarMsg(err);
+    }
+  };
+
+
+  const handleSendInvitations = async (mutation, variables) => {
+    try {
+      const { res } = await mutation({ variables });
+      setSnackbarMsg('Success! You have invited the attendees correctly.');
       setIsEditting(false);
     } catch (err) {
       setSnackbarMsg(err);
@@ -55,21 +56,10 @@ export const useRowAction = (rows, setRows, refetch, updateEventsMutation, setIs
     setOpenDialog(true);
   };
 
-  const handleCloseDialog = (type) => {
-    switch (type) {
-      case 'save':
-        handleSaveChanges();
-        break;
-      case 'delete':
-        handleDeleteEvents();
-        break;
-      default:
-        break;
-    }
-    setOpenDialog(false);
-  };
   return ({
-    handleCloseDialog,
+    handleSendInvitations,
+    handleSaveChanges,
+    handleDelete,
     handleOpenDialog,
     handleClickOpenModal,
     handleCloseModal,
