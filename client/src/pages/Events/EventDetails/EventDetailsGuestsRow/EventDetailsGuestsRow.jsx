@@ -12,14 +12,14 @@ function EventDetailsGuestRow({
   row, isEditting, handleActiveCheckboxChange, handleCheck,
 }) {
   return (
-    <TableRow className={styles.row} key={row.id}>
+    <TableRow className={styles.row} key={row._id}>
       {isEditting && (
       <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
         <TableCell align="center">
           <Checkbox
             checked={!!row.checked}
             onChange={() => {
-              handleCheck(!row.checked, row.id);
+              handleCheck(!row.checked, row._id);
             }}
             value="checked"
             inputProps={{
@@ -57,7 +57,7 @@ function EventDetailsGuestRow({
         <Checkbox
           checked={!!row.active}
           onChange={() => {
-            handleActiveCheckboxChange(!row.active, row.id);
+            handleActiveCheckboxChange(!row.active, row._id);
           }}
           disabled={!isEditting}
           value="active"

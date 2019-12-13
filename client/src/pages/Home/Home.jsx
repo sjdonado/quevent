@@ -66,7 +66,7 @@ function Home() {
   }, [loading, data]);
 
   const onRowClick = (row) => {
-    history.push(`/events/${row.id}`);
+    history.push(`/events/${row._id}`);
   };
 
   const handleCloseDialog = (type) => {
@@ -132,7 +132,7 @@ function Home() {
             {rows.map((row) => (
               <EventRow
                 className={styles.row}
-                key={row.id}
+                key={row._id}
                 row={row}
                 onRowClick={onRowClick}
                 handleActiveCheckboxChange={handleActiveCheckboxChange}
