@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
 import {
-  Box, Typography,
+  Box,
 } from '@material-ui/core';
 import { useDropzone } from 'react-dropzone';
 import XLSX from 'xlsx';
@@ -28,12 +28,13 @@ function AddGuests({ match }) {
     try {
       if (attendees) {
         setSubmitting(true);
-        const { data } = await addAttendeesMutation({
+        await addAttendeesMutation({
           variables: {
             eventId: match.params.id,
             attendees,
           },
         });
+        setSubmitting(false);
         history.replace({
           pathname: `/events/${match.params.id}`,
           state: {
@@ -45,8 +46,8 @@ function AddGuests({ match }) {
       }
     } catch (err) {
       setSnackbarMsg('Error. There was problem submitting the file');
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
 

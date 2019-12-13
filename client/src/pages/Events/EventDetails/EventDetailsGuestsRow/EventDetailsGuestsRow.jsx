@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Slide from '@material-ui/core/Slide';
 
 import {
@@ -73,6 +73,8 @@ function EventDetailsGuestRow({
 EventDetailsGuestRow.propTypes = {
   row: PropTypes.oneOfType([PropTypes.object]).isRequired,
   isEditting: PropTypes.bool.isRequired,
+  handleActiveCheckboxChange: PropTypes.func.isRequired,
+  handleCheck: PropTypes.func.isRequired,
 };
 
 export default EventDetailsGuestRow;

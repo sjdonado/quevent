@@ -8,10 +8,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { setContext } from 'apollo-link-context';
 import { onError } from 'apollo-link-error';
 import { createUploadLink } from 'apollo-upload-client';
-
 import { withCookies, Cookies } from 'react-cookie';
 import moment from 'moment';
-
 import {
   Route,
   Switch,
@@ -29,7 +27,8 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
-
+/* import EventView from './pages/Events/EventView';
+import CreateEvent from './pages/Events/CreateEvent'; */
 import PrivateRoutes from './utils/PrivateRoutes';
 import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';

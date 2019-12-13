@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import MuiTable from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -47,6 +47,9 @@ export default function Table({
 }
 
 Table.propTypes = {
+  isEditting: PropTypes.bool.isRequired,
+  isAllChecked: PropTypes.bool.isRequired,
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   children: PropTypes.node.isRequired,
+  handleCheckAll: PropTypes.func.isRequired,
 };

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
-import Slide from '@material-ui/core/Slide';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CropFreeIcon from '@material-ui/icons/CropFree';
+import MoreIcon from '@material-ui/icons/MoreVert';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { useQuery, useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
@@ -23,6 +24,9 @@ import Snackbar from '../../../components/Snackbar/Snackbar';
 import ConfirmationDialog from './ConfirmationDialog/ConfirmationDialog';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
 import { SEND_INVITATIONS_MUTATION, UPDATE_ATTENDEES_MUTATION } from '../../../graphql/mutations';
+import EditToolbar from '../../../components/EditToolbar/EditToolbar';
+import { useCheckBox } from '../../../hooks/useCheckbox';
+import { useRowAction } from '../../../hooks/useRowAction';
 
 
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
@@ -30,17 +34,14 @@ const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
 function EventDetails({ match, location }) {
   const [currentFilter, setCurrentFilter] = useState(0);
-  const [snackbarMsg, setSnackbarMsg] = useState(null);
-  const [isEditting, setIsEditting] = useState(false);
-  const [saveChanges, setSaveChanges] = useState(false);
-  const [isActiveStateChanged, setIsActiveStateChanged] = useState(false);
   const [rows, setRows] = useState([]);
-  const [numberOfCheckedRows, setNumberOfCheckedRows] = useState(0);
-  const [isAllChecked, setIsAllChecked] = useState(false);
-  const [openDialog, setOpenDialog] = React.useState(false);
-  const [dialogType, setDialogType] = useState('');
   const history = useHistory();
-  const { loading, error, data } = useQuery(GET_ATTENDEES_QUERY, {
+  const {
+    loading,
+    error,
+    data,
+    refetch,
+  } = useQuery(GET_ATTENDEES_QUERY, {
     variables: {
       eventId: match.params.id,
     },
@@ -48,6 +49,37 @@ function EventDetails({ match, location }) {
   const [sendInvitationsMutation] = useMutation(SEND_INVITATIONS_MUTATION);
   const [updateAttendeesMutation] = useMutation(UPDATE_ATTENDEES_MUTATION);
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const {
+    handleActiveCheckboxChange, handleCheck,
+    handleReset, handleCheckAll,
+    isActiveStateChanged, isAllChecked,
+    isEditting, setIsEditting,
+    numberOfCheckedRows,
+  } = useCheckBox(rows, setRows);
+
+  const {
+    handleSendInvitations,
+    handleSaveChanges,
+    handleDelete,
+    handleOpenDialog,
+    snackbarMsg,
+    openDialog,
+    dialogType,
+    setDialogType,
+    setSnackbarMsg,
+    setOpenDialog,
+  } = useRowAction(refetch, setIsEditting);
 
   useEffect(() => {
     history.replace();
@@ -58,24 +90,15 @@ function EventDetails({ match, location }) {
 
   useEffect(() => {
     if (!loading) {
-      console.log(data);
-
       setRows(data.getEvent.attendance);
     }
   }, [loading]);
-
-  useEffect(() => {
-    if (rows.length > 0 && numberOfCheckedRows === rows.length) {
-      setIsAllChecked(true);
-    } else {
-      setIsAllChecked(false);
-    }
-  }, [numberOfCheckedRows, rows]);
 
   const handleFilteredRows = () => {
     let filteredRows;
     switch (currentFilter) {
       case 0:
+        filteredRows = [...rows];
         setRows(data.getEvent.attendance);
         break;
       case 1:
@@ -89,6 +112,7 @@ function EventDetails({ match, location }) {
       default:
         break;
     }
+    return filteredRows;
   };
 
   useEffect(() => {
@@ -97,86 +121,26 @@ function EventDetails({ match, location }) {
     }
   }, [currentFilter]);
 
-
-  const handleCheckAll = (checked) => {
-    const allRowsChecked = rows.map((row) => ({ ...row, checked }));
-    setRows(allRowsChecked);
-    setNumberOfCheckedRows(checked ? rows.length : 0);
-  };
-
-  const handleCheck = (checked, rowId) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
-        return { ...row, checked };
-      }
-      return row;
-    });
-    setRows(updatedRows);
-    setNumberOfCheckedRows(checked ? numberOfCheckedRows + 1 : numberOfCheckedRows - 1);
-  };
-
-
-  const handleOpenDialog = (type) => {
-    setDialogType(type);
-    setOpenDialog(true);
-  };
-
-  const handleSendInvitations = async () => {
-    try {
-      const checkedRows = rows.filter((row) => row.checked);
-      const { res } = await sendInvitationsMutation({
-        variables: {
-          eventId: match.params.id,
-        },
-      });
-      setSnackbarMsg('Success! You have invited the attendees correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      setSnackbarMsg(err);
-    }
-  };
-
-  const handleSaveChanges = async () => {
-    try {
-      const { res } = await updateAttendeesMutation({
-        variables: {
-          eventId: match.params.id,
-          attendees: JSON.stringify(rows),
-        },
-      });
-      setSnackbarMsg('Success! You have updated the attendees list correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      setSnackbarMsg(err);
-    }
-  };
-
-  const handleDeleteGuest = async () => {
-    try {
-      const checkedRows = rows.filter((row) => !row.checked);
-      const { res } = await updateAttendeesMutation({
-        variables: {
-          eventId: match.params.id,
-          attendees: JSON.stringify(checkedRows),
-        },
-      });
-      setRows(checkedRows);
-      setSnackbarMsg('Success! You have deleted the attendees correctly.');
-      setIsEditting(false);
-    } catch (err) {
-      setSnackbarMsg(err);
-    }
-  };
   const handleCloseDialog = (type) => {
+    let checkedRows;
     switch (type) {
       case 'save':
-        handleSaveChanges();
+        handleSaveChanges(updateAttendeesMutation, {
+          eventId: match.params.id,
+          attendees: JSON.stringify(rows),
+        });
         break;
       case 'send':
-        handleSendInvitations();
+        handleSendInvitations(sendInvitationsMutation, {
+          eventId: match.params.id,
+        });
         break;
       case 'delete':
-        handleDeleteGuest();
+        checkedRows = rows.filter((row) => !row.checked);
+        handleDelete(updateAttendeesMutation, {
+          eventId: match.params.id,
+          attendees: JSON.stringify(checkedRows),
+        });
         break;
       default:
         break;
@@ -188,17 +152,6 @@ function EventDetails({ match, location }) {
     setCurrentFilter(newValue);
   };
 
-  const handleActiveCheckboxChange = (active, rowId) => {
-    const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
-        return { ...row, active };
-      }
-      return row;
-    });
-    setIsActiveStateChanged(true);
-    setRows(updatedRows);
-  };
-
   return (
     <PageContainer
       title="Event details"
@@ -206,22 +159,61 @@ function EventDetails({ match, location }) {
       action={() => (
         <>
 
-          <ActionButton
-            title="Scan QR code"
-            onClick={() => {
-              history.push(`/events/${match.params.id}/qrreader`);
-            }}
-          >
-            <CropFreeIcon />
-          </ActionButton>
-          <ActionButton
-            title="Add a guest"
-            onClick={() => {
-              history.push(`/events/${match.params.id}/guests`);
-            }}
-          >
-            <PersonAddOutlinedIcon />
-          </ActionButton>
+          <div className={styles['btn-lg-screen']}>
+            <ActionButton
+              title="Scan QR code"
+
+              onClick={() => {
+                history.push(`/events/${match.params.id}/qrreader`);
+              }}
+            >
+              <CropFreeIcon />
+            </ActionButton>
+            <ActionButton
+              title="Add a guest"
+              onClick={() => {
+                history.push(`/events/${match.params.id}/guests`);
+              }}
+            >
+              <PersonAddOutlinedIcon />
+            </ActionButton>
+          </div>
+          <div className={styles['btn-xs-screen']}>
+            <ActionButton
+              title="More options"
+              onClick={handleMenu}
+            >
+              <MoreIcon />
+            </ActionButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => {
+                history.push(`/events/${match.params.id}/qrreader`);
+              }}
+              >
+                QR Reader
+              </MenuItem>
+              <MenuItem onClick={() => {
+                history.push(`/events/${match.params.id}/guests`);
+              }}
+              >
+                Add Guests
+              </MenuItem>
+            </Menu>
+          </div>
 
         </>
       )}
@@ -234,63 +226,31 @@ function EventDetails({ match, location }) {
 
         {loading ? (<Progress type="circular" />) : (
           <Box className={styles.table}>
-            {isEditting ? (
-              <>
-                <div className={styles.edit}>
-                  <div className={styles.editActions}>
-                    <Button
-                      color="primary"
-                      onClick={() => {
-                        setIsEditting(false);
-                        handleFilteredRows();
-                        setNumberOfCheckedRows(0);
-                      }}
-                      className={styles.editAction}
-                    >
-                  Cancel
-                    </Button>
-                    <Button
-                      color="primary"
-                      onClick={() => { handleOpenDialog('save'); }}
-                      disabled={!isActiveStateChanged}
-                      className={styles.editAction}
-                    >
-                  Save
-                    </Button>
-                  </div>
-
-                  <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
-                    <div>
-                      <ActionButton
-                        disabled={!(numberOfCheckedRows > 0)}
-                        title="Send invitations"
-                        onClick={() => { handleOpenDialog('send'); }}
-                      >
-                        <MailOutlineIcon />
-                      </ActionButton>
-                      <ActionButton
-                        disabled={!(numberOfCheckedRows > 0)}
-                        title="Delete selected"
-                        onClick={() => { handleOpenDialog('delete'); }}
-                      >
-                        <DeleteForeverOutlinedIcon />
-                      </ActionButton>
-                    </div>
-                  </Slide>
-                </div>
-
-              </>
-            ) : (
-              <Button
-                color="primary"
-                onClick={() => {
-                  setIsEditting(true);
-                }}
-                className={styles.editAction}
+            <EditToolbar
+              isEditting={isEditting}
+              setIsEditting={setIsEditting}
+              handleReset={() => { handleReset(handleFilteredRows()); }}
+              setDialogType={setDialogType}
+              setOpenDialog={setOpenDialog}
+              isActiveStateChanged={isActiveStateChanged}
+              options={() => (
+                <ActionButton
+                  title="Send invitations"
+                  onClick={() => { handleOpenDialog('send'); }}
+                  disabled={!(rows.some(({ invited }) => !invited))}
+                >
+                  <MailOutlineIcon />
+                </ActionButton>
+              )}
+            >
+              <ActionButton
+                title="Delete selected"
+                disabled={!(numberOfCheckedRows > 0)}
+                onClick={() => { handleOpenDialog('delete'); }}
               >
-              Edit
-              </Button>
-            )}
+                <DeleteForeverOutlinedIcon />
+              </ActionButton>
+            </EditToolbar>
             <AttendeesTable
               headers={headers}
               isEditting={isEditting}
@@ -304,8 +264,6 @@ function EventDetails({ match, location }) {
                   row={row}
                   handleActiveCheckboxChange={handleActiveCheckboxChange}
                   handleCheck={handleCheck}
-                  handleSaveChanges={handleSaveChanges}
-                  saveChanges={saveChanges}
                   isEditting={isEditting}
                 />
               ))}

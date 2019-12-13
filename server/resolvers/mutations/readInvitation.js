@@ -26,7 +26,6 @@ const readInvitation = async (parent, { qrCodeKey }, context) => {
   });
 
   await user.save();
-  console.log(user.events[eventIdx].attendance[attendeeIdx]);
 
   return user.events[eventIdx].attendance[attendeeIdx];
 };

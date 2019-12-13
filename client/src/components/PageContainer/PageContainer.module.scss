@@ -13,6 +13,12 @@
     max-width: 600px;
     display: flex;
     flex-direction: column;
+
+    @media only screen and (max-width: 650px) {
+      margin: 2em 1em;
+      width: auto;
+    }
+
     .header{
       display: flex;
       justify-content: space-between;
@@ -25,6 +31,9 @@
         background-color: lighten($color: $accent-color, $amount: 50);
         color: $accent-color;
         font-weight: 700;
+        @media only screen and (max-width: 600px) {
+          font-size: 1.6em;
+        }
         &::before{
           content: '';
           width: 12px;
@@ -39,6 +48,9 @@
       justify-content: center;
       align-items: center;
       h1{
+        @media only screen and (max-width: 600px) {
+          font-size: 1.6em;
+        }
         display: inline-block;
         border-radius: 8px;;
         padding: 0.1em 0.3em;
