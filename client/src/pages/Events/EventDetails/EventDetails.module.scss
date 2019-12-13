@@ -34,3 +34,16 @@
   align-self: flex-start;
   font-weight: 600;
 }
+
+.btn-lg-screen {
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
+}
+
+.btn-xs-screen {
+  display: none;
+  @media only screen and (max-width: 600px) {
+    display: inline-block;
+  }
+}

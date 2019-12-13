@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box, Typography, Button,
+  Box, Typography, Button, Menu, MenuItem,
 } from '@material-ui/core';
 import Slide from '@material-ui/core/Slide';
 import ReactRouterPropTypes from 'react-router-prop-types';
@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CropFreeIcon from '@material-ui/icons/CropFree';
+import MoreIcon from '@material-ui/icons/MoreVert';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 import { useQuery, useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
@@ -43,6 +44,18 @@ function EventDetails({ match, location }) {
   });
   const [sendInvitationsMutation] = useMutation(SEND_INVITATIONS_MUTATION);
   const [updateAttendeesMutation] = useMutation(UPDATE_ATTENDEES_MUTATION);
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+
+  const handleMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const {
     handleActiveCheckboxChange, handleCheck,
@@ -115,7 +128,9 @@ function EventDetails({ match, location }) {
         });
         break;
       case 'send':
-        handleSendInvitations();
+        handleSendInvitations(sendInvitationsMutation, {
+          eventId: match.params.id,
+        });
         break;
       case 'delete':
         checkedRows = rows.filter((row) => !row.checked);
@@ -141,22 +156,61 @@ function EventDetails({ match, location }) {
       action={() => (
         <>
 
-          <ActionButton
-            title="Scan QR code"
-            onClick={() => {
-              history.push(`/events/${match.params.id}/qrreader`);
-            }}
-          >
-            <CropFreeIcon />
-          </ActionButton>
-          <ActionButton
-            title="Add a guest"
-            onClick={() => {
-              history.push(`/events/${match.params.id}/guests`);
-            }}
-          >
-            <PersonAddOutlinedIcon />
-          </ActionButton>
+          <div className={styles['btn-lg-screen']}>
+            <ActionButton
+              title="Scan QR code"
+
+              onClick={() => {
+                history.push(`/events/${match.params.id}/qrreader`);
+              }}
+            >
+              <CropFreeIcon />
+            </ActionButton>
+            <ActionButton
+              title="Add a guest"
+              onClick={() => {
+                history.push(`/events/${match.params.id}/guests`);
+              }}
+            >
+              <PersonAddOutlinedIcon />
+            </ActionButton>
+          </div>
+          <div className={styles['btn-xs-screen']}>
+            <ActionButton
+              title="More options"
+              onClick={handleMenu}
+            >
+              <MoreIcon />
+            </ActionButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={open}
+              onClose={handleClose}
+            >
+              <MenuItem onClick={() => {
+                history.push(`/events/${match.params.id}/qrreader`);
+              }}
+              >
+                QR Reader
+              </MenuItem>
+              <MenuItem onClick={() => {
+                history.push(`/events/${match.params.id}/guests`);
+              }}
+              >
+                Add Guests
+              </MenuItem>
+            </Menu>
+          </div>
 
         </>
       )}
@@ -176,14 +230,15 @@ function EventDetails({ match, location }) {
               setDialogType={setDialogType}
               setOpenDialog={setOpenDialog}
               isActiveStateChanged={isActiveStateChanged}
+              options={() => (
+                <ActionButton
+                  title="Send invitations"
+                  onClick={() => { handleOpenDialog('send'); }}
+                >
+                  <MailOutlineIcon />
+                </ActionButton>
+              )}
             >
-              <ActionButton
-                disabled={!(numberOfCheckedRows > 0)}
-                title="Send invitations"
-                onClick={() => { handleOpenDialog('send'); }}
-              >
-                <MailOutlineIcon />
-              </ActionButton>
               <ActionButton
                 title="Delete selected"
                 disabled={!(numberOfCheckedRows > 0)}

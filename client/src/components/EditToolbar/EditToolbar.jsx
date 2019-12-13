@@ -11,6 +11,7 @@ import styles from './EditToolbar.module.scss';
 function EditToolbar({
   children, isEditting, setIsEditting, handleReset,
   setDialogType, setOpenDialog, isActiveStateChanged,
+  options,
 }) {
   return (
     <>
@@ -47,15 +48,18 @@ function EditToolbar({
 
         </>
       ) : (
-        <Button
-          color="primary"
-          onClick={() => {
-            setIsEditting(true);
-          }}
-          className={styles.editAction}
-        >
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Button
+            color="primary"
+            onClick={() => {
+              setIsEditting(true);
+            }}
+            className={styles.editAction}
+          >
               Edit
-        </Button>
+          </Button>
+          {options && options()}
+        </Box>
       )}
     </>
   );
@@ -69,6 +73,7 @@ EditToolbar.propTypes = {
   handleReset: PropTypes.func.isRequired,
   setDialogType: PropTypes.func.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
+  options: PropTypes.func.isRequired,
 };
 
 export default EditToolbar;

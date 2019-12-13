@@ -11,12 +11,12 @@ export default function TabsNav({ handleTabChange, currentFilter }) {
     <Paper className={styles.wrapper}>
       <Tabs
         classes={{
-          indicator: styles.tabs,
+          indicator: styles.indicator,
         }}
-        centered
+        variant="scrollable"
         value={currentFilter}
         onChange={handleTabChange}
-        aria-label="styled tabs example"
+        aria-label="styled tabs"
         TabIndicatorProps={{ children: <div /> }}
       >
         <Tab

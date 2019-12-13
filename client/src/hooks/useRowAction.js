@@ -44,6 +44,7 @@ export const useRowAction = (refetch, setIsEditting) => {
   const handleSendInvitations = async (mutation, variables) => {
     try {
       const { res } = await mutation({ variables });
+      refetch();
       setSnackbarMsg('Success! You have invited the attendees correctly.');
       setIsEditting(false);
     } catch (err) {
