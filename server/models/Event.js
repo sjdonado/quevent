@@ -9,6 +9,14 @@ const fields = {
     type: String,
     required: [true, 'Name required'],
   },
+  description: {
+    type: String,
+    required: [true, 'Description required'],
+  },
+  location: {
+    type: String,
+    required: [true, 'Location required'],
+  },
   startDate: {
     type: Date,
     required: [true, 'Start date required'],

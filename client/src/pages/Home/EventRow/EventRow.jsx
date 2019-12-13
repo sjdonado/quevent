@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Slide from '@material-ui/core/Slide';
 import moment from 'moment';
 import {
@@ -9,7 +9,11 @@ import styles from './EventRow.module.scss';
 
 
 function EventRow({
-  row, isEditting, handleActiveCheckboxChange, handleCheck, onRowClick,
+  row,
+  isEditting,
+  handleActiveCheckboxChange,
+  handleCheck,
+  onRowClick,
 }) {
   return (
     <TableRow className={isEditting ? '' : styles.row} key={row.id} onClick={() => !isEditting && onRowClick(row)}>
