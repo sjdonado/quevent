@@ -22,7 +22,7 @@ jobs:
         cd client
         npm install
         npm run build --if-present
-        rm -r ../server/client/build
+        rm -rf ../server/client/build
         mv build ../server/client/build
     
     - name: Login to heroku
