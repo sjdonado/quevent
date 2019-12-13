@@ -1,6 +1,7 @@
 // const { ApolloServer,  } = require('apollo-server');
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const { ApolloServer, gql } = require('apollo-server-express');
 
 const { GraphQLScalarType } = require('graphql');
@@ -23,6 +24,7 @@ const { port } = config.server;
 database.connect();
 
 const app = express();
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 const resolvers = {
@@ -77,6 +79,5 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
-app.listen({ port }, () =>  
-  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`)
-);
+app.listen({ port }, () =>
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`),);
