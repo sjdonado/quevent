@@ -21,14 +21,15 @@ function GuestsQrReader({ match }) {
     if (arg) {
       setScanning(true);
       try {
-        const { res } = await readInvitationMutation({
+        const { data } = await readInvitationMutation({
           variables: {
             qrCodeKey: arg,
           },
         });
-        setSnackbarMsg('User scanned!');
+
+        setSnackbarMsg(`User ${data.readInvitation.email} scanned`);
       } catch (err) {
-        setSnackbarMsg(err);
+        console.log(err);
       }
       setScanning(false);
     }

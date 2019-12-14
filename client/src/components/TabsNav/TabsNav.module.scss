@@ -1,12 +1,21 @@
 @import '../../styles/main.scss';
 
+
+.scroller{
+  overflow-x: auto !important;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 .wrapper{
   align-self: stretch;
   margin-top: 1em;
   color: $primary-text-color;
   background-color: $contrast-color;
   border-radius: 8px;
-  .tabs{
+  
+  .indicator{
     display: flex;
     justify-content: center;
     background-color: transparent;
