@@ -23,7 +23,7 @@ export const useCheckBox = (rows, setRows) => {
 
   const handleCheck = (checked, rowId) => {
     const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
+      if (row._id === rowId) {
         return { ...row, checked };
       }
       return row;
@@ -35,7 +35,7 @@ export const useCheckBox = (rows, setRows) => {
 
   const handleActiveCheckboxChange = (active, rowId) => {
     const updatedRows = rows.map((row) => {
-      if (row.id === rowId) {
+      if (row._id === rowId) {
         return { ...row, active };
       }
       return row;

@@ -67,7 +67,7 @@ type User {
 }
 
 type Event {
-  id: ID!
+  _id: ID!
   name: String!
   description: String!
   location: String!
@@ -80,7 +80,7 @@ type Event {
 }
 
 type Attendee {
-  id: ID!
+  _id: ID!
   email: String!
   active: Boolean!
   attended: Boolean!
