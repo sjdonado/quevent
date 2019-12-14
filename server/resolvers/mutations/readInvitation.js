@@ -21,6 +21,10 @@ const readInvitation = async (parent, { qrCodeKey }, context) => {
 
   const attendee = user.events[eventIdx].attendance[attendeeIdx];
 
+  if (!attendee.active) {
+    throw new ApolloError('Attendee is not active', 401);
+  }
+
   user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
     attended: true,
   });
