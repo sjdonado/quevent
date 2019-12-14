@@ -11,19 +11,19 @@ const transport = nodemailer.createTransport(sgTransport({
 
 transport.use('compile', hbs({
     viewEngine: {
-        partialsDir: "./utils",
-        //defaultLayout: ""
+        partialsDir: './services/utils',
+        defaultLayout: ''
     },
-    viewPath: "./utils",
-    //extName: ".handlebars"
+    viewPath: './services/utils',
+    extName: '.handlebars'
 }));
-
 const sendQRCodeEmail = (qrCode, author, eventName, to) => transport.sendMail({
     from: 'info@quevent.com',
     to,
     subject: 'Quevent invitation',
     //    html: `${author} invited you to ${eventName}. <br/> To enter the event you need to show the following QR code: <br/> <img src="cid:qrcCodecid" />`,
     template: 'index',
+    context: { author, eventName },
     attachments: [{
         cid: 'qrcCodecid',
         filename: 'qrCode.jpg',
