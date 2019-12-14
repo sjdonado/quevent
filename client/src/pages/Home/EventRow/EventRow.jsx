@@ -16,14 +16,14 @@ function EventRow({
   onRowClick,
 }) {
   return (
-    <TableRow className={isEditting ? '' : styles.row} key={row.id} onClick={() => !isEditting && onRowClick(row)}>
+    <TableRow className={isEditting ? '' : styles.row} onClick={() => !isEditting && onRowClick(row)}>
       {isEditting && (
       <Slide direction="right" in={isEditting} mountOnEnter unmountOnExit exit>
         <TableCell align="center">
           <Checkbox
             checked={!!row.checked}
             onChange={() => {
-              handleCheck(!row.checked, row.id);
+              handleCheck(!row.checked, row._id);
             }}
             value="checked"
             inputProps={{
@@ -50,7 +50,7 @@ function EventRow({
         <Checkbox
           checked={!!row.active}
           onChange={() => {
-            handleActiveCheckboxChange(!row.active, row.id);
+            handleActiveCheckboxChange(!row.active, row._id);
           }}
           disabled={!isEditting}
           value="active"

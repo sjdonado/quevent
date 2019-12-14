@@ -15,7 +15,7 @@ export const GET_EVENTS_QUERY = gql`
     getUser {
       id
       events {
-        id
+        _id
         name
         description
         location
@@ -23,7 +23,7 @@ export const GET_EVENTS_QUERY = gql`
         endDate
         active
         attendance {
-          id
+          _id
           email
           attended
           active
@@ -37,9 +37,9 @@ export const GET_EVENTS_QUERY = gql`
 export const GET_ATTENDEES_QUERY = gql`
   query getEventById($eventId: ID!){
     getEvent(eventId: $eventId) {
-      id
+      _id
       attendance {
-          id
+          _id
           email
           attended
           active

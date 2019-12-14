@@ -3,7 +3,7 @@
 .wrapper{
   box-sizing: border-box;
 
-  height: 300px;
+  min-height: 300px;
   margin: 1em 0;
   text-align: center;
   color: $primary-color;
