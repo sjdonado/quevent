@@ -70,7 +70,7 @@ function Home() {
   }, [loading, data]);
 
   const onRowClick = (row) => {
-    history.push(`/events/${row.id}`);
+    history.push(`/events/${row._id}`);
   };
 
   const handleCloseDialog = (type) => {
