@@ -10,8 +10,12 @@ const transport = nodemailer.createTransport(sgTransport({
 }));
 
 transport.use('compile', hbs({
-    viewEngine: 'express-handlebars',
-    viewPath: './utils/'
+    viewEngine: {
+        partialsDir: "./utils",
+        //defaultLayout: ""
+    },
+    viewPath: "./utils",
+    //extName: ".handlebars"
 }));
 
 const sendQRCodeEmail = (qrCode, author, eventName, to) => transport.sendMail({
