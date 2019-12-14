@@ -90,7 +90,11 @@ function EventDetails({ match, location }) {
 
   useEffect(() => {
     if (!loading) {
-      setRows(data.getEvent.attendance);
+      if (error) {
+        history.push('/home');
+      } else {
+        setRows(data.getEvent.attendance);
+      }
     }
   }, [loading]);
 
@@ -260,7 +264,7 @@ function EventDetails({ match, location }) {
               {rows.map((row) => (
                 <GuestsRow
                   className={styles.row}
-                  key={row.id}
+                  key={row._id}
                   row={row}
                   handleActiveCheckboxChange={handleActiveCheckboxChange}
                   handleCheck={handleCheck}
