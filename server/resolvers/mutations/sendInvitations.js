@@ -23,8 +23,8 @@ const sendInvitations = async(parent, { eventId }, context) => {
                 name: event.name,
                 description: event.description,
                 location: event.location,
-                startDate: moment(event.startDate).format('MMMM Do YYYY, h:mm a'),
-                endDate: moment(event.endDate).format('MMMM Do YYYY, h:mm a'),
+                startDate: moment(event.startDate).utcOffset(7).format('MMMM Do YYYY, h:mm a'), //LLL
+                endDate: moment(event.endDate).utcOffset(7).format('MMMM Do YYYY, h:mm a'),
             };
             const res = await sendQRCodeEmail(url, user.name, eventInfo, attendee.email);
 
