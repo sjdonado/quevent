@@ -30,18 +30,15 @@ function Login({ setToken }) {
     }
   };
 
-  const handleError = (err) => {
-    console.log('err', err);
+  const handleError = () => {
+    setSnackbarMsg('Error on login with Google, try again');
   };
 
   return (
     <section id="login" className={styles.root}>
       <Typography component="h1" variant="h2">Quevent</Typography>
+      <Typography variant="subtitle" className={styles.subtitle}>Keep track of your events with us</Typography>
       <Box className={styles['form-container']}>
-        {/* <Typography variant>Login</Typography> */}
-        {/* <Box>
-          Form
-        </Box> */}
         <GoogleLogin
           clientId={GOOGLE_CLIENT_ID}
           buttonText="Login with Google"

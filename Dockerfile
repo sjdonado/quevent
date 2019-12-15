@@ -4,11 +4,11 @@ WORKDIR /usr/src/app
 
 RUN npm install -g yarn
 
-COPY ./package.json .
-COPY ./yarn.lock .
-
-COPY . .
+COPY ./server/package.json .
+COPY ./server/yarn.lock .
 
 RUN yarn
+
+COPY ./server .
 
 CMD ["yarn", "start"]
