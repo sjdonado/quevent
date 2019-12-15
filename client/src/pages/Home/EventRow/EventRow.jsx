@@ -38,7 +38,7 @@ function EventRow({
         {row.name}
       </TableCell>
       <TableCell align="center">
-        Universidad del Norte
+        {row.location}
       </TableCell>
       <TableCell align="center">
         {moment(`${row.startDate}`, 'x').format('LLL')}
