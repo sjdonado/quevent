@@ -10,7 +10,7 @@ const transport = nodemailer.createTransport(sgTransport({
 }));
 
 const sendQRCodeEmail = (qrCode, author, eventName, to) => transport.sendMail({
-  from: 'info@quevent.com',
+  from: 'no-reply@quevent.herokuapp.com',
   to,
   subject: 'Quevent invitation',
   html: `${author} invited you to ${eventName}. <br/> To enter the event you need to show the following QR code: <br/> <img src="cid:qrcCodecid" />`,

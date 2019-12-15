@@ -31,7 +31,6 @@ import { useRowAction } from '../../../hooks/useRowAction';
 
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
-
 function EventDetails({ match, location }) {
   const [currentFilter, setCurrentFilter] = useState(0);
   const [rows, setRows] = useState([]);
@@ -227,7 +226,6 @@ function EventDetails({ match, location }) {
           handleTabChange={handleTabChange}
           currentFilter={currentFilter}
         />
-
         {loading ? (<Progress type="circular" />) : (
           <Box className={styles.table}>
             <EditToolbar
