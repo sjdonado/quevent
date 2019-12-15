@@ -17,13 +17,13 @@ transport.use('compile', hbs({
     viewPath: './services/utils',
     extName: '.handlebars'
 }));
-const sendQRCodeEmail = (qrCode, author, eventName, to) => transport.sendMail({
+const sendQRCodeEmail = (qrCode, author, eventInfo, to) => transport.sendMail({
     from: 'no-reply@quevent.herokuapp.com',
     to,
     subject: 'Quevent invitation',
     //    html: `${author} invited you to ${eventName}. <br/> To enter the event you need to show the following QR code: <br/> <img src="cid:qrcCodecid" />`,
     template: 'index',
-    context: { author, eventName },
+    context: { author, eventInfo },
     attachments: [{
         cid: 'qrcCodecid',
         filename: 'qrCode.jpg',
