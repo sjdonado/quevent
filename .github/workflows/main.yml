@@ -18,8 +18,8 @@ jobs:
       - name: Build
         working-directory: client
         run: |
-          npm install -g yarn
-          yarn && yarn build
+          npm install
+          npm run build
           mv build ../server/client
       - name: Login
         uses: actions/heroku@1.0.0
