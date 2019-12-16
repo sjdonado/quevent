@@ -2,7 +2,7 @@
 > Keep track of your events with us.
 <div align="center">
   <a href="https://quevent.herokuapp.com">
-    <img src="/client/public/logo512.png" alt="Quevent" width="512px" />
+    <img src="/client/public/logo512.png" alt="Quevent" width="250px" />
   </a>
 </div>
 
