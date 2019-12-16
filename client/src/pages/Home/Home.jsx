@@ -135,7 +135,7 @@ function Home() {
               {rows.map((row) => (
                 <EventRow
                   className={styles.row}
-                  key={row.id}
+                  key={row._id}
                   row={row}
                   onRowClick={onRowClick}
                   handleActiveCheckboxChange={handleActiveCheckboxChange}

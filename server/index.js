@@ -29,7 +29,7 @@ app.use(cors({
   origin,
 }));
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client')));
 
 const resolvers = {
   Query,
@@ -80,7 +80,7 @@ const server = new ApolloServer({
 server.applyMiddleware({ app });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client/build/index.html'));
+  res.sendFile(path.join(__dirname, 'client/index.html'));
 });
 
 app.listen({ port }, () => 
