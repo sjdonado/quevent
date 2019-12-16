@@ -26,3 +26,15 @@
   margin-top: 1em;
   color: white;
 }
+
+.credits {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: white;
+  padding-right: 4px;
+  a, a:visited, a:hover {
+    color: white;
+    text-decoration: underline;
+  }
+}

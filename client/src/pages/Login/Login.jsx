@@ -37,7 +37,7 @@ function Login({ setToken }) {
   return (
     <section id="login" className={styles.root}>
       <Typography component="h1" variant="h2">Quevent</Typography>
-      <Typography variant="subtitle" className={styles.subtitle}>Keep track of your events with us</Typography>
+      <Typography variant="subtitle1" className={styles.subtitle}>Keep track of your events with us</Typography>
       <Box className={styles['form-container']}>
         <GoogleLogin
           clientId={GOOGLE_CLIENT_ID}
@@ -47,6 +47,8 @@ function Login({ setToken }) {
           // cookiePolicy="single_host_origin"
         />
       </Box>
+      <Typography variant="caption" className={styles.credits}>Made with ❤️ by <a href="https://github.com/sjdonado/quevent/blob/master/CONTRIBUTING.md#contributors" target="_blank"
+        aria-label="Contributors">contributors</a></Typography>
       <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
     </section>
   );

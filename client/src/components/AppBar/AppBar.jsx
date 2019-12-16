@@ -95,7 +95,7 @@ function ApppBar({ handleLogout }) {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+          {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </Toolbar>
