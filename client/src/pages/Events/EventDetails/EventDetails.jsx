@@ -12,6 +12,7 @@ import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import CropFreeIcon from '@material-ui/icons/CropFree';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { useQuery, useMutation } from 'react-apollo';
 import PageContainer from '../../../components/PageContainer/PageContainer';
 import TabsNav from '../../../components/TabsNav/TabsNav';
@@ -22,6 +23,7 @@ import styles from './EventDetails.module.scss';
 import Progress from '../../../components/Progress/Progress';
 import Snackbar from '../../../components/Snackbar/Snackbar';
 import ConfirmationDialog from './ConfirmationDialog/ConfirmationDialog';
+import UpdateEventModal from '../../../components/CreateEventModal/CreateEventModal';
 import { GET_ATTENDEES_QUERY } from '../../../graphql/queries';
 import { SEND_INVITATIONS_MUTATION, UPDATE_ATTENDEES_MUTATION } from '../../../graphql/mutations';
 import EditToolbar from '../../../components/EditToolbar/EditToolbar';
@@ -69,15 +71,19 @@ function EventDetails({ match, location }) {
 
   const {
     handleSendInvitations,
+    handleCloseModal,
+    handleClickOpenModal,
     handleSaveChanges,
     handleDelete,
     handleOpenDialog,
     snackbarMsg,
     openDialog,
+    openModal,
     dialogType,
     setDialogType,
     setSnackbarMsg,
     setOpenDialog,
+    submitting,
   } = useRowAction(refetch, setIsEditting);
 
   useEffect(() => {
@@ -95,13 +101,13 @@ function EventDetails({ match, location }) {
         setRows(data.getEvent.attendance);
       }
     }
-  }, [loading]);
+  }, [loading, data]);
 
   const handleFilteredRows = () => {
     let filteredRows;
     switch (currentFilter) {
       case 0:
-        filteredRows = [...rows];
+        filteredRows = [...data.getEvent.attendance];
         setRows(data.getEvent.attendance);
         break;
       case 1:
@@ -163,6 +169,12 @@ function EventDetails({ match, location }) {
         <>
 
           <div className={styles['btn-lg-screen']}>
+            <ActionButton
+              title="Edit event"
+              onClick={handleClickOpenModal}
+            >
+              <EditOutlinedIcon />
+            </ActionButton>
             <ActionButton
               title="Scan QR code"
 
@@ -226,7 +238,7 @@ function EventDetails({ match, location }) {
           handleTabChange={handleTabChange}
           currentFilter={currentFilter}
         />
-        {loading ? (<Progress type="circular" />) : (
+        {loading ? (<Progress type="circular" size={55} />) : (
           <Box className={styles.table}>
             <EditToolbar
               isEditting={isEditting}
@@ -253,31 +265,40 @@ function EventDetails({ match, location }) {
                 <DeleteForeverOutlinedIcon />
               </ActionButton>
             </EditToolbar>
-            <AttendeesTable
-              headers={headers}
-              isEditting={isEditting}
-              isAllChecked={isAllChecked}
-              handleCheckAll={handleCheckAll}
-            >
-              {rows.map((row) => (
-                <GuestsRow
-                  className={styles.row}
-                  key={row._id}
-                  row={row}
-                  handleActiveCheckboxChange={handleActiveCheckboxChange}
-                  handleCheck={handleCheck}
-                  isEditting={isEditting}
-                />
-              ))}
-            </AttendeesTable>
+            {submitting ? (<Progress type="circular" size={55} />) : (
+              <AttendeesTable
+                headers={headers}
+                isEditting={isEditting}
+                isAllChecked={isAllChecked}
+                handleCheckAll={handleCheckAll}
+              >
+                {rows.map((row) => (
+                  <GuestsRow
+                    className={styles.row}
+                    key={row._id}
+                    row={row}
+                    handleActiveCheckboxChange={handleActiveCheckboxChange}
+                    handleCheck={handleCheck}
+                    isEditting={isEditting}
+                  />
+                ))}
+              </AttendeesTable>
+            )}
+            <ConfirmationDialog
+              openDialog={openDialog}
+              handleCloseDialog={handleCloseDialog}
+              dialogType={dialogType}
+            />
+            <UpdateEventModal
+              open={openModal}
+              edit={data.getEvent}
+              handleClickOpen={handleClickOpenModal}
+              handleClose={handleCloseModal}
+            />
+            <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
           </Box>
         )}
-        <ConfirmationDialog
-          openDialog={openDialog}
-          handleCloseDialog={handleCloseDialog}
-          dialogType={dialogType}
-        />
-        <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
+
       </Box>
     </PageContainer>
   );

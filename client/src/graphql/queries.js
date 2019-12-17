@@ -38,6 +38,12 @@ export const GET_ATTENDEES_QUERY = gql`
   query getEventById($eventId: ID!){
     getEvent(eventId: $eventId) {
       _id
+      name
+      description
+      location
+      startDate
+      endDate
+      active
       attendance {
           _id
           email

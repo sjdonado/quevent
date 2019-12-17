@@ -44,7 +44,7 @@ function ApppBar({ handleLogout }) {
           className={styles['profile-wrapper']}
           color="inherit"
         >
-          <Box className={styles['profile-wrapper']}>
+          <Box className={styles.wrapper}>
             <Query query={APPBAR_QUERY}>
               {({ loading, error, data }) => {
                 if (error) {
