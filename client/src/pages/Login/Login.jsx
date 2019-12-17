@@ -47,8 +47,8 @@ function Login({ setToken }) {
           // cookiePolicy="single_host_origin"
         />
       </Box>
-      <Typography variant="caption" className={styles.credits}>Made with ❤️ by <a href="https://github.com/sjdonado/quevent/blob/master/CONTRIBUTING.md#contributors" target="_blank"
-        aria-label="Contributors">contributors</a></Typography>
+      <Typography variant="caption" className={styles.credits}><a href="https://github.com/sjdonado/quevent/blob/master/README.md#contributors" target="_blank"
+        aria-label="Contributors">Made with ❤️ in Barranquilla</a></Typography>
       <Snackbar message={snackbarMsg} setMessage={setSnackbarMsg} />
     </section>
   );
