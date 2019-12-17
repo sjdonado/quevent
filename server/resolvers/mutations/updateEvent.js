@@ -2,13 +2,14 @@ const { ApolloError } = require('apollo-server');
 
 const { authentication } = require('../../services/auth');
 
-const deactivateEvent = async (parent, args, context) => {
+const updateEvent = async (parent, args, context) => {
   const {
     eventId,
     name,
+    description,
+    location,
     startDate,
     endDate,
-    active,
   } = args;
 
   const user = await authentication(context);
@@ -24,7 +25,8 @@ const deactivateEvent = async (parent, args, context) => {
     name: name || event.name,
     startDate: startDate || event.startDate,
     endDate: endDate || event.endDate,
-    active: active || event.active,
+    description: description || event.description,
+    location: location || event.location,
   });
 
   await user.save();
@@ -32,4 +34,4 @@ const deactivateEvent = async (parent, args, context) => {
   return user.events[eventIdx];
 };
 
-module.exports = deactivateEvent;
+module.exports = updateEvent;
