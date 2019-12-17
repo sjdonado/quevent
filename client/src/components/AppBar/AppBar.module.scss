@@ -36,6 +36,7 @@
     display: flex;
     align-items: center;
     margin-left: auto;
+    max-width: 50%;
   }
   
   .picture {
@@ -44,4 +45,10 @@
   
   .badge {
     background-color: #44b700;
+  }
+
+  .wrapper{
+    display: flex;
+    width: 100%;
+    align-items: center;
   }

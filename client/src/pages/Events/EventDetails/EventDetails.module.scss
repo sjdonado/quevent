@@ -17,6 +17,7 @@
 .table{
   margin-top: 1em;
   display: flex;
+  flex: 1;
   flex-direction: column;
   .edit{
     display: flex;

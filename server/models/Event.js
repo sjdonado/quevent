@@ -32,13 +32,15 @@ const fields = {
   author: {
     type: String,
   },
-  attendance: [attendeeSchema],
+  attendance: {
+    type: [attendeeSchema],
+    default: null,
+  },
 };
 
 const eventSchema = new Schema(fields, {
   timestamps: true,
 });
-
 
 eventSchema.methods.toJSON = function toJSON() {
   const doc = this.toObject();

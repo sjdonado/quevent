@@ -18,7 +18,10 @@ const fields = {
     type: Boolean,
     default: true,
   },
-  events: [eventSchema],
+  events: {
+    type: [eventSchema],
+    default: null,
+  },
 };
 
 const userSchema = new Schema(fields, {

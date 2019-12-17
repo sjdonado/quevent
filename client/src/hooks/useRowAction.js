@@ -5,6 +5,7 @@ export const useRowAction = (refetch, setIsEditting) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogType, setDialogType] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const handleClickOpenModal = () => {
     setOpenModal(true);
@@ -13,13 +14,14 @@ export const useRowAction = (refetch, setIsEditting) => {
   const handleCloseModal = (submit) => {
     if (submit) {
       refetch();
-      setSnackbarMsg('Success! You have created a new event.');
+      setSnackbarMsg('Success!');
     }
     setOpenModal(false);
   };
 
   const handleDelete = async (mutation, variables) => {
     try {
+      setSubmitting(true);
       await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have deleted the events correctly.');
@@ -27,10 +29,12 @@ export const useRowAction = (refetch, setIsEditting) => {
     } catch (err) {
       setSnackbarMsg('There was a problem with the server');
     }
+    setSubmitting(false);
   };
 
   const handleSaveChanges = async (mutation, variables) => {
     try {
+      setSubmitting(true);
       await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have updated the attendees list correctly.');
@@ -38,11 +42,13 @@ export const useRowAction = (refetch, setIsEditting) => {
     } catch (err) {
       setSnackbarMsg('There was a problem with the server');
     }
+    setSubmitting(false);
   };
 
 
   const handleSendInvitations = async (mutation, variables) => {
     try {
+      setSubmitting(true);
       await mutation({ variables });
       refetch();
       setSnackbarMsg('Success! You have invited the attendees correctly.');
@@ -50,6 +56,7 @@ export const useRowAction = (refetch, setIsEditting) => {
     } catch (err) {
       setSnackbarMsg('There was a problem with the server');
     }
+    setSubmitting(false);
   };
 
   const handleOpenDialog = (type) => {
@@ -71,5 +78,6 @@ export const useRowAction = (refetch, setIsEditting) => {
     setDialogType,
     setSnackbarMsg,
     setOpenDialog,
+    submitting,
   });
 };

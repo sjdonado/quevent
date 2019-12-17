@@ -66,6 +66,9 @@ function EventRow({
 EventRow.propTypes = {
   row: PropTypes.oneOfType([PropTypes.object]).isRequired,
   isEditting: PropTypes.bool.isRequired,
+  handleActiveCheckboxChange: PropTypes.func.isRequired,
+  handleCheck: PropTypes.func.isRequired,
+  onRowClick: PropTypes.func.isRequired,
 };
 
 export default EventRow;

@@ -16,10 +16,11 @@ type Mutation {
   ): Event!
   updateEvent(
     eventId: ID!
-    name: String
-    startDate: Date
-    endDate: Date
-    active: Boolean
+    name: String!
+    description: String!
+    location: String!
+    startDate: Date!
+    endDate: Date!
   ): Event!
   updateEvents(
     events: String!
