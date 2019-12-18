@@ -40,7 +40,7 @@ export const CREATE_EVENT_MUTATION = gql`
 export const ADD_ATTENDEES = gql`
   mutation addAttendees(
     $eventId: ID!
-    $attendees: [AttendeeInput]!
+    $attendees: [AttendeeInput!]!
   ) {
     addAttendees(
       eventId: $eventId
@@ -77,7 +77,7 @@ export const READ_INVITATION_MUTATION = gql`
 `;
 
 export const UPDATE_ATTENDEES_MUTATION = gql`
-  mutation updateAttendees($eventId: ID!, $attendees: [AttendeeInput!]!) {
+  mutation updateAttendees($eventId: ID!, $attendees: [UpdateAttendeeInput!]!) {
     updateAttendees(
       eventId: $eventId
       attendees: $attendees

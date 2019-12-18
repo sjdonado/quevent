@@ -27,7 +27,7 @@ export const useRowAction = (refetch, setIsEditting) => {
       setSnackbarMsg('Success! You have deleted the events correctly.');
       setIsEditting(false);
     } catch (err) {
-      setSnackbarMsg('There was a problem with the server');
+      setSnackbarMsg(`Error: ${err.message.substring(15)}`);
     }
     setSubmitting(false);
   };
@@ -40,7 +40,7 @@ export const useRowAction = (refetch, setIsEditting) => {
       setSnackbarMsg('Success! You have updated the attendees list correctly.');
       setIsEditting(false);
     } catch (err) {
-      setSnackbarMsg('There was a problem with the server');
+      setSnackbarMsg(`Error: ${err.message.substring(15)}`);
     }
     setSubmitting(false);
   };
@@ -54,7 +54,7 @@ export const useRowAction = (refetch, setIsEditting) => {
       setSnackbarMsg('Success! You have invited the attendees correctly.');
       setIsEditting(false);
     } catch (err) {
-      setSnackbarMsg('There was a problem with the server');
+      setSnackbarMsg(`Error: ${err.message.substring(15)}`);
     }
     setSubmitting(false);
   };

@@ -13,6 +13,9 @@ const sendInvitations = async (parent, { eventId }, context) => {
   }
 
   const event = user.events[eventIdx];
+  if (!event.active) {
+    throw new ApolloError('The event is not active', 400);
+  }
 
   await Promise.all(event.attendance.map(async (attendee) => {
     if (!attendee.invited && attendee.active) {

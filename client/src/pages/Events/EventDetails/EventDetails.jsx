@@ -136,7 +136,7 @@ function EventDetails({ match, location }) {
       case 'save':
         handleSaveChanges(updateAttendeesMutation, {
           eventId: match.params.id,
-          attendees: rows.map(({ _id, email, active }) => ({ _id, email, active })),
+          attendees: rows.map(({ _id, active }) => ({ _id, active })),
         });
         break;
       case 'send':
@@ -148,7 +148,7 @@ function EventDetails({ match, location }) {
         checkedRows = rows.filter((row) => !row.checked);
         handleDelete(updateAttendeesMutation, {
           eventId: match.params.id,
-          attendees: checkedRows.map(({ _id, email, active }) => ({ _id, email, active })),
+          attendees: checkedRows.map(({ _id }) => ({ _id })),
         });
         break;
       default:

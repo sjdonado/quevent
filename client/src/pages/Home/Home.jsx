@@ -62,8 +62,6 @@ function Home() {
     setOpenDialog,
   } = useRowAction(refetch, setIsEditting);
 
-  console.log('events', data);
-
   useEffect(() => {
     if (!loading) {
       setRows(data.getUser.events);

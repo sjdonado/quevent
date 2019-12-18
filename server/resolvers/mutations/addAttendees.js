@@ -12,9 +12,15 @@ const addAttendee = async (parent, { eventId, attendees }, context) => {
   }
 
   const event = user.events[eventIdx];
-  event.attendance = attendees.map((attendee) => Object.assign(attendee, {
-    qrCodeKey: generateQRCodeKey(event.id, attendee.email),
-  }));
+  if (!event.active) {
+    throw new ApolloError('The event is not active', 400);
+  }
+
+  Object.assign(event, {
+    attendance: attendees.map((attendee) => Object.assign(attendee, {
+      qrCodeKey: generateQRCodeKey(event.id, attendee.email),
+    })),
+  });
 
   await user.save();
 

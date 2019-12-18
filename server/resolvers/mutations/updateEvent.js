@@ -21,7 +21,7 @@ const updateEvent = async (parent, args, context) => {
 
   const event = user.events[eventIdx];
 
-  user.events[eventIdx] = Object.assign(event, {
+  Object.assign(event, {
     name: name || event.name,
     startDate: startDate || event.startDate,
     endDate: endDate || event.endDate,
@@ -31,7 +31,7 @@ const updateEvent = async (parent, args, context) => {
 
   await user.save();
 
-  return user.events[eventIdx];
+  return event;
 };
 
 module.exports = updateEvent;

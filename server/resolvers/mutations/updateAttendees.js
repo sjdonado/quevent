@@ -14,19 +14,24 @@ const updateAttendees = async (parent, args, context) => {
     throw new ApolloError('Event not found', 404);
   }
 
-  const { attendance } = user.events[eventIdx];
-  user.events[eventIdx].attendance = attendance.map((attendee) => {
-    const attendeeIdx = attendees.findIndex(({ _id }) => attendee.getId() === _id);
-    if (attendeeIdx !== -1) {
-      return Object.assign(attendee, attendees[attendeeIdx]);
-    }
-    return attendee;
+  const event = user.events[eventIdx];
+  if (!event.active) {
+    throw new ApolloError('The event is not active', 400);
+  }
+
+  Object.assign(event, {
+    attendance: event.attendance.map((attendee) => {
+      const attendeeIdx = attendees.findIndex(({ _id }) => attendee.getId() === _id);
+      if (attendeeIdx !== -1) {
+        return Object.assign(attendee, attendees[attendeeIdx]);
+      }
+      return attendee;
+    }),
   });
+
   await user.save();
 
-  console.log('attendance', user.events[eventIdx].attendance);
-
-  return user.events[eventIdx].attendance;
+  return event.attendance;
 };
 
 module.exports = updateAttendees;

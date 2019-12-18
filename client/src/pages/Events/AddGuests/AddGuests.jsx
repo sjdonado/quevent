@@ -45,7 +45,7 @@ function AddGuests({ match }) {
         setSnackbarMsg('A file is required');
       }
     } catch (err) {
-      setSnackbarMsg('Error. There was problem submitting the file');
+      setSnackbarMsg(`Error: ${err.message.substring(15)}`);
       setSubmitting(false);
     }
   };

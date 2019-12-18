@@ -1,5 +1,4 @@
 const { signToken, googleOauth } = require('../../services/auth');
-// const { createToken } = require('../../services/auth');
 
 const login = async (parent, { idToken }, context) => {
   const googleUser = await googleOauth(idToken);
