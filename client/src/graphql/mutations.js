@@ -77,7 +77,7 @@ export const READ_INVITATION_MUTATION = gql`
 `;
 
 export const UPDATE_ATTENDEES_MUTATION = gql`
-  mutation updateAttendees($eventId: ID!, $attendees: String!) {
+  mutation updateAttendees($eventId: ID!, $attendees: [AttendeeInput!]!) {
     updateAttendees(
       eventId: $eventId
       attendees: $attendees
@@ -91,7 +91,7 @@ export const UPDATE_ATTENDEES_MUTATION = gql`
 `;
 
 export const UPDATE_EVENTS_MUTATION = gql`
-  mutation updateEvents($events: String!) {
+  mutation updateEvents($events: [EventInput!]!) {
     updateEvents(events: $events) {
       _id
       name
@@ -99,11 +99,11 @@ export const UPDATE_EVENTS_MUTATION = gql`
       endDate
       active
       attendance {
-          _id
-          email
-          attended
-          active
-          invited
+        _id
+        email
+        attended
+        active
+        invited
       }
     }
   }

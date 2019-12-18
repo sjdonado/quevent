@@ -1,5 +1,3 @@
-const { ApolloError } = require('apollo-server');
-
 const { authentication } = require('../../services/auth');
 
 const updateEvents = async (parent, args, context) => {
@@ -7,12 +5,15 @@ const updateEvents = async (parent, args, context) => {
     events,
   } = args;
 
-  const eventsToArray = JSON.parse(events);
-
-
   const user = await authentication(context);
 
-  user.events = [...eventsToArray];
+  user.events = user.events.map((event) => {
+    const eventIdx = events.findIndex(({ _id }) => event.getId() === _id);
+    if (eventIdx !== -1) {
+      return Object.assign(event, events[eventIdx]);
+    }
+    return event;
+  });
   await user.save();
 
   return user.events;

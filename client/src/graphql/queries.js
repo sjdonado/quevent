@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 export const APPBAR_QUERY = gql`
   {
     getUser {
-      id
+      _id
       name
       profilePicture
     }
@@ -13,7 +13,7 @@ export const APPBAR_QUERY = gql`
 export const GET_EVENTS_QUERY = gql`
   {
     getUser {
-      id
+      _id
       events {
         _id
         name

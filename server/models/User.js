@@ -38,10 +38,10 @@ userSchema.methods.toJSON = function toJSON() {
   return doc;
 };
 
-userSchema.methods.getId = function toJSON() {
+userSchema.methods.getId = function getId() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
-  return doc._id;
+  return doc._id.toString();
 };
 
 const User = mongoose.model('User', userSchema);

@@ -27,8 +27,6 @@ import { AUTH_TOKEN_COOKIE_NAME } from './utils/constants';
 
 import AppBar from './components/AppBar/AppBar';
 import Login from './pages/Login/Login';
-/* import EventView from './pages/Events/EventView';
-import CreateEvent from './pages/Events/CreateEvent'; */
 import PrivateRoutes from './utils/PrivateRoutes';
 import EventDetails from './pages/Events/EventDetails/EventDetails';
 import Home from './pages/Home/Home';

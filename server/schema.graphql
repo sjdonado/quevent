@@ -23,15 +23,11 @@ type Mutation {
     endDate: Date!
   ): Event!
   updateEvents(
-    events: String!
+    events: [EventInput!]!
   ): [Event]!
-  addAttendee(
-    eventId: ID!
-    email: String!
-  ): Attendee!
   addAttendees(
     eventId: ID!
-    attendees: [AttendeeInput]!
+    attendees: [AttendeeInput!]!
   ): [Attendee]!
   updateAttendee(
     eventId: ID!
@@ -41,7 +37,7 @@ type Mutation {
   ): Attendee!
   updateAttendees(
     eventId: ID!
-    attendees: String!
+    attendees: [AttendeeInput!]!
   ): [Attendee]!
   sendInvitations(
     eventId: ID!
@@ -57,7 +53,7 @@ type AuthPayload {
 }
 
 type User {
-  id: ID!
+  _id: ID!
   name: String!
   email: String!
   profilePicture: String!
@@ -91,11 +87,17 @@ type Attendee {
 }
 
 input AttendeeInput {
+  _id: ID!
   email: String!
+  active: Boolean,
 }
 
-input AttendeeUpdateInput {
-  id: ID!
-  email: String!
-  active: Boolean!
+input EventInput {
+  _id: ID!
+  name: String
+  description: String
+  location: String
+  startDate: Date
+  endDate: Date
+  active: Boolean
 }
