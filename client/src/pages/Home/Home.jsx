@@ -62,6 +62,8 @@ function Home() {
     setOpenDialog,
   } = useRowAction(refetch, setIsEditting);
 
+  console.log('events', data);
+
   useEffect(() => {
     if (!loading) {
       setRows(data.getUser.events);
@@ -77,13 +79,29 @@ function Home() {
     switch (type) {
       case 'save':
         handleSaveChanges(updateEventsMutation, {
-          events: JSON.stringify(rows),
+          events: rows.map((item) => ({
+            _id: item._id,
+            name: item.name,
+            description: item.description,
+            location: item.location,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            active: item.active,
+          })),
         });
         break;
       case 'delete':
         checkedRows = rows.filter((row) => !row.checked);
         handleDelete(updateEventsMutation, {
-          events: JSON.stringify(checkedRows),
+          events: checkedRows.map((item) => ({
+            _id: item._id,
+            name: item.name,
+            description: item.description,
+            location: item.location,
+            startDate: item.startDate,
+            endDate: item.endDate,
+            active: item.active,
+          })),
         });
         break;
       default:

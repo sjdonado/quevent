@@ -17,7 +17,7 @@ const DatePicker = ({
     return (
       <DateTimePicker
         name={name}
-        variant="inline"
+        inputVariant="outlined"
         id={id}
         label={label}
         helperText={helperText}

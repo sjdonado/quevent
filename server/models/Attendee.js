@@ -39,10 +39,10 @@ attendeeSchema.methods.toJSON = function toJSON() {
   return doc;
 };
 
-attendeeSchema.methods.getId = function toJSON() {
+attendeeSchema.methods.getId = function getId() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
-  return doc._id;
+  return doc._id.toString();
 };
 
 // const Attendee = mongoose.model('Attendee', attendeeSchema);

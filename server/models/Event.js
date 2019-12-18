@@ -49,10 +49,10 @@ eventSchema.methods.toJSON = function toJSON() {
   return doc;
 };
 
-eventSchema.methods.getId = function toJSON() {
+eventSchema.methods.getId = function getId() {
   const doc = this.toObject();
   // eslint-disable-next-line no-underscore-dangle
-  return doc._id;
+  return doc._id.toString();
 };
 
 // const Event = mongoose.model('Event', eventSchema);
