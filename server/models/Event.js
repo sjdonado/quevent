@@ -32,10 +32,7 @@ const fields = {
   author: {
     type: String,
   },
-  attendance: {
-    type: [attendeeSchema],
-    default: null,
-  },
+  attendance: [attendeeSchema],
 };
 
 const eventSchema = new Schema(fields, {

@@ -5,7 +5,11 @@ const { Schema } = mongoose;
 const fields = {
   email: {
     type: String,
+  },
+  qrCodeKey: {
+    type: String,
     unique: true,
+    sparse: true,
   },
   active: {
     type: Boolean,

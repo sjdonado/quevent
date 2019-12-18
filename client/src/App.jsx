@@ -87,7 +87,7 @@ function App({ cookies, history }) {
         extensions,
       }) => {
         if (extensions.code === 'UNAUTHENTICATED') {
-          cookies.remove(AUTH_TOKEN_COOKIE_NAME);
+          handleLogout();
         }
         console.error(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
       });
