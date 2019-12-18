@@ -4,13 +4,13 @@ const { server } = require('../config');
 
 const cryptr = new Cryptr(server.secret);
 
-const generateQRCodeKey = (eventId, attendeeId) => cryptr.encrypt(`${eventId}|${attendeeId}`);
+const generateQRCodeKey = (eventId, attendeeEmail) => cryptr.encrypt(`${eventId}|${attendeeEmail}`);
 
 const getQRCodeKeyData = (qrCodeKey) => {
-  const [eventId, attendeeId] = cryptr.decrypt(qrCodeKey).split('|');
+  const [eventId, attendeeEmail] = cryptr.decrypt(qrCodeKey).split('|');
   return {
     eventId,
-    attendeeId,
+    attendeeEmail,
   };
 };
 

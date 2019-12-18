@@ -5,8 +5,8 @@ const { getQRCodeKeyData } = require('../../services/encrypt');
 
 const readInvitation = async (parent, { qrCodeKey }, context) => {
   const user = await authentication(context);
-  const { eventId, attendeeId } = getQRCodeKeyData(qrCodeKey);
-  console.log(eventId, attendeeId);
+  const { eventId, attendeeEmail } = getQRCodeKeyData(qrCodeKey);
+  console.log(eventId, attendeeEmail);
 
 
   const eventIdx = user.events.findIndex(({ id }) => id === eventId);
@@ -14,7 +14,7 @@ const readInvitation = async (parent, { qrCodeKey }, context) => {
     throw new ApolloError('Event not found', 404);
   }
 
-  const attendeeIdx = user.events[eventIdx].attendance.findIndex(({ id }) => id === attendeeId);
+  const attendeeIdx = user.events[eventIdx].attendance.findIndex(({ email }) => email === attendeeEmail);
   if (attendeeIdx === -1) {
     throw new ApolloError('Attendee not found', 404);
   }

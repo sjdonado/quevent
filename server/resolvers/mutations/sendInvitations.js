@@ -3,7 +3,6 @@ const { ApolloError } = require('apollo-server');
 const moment = require('moment');
 const { authentication } = require('../../services/auth');
 const { sendQRCodeEmail } = require('../../services/mailer');
-const { generateQRCodeKey } = require('../../services/encrypt');
 
 const sendInvitations = async (parent, { eventId }, context) => {
   const user = await authentication(context);
@@ -16,9 +15,9 @@ const sendInvitations = async (parent, { eventId }, context) => {
   const event = user.events[eventIdx];
 
   await Promise.all(event.attendance.map(async (attendee) => {
-    const url = await QRCode.toDataURL(generateQRCodeKey(event.id, attendee.id));
-
-    if (!attendee.invited) {
+    if (!attendee.invited && attendee.active) {
+      console.log('attendee', attendee);
+      const url = await QRCode.toDataURL(attendee.qrCodeKey);
       const eventInfo = {
         name: event.name,
         description: event.description,

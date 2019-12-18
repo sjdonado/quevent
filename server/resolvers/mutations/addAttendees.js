@@ -1,6 +1,7 @@
 const { ApolloError } = require('apollo-server');
 
 const { authentication } = require('../../services/auth');
+const { generateQRCodeKey } = require('../../services/encrypt');
 
 const addAttendee = async (parent, { eventId, attendees }, context) => {
   const user = await authentication(context);
@@ -10,11 +11,14 @@ const addAttendee = async (parent, { eventId, attendees }, context) => {
     throw new ApolloError('Event not found', 404);
   }
 
-  user.events[eventIdx].attendance = [...attendees];
+  const event = user.events[eventIdx];
+  event.attendance = attendees.map((attendee) => Object.assign(attendee, {
+    qrCodeKey: generateQRCodeKey(event.id, attendee.email),
+  }));
 
   await user.save();
 
-  return user.events[eventIdx].attendance;
+  return event.attendance;
 };
 
 module.exports = addAttendee;
