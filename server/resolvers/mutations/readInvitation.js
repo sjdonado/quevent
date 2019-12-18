@@ -6,32 +6,34 @@ const { getQRCodeKeyData } = require('../../services/encrypt');
 const readInvitation = async (parent, { qrCodeKey }, context) => {
   const user = await authentication(context);
   const { eventId, attendeeEmail } = getQRCodeKeyData(qrCodeKey);
-  console.log(eventId, attendeeEmail);
-
 
   const eventIdx = user.events.findIndex(({ id }) => id === eventId);
   if (eventIdx === -1) {
     throw new ApolloError('Event not found', 404);
   }
 
-  const attendeeIdx = user.events[eventIdx].attendance.findIndex(({ email }) => email === attendeeEmail);
+  const event = user.events[eventIdx];
+  if (!event.active) {
+    throw new ApolloError('The event is not active', 400);
+  }
+
+  const attendeeIdx = event.attendance.findIndex(({ email }) => email === attendeeEmail);
   if (attendeeIdx === -1) {
     throw new ApolloError('Attendee not found', 404);
   }
 
-  const attendee = user.events[eventIdx].attendance[attendeeIdx];
-
+  const attendee = event.attendance[attendeeIdx];
   if (!attendee.active) {
     throw new ApolloError('Attendee is not active', 401);
   }
 
-  user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
+  Object.assign(attendee, {
     attended: true,
   });
 
   await user.save();
 
-  return user.events[eventIdx].attendance[attendeeIdx];
+  return attendee;
 };
 
 module.exports = readInvitation;
