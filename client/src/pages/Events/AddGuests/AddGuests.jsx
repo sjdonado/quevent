@@ -22,7 +22,7 @@ function AddGuests({ match }) {
   const history = useHistory();
   const [error, setError] = useState(null);
   const {
-    acceptedFiles, rejectedFiles, getRootProps, getInputProps,
+    acceptedFiles, getRootProps, getInputProps,
   } = useDropzone({
     accept: '.xlsx, .csv',
   });

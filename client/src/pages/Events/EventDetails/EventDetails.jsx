@@ -214,7 +214,11 @@ function EventDetails({ match, location }) {
               }}
               open={open}
               onClose={handleClose}
+
             >
+              <MenuItem onClick={handleClickOpenModal}>
+                Edit Event
+              </MenuItem>
               <MenuItem onClick={() => {
                 history.push(`/events/${match.params.id}/qrreader`);
               }}
