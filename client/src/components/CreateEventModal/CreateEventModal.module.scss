@@ -1,4 +1,4 @@
-@import '../../styles/main.scss';
+@import '../../styles/abstracts/variables';
 
 .dialog{
   h2{
@@ -8,12 +8,18 @@
 
 .dates{
   display: flex;
-  flex-wrap: wrap;
   margin: 1em 0;
+  @media only screen and (max-width: 540px){
+    flex-wrap: wrap;
+  }
   .date{
     flex-grow: 1;
     &:not(:first-child){
       margin-left: 1em;
+      @media only screen and (max-width: 540px){
+        margin-left: 0;
+        margin: 1em 0;
+      }
     }
   }
 }

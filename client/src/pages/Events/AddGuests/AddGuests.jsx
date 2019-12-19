@@ -21,7 +21,11 @@ function AddGuests({ match }) {
   const [snackbarMsg, setSnackbarMsg] = useState(null);
   const history = useHistory();
   const [error, setError] = useState(null);
-  const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
+  const {
+    acceptedFiles, getRootProps, getInputProps,
+  } = useDropzone({
+    accept: '.xlsx, .csv',
+  });
   const [addAttendeesMutation] = useMutation(ADD_ATTENDEES);
 
   const handleSubmit = async () => {
@@ -88,7 +92,7 @@ function AddGuests({ match }) {
             {acceptedFiles.length > 0 ? <p>{acceptedFiles[0].name}</p>
               : (
                 <div className={styles.message}>
-                  <p>Drag and drop your .xls file here, or click to select file.</p>
+                  <p>Drag and drop your .xls or .csv file here, or click to select file.</p>
                   <p className={styles.small}>
                     Make sure that your file contains a column called
                     <b> email</b>
