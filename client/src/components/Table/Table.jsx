@@ -10,7 +10,7 @@ import styles from './Table.module.scss';
 
 
 export default function Table({
-  headers, isEditting, children, handleCheckAll, isAllChecked,
+  headers, isEditting, children, handleCheckAll, isAllChecked, isSelectingAttendees,
 }) {
   return (
     <Box className={styles.root}>
@@ -36,6 +36,22 @@ export default function Table({
             {headers.map((header) => (
               <TableCell align="center" key={header}>{header}</TableCell>
             ))}
+            {isSelectingAttendees && (
+            <Slide direction="left" in={isSelectingAttendees} mountOnEnter unmountOnExit exit>
+              <TableCell align="center">
+                <Checkbox
+                  checked={isAllChecked}
+                  onChange={() => {
+                    handleCheckAll(!isAllChecked);
+                  }}
+                  value="checked"
+                  inputProps={{
+                    'aria-label': 'invite all attendees checkbox',
+                  }}
+                />
+              </TableCell>
+            </Slide>
+            )}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -49,6 +65,7 @@ export default function Table({
 Table.propTypes = {
   isEditting: PropTypes.bool.isRequired,
   isAllChecked: PropTypes.bool.isRequired,
+  isSelectingAttendees: PropTypes.bool.isRequired,
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   children: PropTypes.node.isRequired,
   handleCheckAll: PropTypes.func.isRequired,

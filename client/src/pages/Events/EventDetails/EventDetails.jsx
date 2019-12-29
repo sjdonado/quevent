@@ -34,6 +34,8 @@ import { useRowAction } from '../../../hooks/useRowAction';
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
 function EventDetails({ match, location }) {
+  //const [isSelectingAttendees, setIsSelectingAttendees] = useState(false);
+
   const [currentFilter, setCurrentFilter] = useState(0);
   const [rows, setRows] = useState([]);
   const history = useHistory();
@@ -67,6 +69,7 @@ function EventDetails({ match, location }) {
     isActiveStateChanged, isAllChecked,
     isEditting, setIsEditting,
     numberOfCheckedRows,
+    isSelectingAttendees, setIsSelectingAttendees,
   } = useCheckBox(rows, setRows);
 
   const {
@@ -254,7 +257,12 @@ function EventDetails({ match, location }) {
               options={() => (
                 <ActionButton
                   title="Send invitations"
-                  onClick={() => { handleOpenDialog('send'); }}
+                  onClick={() => 
+                    {
+                      setIsSelectingAttendees(!isSelectingAttendees);
+                      // console.log('something is happening in here');
+                      // handleOpenDialog('send');
+                    }}
                   disabled={!(rows.some(({ invited }) => !invited))}
                 >
                   <MailOutlineIcon />
@@ -275,6 +283,7 @@ function EventDetails({ match, location }) {
                 isEditting={isEditting}
                 isAllChecked={isAllChecked}
                 handleCheckAll={handleCheckAll}
+                isSelectingAttendees={isSelectingAttendees}
               >
                 {rows.map((row) => (
                   <GuestsRow
@@ -284,6 +293,7 @@ function EventDetails({ match, location }) {
                     handleActiveCheckboxChange={handleActiveCheckboxChange}
                     handleCheck={handleCheck}
                     isEditting={isEditting}
+                    isSelectingAttendees={isSelectingAttendees}
                   />
                 ))}
               </AttendeesTable>
