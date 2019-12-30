@@ -34,6 +34,7 @@ type Mutation {
     attendeeId: ID!
     active: Boolean
     attended: Boolean
+    selectable: Boolean
   ): Attendee!
   updateAttendees(
     eventId: ID!
@@ -84,6 +85,7 @@ type Attendee {
   invited: Boolean!
   createdAt: Date!
   updatedAt: Date!
+  selectable: Boolean!
 }
 
 input UpdateAttendeeInput {

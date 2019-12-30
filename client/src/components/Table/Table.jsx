@@ -7,10 +7,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { Box, Slide, Checkbox } from '@material-ui/core';
 import styles from './Table.module.scss';
+import { isNonNullType } from 'graphql';
 
 
 export default function Table({
-  headers, isEditting, children, handleCheckAll, isAllChecked, isSelectingAttendees,
+  headers, isEditting, children, handleCheckAll, isAllChecked, isSelectingAttendees, isAllSelected, handleSelectAll,
 }) {
   return (
     <Box className={styles.root}>
@@ -40,9 +41,9 @@ export default function Table({
             <Slide direction="left" in={isSelectingAttendees} mountOnEnter unmountOnExit exit>
               <TableCell align="center">
                 <Checkbox
-                  checked={isAllChecked}
+                  checked={isAllSelected}
                   onChange={() => {
-                    handleCheckAll(!isAllChecked);
+                    handleSelectAll(!isAllSelected);
                   }}
                   value="checked"
                   inputProps={{
@@ -65,8 +66,10 @@ export default function Table({
 Table.propTypes = {
   isEditting: PropTypes.bool.isRequired,
   isAllChecked: PropTypes.bool.isRequired,
-  isSelectingAttendees: PropTypes.bool.isRequired,
+  isSelectingAttendees: PropTypes.bool,
   headers: PropTypes.arrayOf(PropTypes.string).isRequired,
   children: PropTypes.node.isRequired,
   handleCheckAll: PropTypes.func.isRequired,
+  isAllSelected: PropTypes.bool,
+  handleSelectAll: PropTypes.func,
 };

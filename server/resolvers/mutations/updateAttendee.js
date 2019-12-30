@@ -2,36 +2,37 @@ const { ApolloError } = require('apollo-server');
 
 const { authentication } = require('../../services/auth');
 
-const updateAttendee = async (parent, args, context) => {
-  const {
-    eventId,
-    attendeeId,
-    active,
-    attended,
-  } = args;
+const updateAttendee = async(parent, args, context) => {
+    const {
+        eventId,
+        attendeeId,
+        active,
+        attended,
+        invited,
+    } = args;
 
-  const user = await authentication(context);
+    const user = await authentication(context);
 
-  const eventIdx = user.events.findIndex(({ id }) => id === eventId);
-  if (eventIdx === -1) {
-    throw new ApolloError('Event not found', 404);
-  }
+    const eventIdx = user.events.findIndex(({ id }) => id === eventId);
+    if (eventIdx === -1) {
+        throw new ApolloError('Event not found', 404);
+    }
 
-  const attendeeIdx = user.events[eventIdx].attendance.findIndex(({ id }) => id === attendeeId);
-  if (attendeeIdx === -1) {
-    throw new ApolloError('Attendee not found', 404);
-  }
+    const attendeeIdx = user.events[eventIdx].attendance.findIndex(({ id }) => id === attendeeId);
+    if (attendeeIdx === -1) {
+        throw new ApolloError('Attendee not found', 404);
+    }
 
-  const attendee = user.events[eventIdx].attendance[attendeeIdx];
+    const attendee = user.events[eventIdx].attendance[attendeeIdx];
+    user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
+        active: active || attendee.active,
+        attended: attended || attendee.attended,
+        selectable: !invited && this.active,
+    });
 
-  user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
-    active: active || attendee.active,
-    attended: attended || attendee.attended,
-  });
-
-  await user.save();
-
-  return user.events[eventIdx].attendance[attendeeIdx];
+    await user.save();
+    console.log('Hello!');
+    return user.events[eventIdx].attendance[attendeeIdx];
 };
 
 module.exports = updateAttendee;

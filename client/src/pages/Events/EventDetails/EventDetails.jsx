@@ -70,6 +70,10 @@ function EventDetails({ match, location }) {
     isEditting, setIsEditting,
     numberOfCheckedRows,
     isSelectingAttendees, setIsSelectingAttendees,
+    //isSelectableStateChanged,
+    handleSelectableCheckboxChange,
+    isAllSelected,
+    handleSelectAll,
   } = useCheckBox(rows, setRows);
 
   const {
@@ -260,7 +264,7 @@ function EventDetails({ match, location }) {
                   onClick={() => 
                     {
                       setIsSelectingAttendees(!isSelectingAttendees);
-                      // console.log('something is happening in here');
+                      console.log(data);
                       // handleOpenDialog('send');
                     }}
                   disabled={!(rows.some(({ invited }) => !invited))}
@@ -284,6 +288,8 @@ function EventDetails({ match, location }) {
                 isAllChecked={isAllChecked}
                 handleCheckAll={handleCheckAll}
                 isSelectingAttendees={isSelectingAttendees}
+                isAllSelected={isAllSelected}
+                handleSelectAll={handleSelectAll}
               >
                 {rows.map((row) => (
                   <GuestsRow
@@ -294,6 +300,7 @@ function EventDetails({ match, location }) {
                     handleCheck={handleCheck}
                     isEditting={isEditting}
                     isSelectingAttendees={isSelectingAttendees}
+                    handleSelectableCheckboxChange={handleSelectableCheckboxChange}
                   />
                 ))}
               </AttendeesTable>
