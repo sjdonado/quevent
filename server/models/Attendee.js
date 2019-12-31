@@ -25,7 +25,7 @@ const fields = {
     },
     selectable: {
         type: Boolean,
-        default: true,
+        default: false,
     },
 };
 

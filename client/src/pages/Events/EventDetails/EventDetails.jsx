@@ -74,6 +74,7 @@ function EventDetails({ match, location }) {
     handleSelectableCheckboxChange,
     isAllSelected,
     handleSelectAll,
+    numberOfSelectedRows,
   } = useCheckBox(rows, setRows);
 
   const {
@@ -91,7 +92,8 @@ function EventDetails({ match, location }) {
     setSnackbarMsg,
     setOpenDialog,
     submitting,
-  } = useRowAction(refetch, setIsEditting);
+    handleSelect,
+  } = useRowAction(refetch, setIsEditting,setIsSelectingAttendees);
 
   useEffect(() => {
     history.replace();
@@ -147,6 +149,13 @@ function EventDetails({ match, location }) {
         });
         break;
       case 'send':
+        handleSelect(updateAttendeesMutation, {
+          eventId: match.params.id,
+          attendees: rows.map(({ _id, selectable }) => {
+            console.log({ _id, selectable });
+            return({ _id, selectable });
+          }),
+        });
         handleSendInvitations(sendInvitationsMutation, {
           eventId: match.params.id,
         });
@@ -258,14 +267,20 @@ function EventDetails({ match, location }) {
               setDialogType={setDialogType}
               setOpenDialog={setOpenDialog}
               isActiveStateChanged={isActiveStateChanged}
+              isSelectingAttendees={isSelectingAttendees}
+              setIsSelectingAttendees={setIsSelectingAttendees}
               options={() => (
                 <ActionButton
                   title="Send invitations"
                   onClick={() => 
                     {
-                      setIsSelectingAttendees(!isSelectingAttendees);
-                      console.log(data);
-                      // handleOpenDialog('send');
+                      if(isSelectingAttendees && numberOfSelectedRows > 0){
+                        handleOpenDialog('send');
+                        //setIsSelectingAttendees(false);
+                      }else{
+                        setIsSelectingAttendees(!isSelectingAttendees);
+                        setIsEditting(false);
+                      }
                     }}
                   disabled={!(rows.some(({ invited }) => !invited))}
                 >

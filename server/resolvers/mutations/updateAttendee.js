@@ -9,6 +9,7 @@ const updateAttendee = async(parent, args, context) => {
         active,
         attended,
         invited,
+        selectable,
     } = args;
 
     const user = await authentication(context);
@@ -27,11 +28,10 @@ const updateAttendee = async(parent, args, context) => {
     user.events[eventIdx].attendance[attendeeIdx] = Object.assign(attendee, {
         active: active || attendee.active,
         attended: attended || attendee.attended,
-        selectable: !invited && this.active,
+        selectable: selectable || attendee.selectable,
     });
 
     await user.save();
-    console.log('Hello!');
     return user.events[eventIdx].attendance[attendeeIdx];
 };
 

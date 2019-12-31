@@ -11,7 +11,7 @@ import styles from './EditToolbar.module.scss';
 function EditToolbar({
   children, isEditting, setIsEditting, handleReset,
   setDialogType, setOpenDialog, isActiveStateChanged,
-  options,
+  options, setIsSelectingAttendees, isSelectingAttendees
 }) {
   return (
     <>
@@ -53,7 +53,9 @@ function EditToolbar({
             color="primary"
             onClick={() => {
               setIsEditting(true);
+              setIsSelectingAttendees(false);
             }}
+            disabled={isSelectingAttendees}
             className={styles.editAction}
           >
               Edit
@@ -74,6 +76,8 @@ EditToolbar.propTypes = {
   setDialogType: PropTypes.func.isRequired,
   setOpenDialog: PropTypes.func.isRequired,
   options: PropTypes.func,
+  setIsSelectingAttendees: PropTypes.func,
+  isSelectingAttendees: PropTypes.bool,
 };
 
 EditToolbar.defaultProps = {

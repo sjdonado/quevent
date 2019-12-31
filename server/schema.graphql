@@ -91,6 +91,7 @@ type Attendee {
 input UpdateAttendeeInput {
   _id: ID!
   active: Boolean,
+  selectable: Boolean,
 }
 
 input AttendeeInput {

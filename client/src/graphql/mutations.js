@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const LOGIN_MUTATION = gql`
+export const LOGIN_MUTATION = gql `
   mutation LoginMutation($idToken: String!) {
     login(idToken: $idToken) {
       token
@@ -13,7 +13,7 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
-export const CREATE_EVENT_MUTATION = gql`
+export const CREATE_EVENT_MUTATION = gql `
   mutation createEvent(
     $name: String!
     $description: String!
@@ -37,7 +37,7 @@ export const CREATE_EVENT_MUTATION = gql`
   }
 `;
 
-export const ADD_ATTENDEES = gql`
+export const ADD_ATTENDEES = gql `
   mutation addAttendees(
     $eventId: ID!
     $attendees: [AttendeeInput!]!
@@ -55,7 +55,7 @@ export const ADD_ATTENDEES = gql`
 `;
 
 
-export const SEND_INVITATIONS_MUTATION = gql`
+export const SEND_INVITATIONS_MUTATION = gql `
   mutation sendInvitations($eventId: ID!) {
     sendInvitations(eventId: $eventId) {
       name
@@ -65,7 +65,7 @@ export const SEND_INVITATIONS_MUTATION = gql`
   }
 `;
 
-export const READ_INVITATION_MUTATION = gql`
+export const READ_INVITATION_MUTATION = gql `
   mutation readInvitation($qrCodeKey: String!) {
     readInvitation(qrCodeKey: $qrCodeKey) {
       email
@@ -76,7 +76,7 @@ export const READ_INVITATION_MUTATION = gql`
   }
 `;
 
-export const UPDATE_ATTENDEES_MUTATION = gql`
+export const UPDATE_ATTENDEES_MUTATION = gql `
   mutation updateAttendees($eventId: ID!, $attendees: [UpdateAttendeeInput!]!) {
     updateAttendees(
       eventId: $eventId
@@ -86,11 +86,12 @@ export const UPDATE_ATTENDEES_MUTATION = gql`
       attended
       active
       invited
+      selectable
     }
   }
 `;
 
-export const UPDATE_EVENTS_MUTATION = gql`
+export const UPDATE_EVENTS_MUTATION = gql `
   mutation updateEvents($events: [EventInput!]!) {
     updateEvents(events: $events) {
       _id
@@ -109,7 +110,7 @@ export const UPDATE_EVENTS_MUTATION = gql`
   }
 `;
 
-export const UPDATE_EVENT_MUTATION = gql`
+export const UPDATE_EVENT_MUTATION = gql `
   mutation updateEvent(
     $eventId: ID!
     $name: String!

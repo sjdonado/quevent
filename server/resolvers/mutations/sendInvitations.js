@@ -18,8 +18,8 @@ const sendInvitations = async(parent, { eventId }, context) => {
     }
 
     await Promise.all(event.attendance.map(async(attendee) => {
-        if (!attendee.invited && attendee.active) {
-            console.log('attendee', attendee);
+        if (!attendee.invited && attendee.active && attendee.selectable) {
+            //console.log('attendee', attendee);
             const url = await QRCode.toDataURL(attendee.qrCodeKey);
             const eventInfo = {
                 name: event.name,
