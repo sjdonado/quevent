@@ -34,6 +34,8 @@ import { useRowAction } from '../../../hooks/useRowAction';
 const headers = ['Email', 'Invited', 'Attended', 'Active'];
 
 function EventDetails({ match, location }) {
+  //const [isSelectingAttendees, setIsSelectingAttendees] = useState(false);
+
   const [currentFilter, setCurrentFilter] = useState(0);
   const [rows, setRows] = useState([]);
   const history = useHistory();
@@ -67,6 +69,12 @@ function EventDetails({ match, location }) {
     isActiveStateChanged, isAllChecked,
     isEditting, setIsEditting,
     numberOfCheckedRows,
+    isSelectingAttendees, setIsSelectingAttendees,
+    //isSelectableStateChanged,
+    handleSelectableCheckboxChange,
+    isAllSelected,
+    handleSelectAll,
+    numberOfSelectedRows,
   } = useCheckBox(rows, setRows);
 
   const {
@@ -84,7 +92,8 @@ function EventDetails({ match, location }) {
     setSnackbarMsg,
     setOpenDialog,
     submitting,
-  } = useRowAction(refetch, setIsEditting);
+    handleSelect,
+  } = useRowAction(refetch, setIsEditting,setIsSelectingAttendees);
 
   useEffect(() => {
     history.replace();
@@ -140,6 +149,13 @@ function EventDetails({ match, location }) {
         });
         break;
       case 'send':
+        handleSelect(updateAttendeesMutation, {
+          eventId: match.params.id,
+          attendees: rows.map(({ _id, selectable }) => {
+            console.log({ _id, selectable });
+            return({ _id, selectable });
+          }),
+        });
         handleSendInvitations(sendInvitationsMutation, {
           eventId: match.params.id,
         });
@@ -251,10 +267,21 @@ function EventDetails({ match, location }) {
               setDialogType={setDialogType}
               setOpenDialog={setOpenDialog}
               isActiveStateChanged={isActiveStateChanged}
+              isSelectingAttendees={isSelectingAttendees}
+              setIsSelectingAttendees={setIsSelectingAttendees}
               options={() => (
                 <ActionButton
                   title="Send invitations"
-                  onClick={() => { handleOpenDialog('send'); }}
+                  onClick={() => 
+                    {
+                      if(isSelectingAttendees && numberOfSelectedRows > 0){
+                        handleOpenDialog('send');
+                        //setIsSelectingAttendees(false);
+                      }else{
+                        setIsSelectingAttendees(!isSelectingAttendees);
+                        setIsEditting(false);
+                      }
+                    }}
                   disabled={!(rows.some(({ invited }) => !invited))}
                 >
                   <MailOutlineIcon />
@@ -275,6 +302,9 @@ function EventDetails({ match, location }) {
                 isEditting={isEditting}
                 isAllChecked={isAllChecked}
                 handleCheckAll={handleCheckAll}
+                isSelectingAttendees={isSelectingAttendees}
+                isAllSelected={isAllSelected}
+                handleSelectAll={handleSelectAll}
               >
                 {rows.map((row) => (
                   <GuestsRow
@@ -284,6 +314,8 @@ function EventDetails({ match, location }) {
                     handleActiveCheckboxChange={handleActiveCheckboxChange}
                     handleCheck={handleCheck}
                     isEditting={isEditting}
+                    isSelectingAttendees={isSelectingAttendees}
+                    handleSelectableCheckboxChange={handleSelectableCheckboxChange}
                   />
                 ))}
               </AttendeesTable>

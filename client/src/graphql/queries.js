@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const APPBAR_QUERY = gql`
+export const APPBAR_QUERY = gql `
   {
     getUser {
       _id
@@ -10,7 +10,7 @@ export const APPBAR_QUERY = gql`
   }
 `;
 
-export const GET_EVENTS_QUERY = gql`
+export const GET_EVENTS_QUERY = gql `
   {
     getUser {
       _id
@@ -34,7 +34,7 @@ export const GET_EVENTS_QUERY = gql`
   }
 `;
 
-export const GET_ATTENDEES_QUERY = gql`
+export const GET_ATTENDEES_QUERY = gql `
   query getEventById($eventId: ID!){
     getEvent(eventId: $eventId) {
       _id
@@ -50,6 +50,7 @@ export const GET_ATTENDEES_QUERY = gql`
           attended
           active
           invited
+          selectable
         }
     }
   }

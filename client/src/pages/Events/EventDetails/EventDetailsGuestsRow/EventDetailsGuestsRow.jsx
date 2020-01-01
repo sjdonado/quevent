@@ -9,7 +9,7 @@ import styles from './EventDetailsGuestsRow.module.scss';
 
 
 function EventDetailsGuestRow({
-  row, isEditting, handleActiveCheckboxChange, handleCheck,
+  row, isEditting, handleActiveCheckboxChange, handleCheck, isSelectingAttendees, handleSelectableCheckboxChange,
 }) {
   return (
     <TableRow className={styles.row} key={row._id}>
@@ -66,6 +66,25 @@ function EventDetailsGuestRow({
           }}
         />
       </TableCell>
+      {isSelectingAttendees && (
+      <Slide direction="left" in={isSelectingAttendees} mountOnEnter unmountOnExit exit>
+        <TableCell align="center">
+          <Checkbox
+            checked={!!row.selectable}
+            onChange={() => {
+              //console.log('changed!');
+              handleSelectableCheckboxChange(!row.selectable, row._id);
+            }}
+            disabled={!row.active}
+            value="selectable"
+            inputProps={{
+              'aria-label': 'invite all attendees checkbox',
+            }}
+          />
+        </TableCell>
+      </Slide>
+
+      )}
     </TableRow>
   );
 }
@@ -75,6 +94,8 @@ EventDetailsGuestRow.propTypes = {
   isEditting: PropTypes.bool.isRequired,
   handleActiveCheckboxChange: PropTypes.func.isRequired,
   handleCheck: PropTypes.func.isRequired,
+  isSelectingAttendees: PropTypes.bool.isRequired,
+  handleSelectableCheckboxChange: PropTypes.func.isRequired,
 };
 
 export default EventDetailsGuestRow;
